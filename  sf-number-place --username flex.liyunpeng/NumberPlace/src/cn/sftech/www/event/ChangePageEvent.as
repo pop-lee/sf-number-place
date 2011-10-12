@@ -12,7 +12,7 @@ package cn.sftech.www.event
 		
 		public static const TO_INTR_PAGE : int = 2;
 		
-		public static const TO_SCORELIST_PAGE : int = 3;
+		public static const TO_RESUME_PAGE : int = 3;
 		
 		public static const EXIT : int = 4;
 		

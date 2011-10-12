@@ -120,11 +120,17 @@ package
 		
 		private function changePageHandle(event : ChangePageEvent):void
 		{
-			if(event.data == ChangePageEvent.TO_GAME_PAGE) {
+			if(event.data == ChangePageEvent.TO_MAIN_PAGE) {
+				if(_model.userResolveArr) {
+					mainPage.canResume(true);
+				} else {
+					mainPage.canResume(false);
+				}
+			} else if(event.data == ChangePageEvent.TO_GAME_PAGE) {
 				gamePage.startGame();
+			} else if(event.data == ChangePageEvent.TO_RESUME_PAGE) {
+				event.data = ChangePageEvent.TO_GAME_PAGE;
 			}
-//			} else if(event.data == ChangePageEvent.TO_SCORELIST_PAGE) {
-//				scoreListPage.dataProvider = _model.topScoreArr;
 //			} else if(event.data == ChangePageEvent.EXIT) {
 //				MttService.exit();
 //				return;

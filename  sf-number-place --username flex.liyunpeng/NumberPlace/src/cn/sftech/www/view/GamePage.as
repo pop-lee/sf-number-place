@@ -11,6 +11,8 @@ package cn.sftech.www.view
 	{
 		private var gamePane : GamePane;
 		
+		private var saveTip : SaveTip;
+		
 		private var _model : ModelLocator = ModelLocator.getInstance();
 		
 		public function GamePage()
@@ -49,6 +51,7 @@ package cn.sftech.www.view
 			prevStepBtn.backgroundImage = PrevStepBtnBackground;
 			prevStepBtn.x = 80;
 			prevStepBtn.y = 300;
+			prevStepBtn.addEventListener(MouseEvent.CLICK,prevStepHandle);
 			addChild(prevStepBtn);
 			
 			var helpBtn : SFMovieClip = new SFMovieClip();
@@ -64,6 +67,18 @@ package cn.sftech.www.view
 			//创建游戏界面
 			gamePane.initGame();
 			gamePane.startGame(_model.currentLv);
+		}
+		
+		private function prevStepHandle(event : MouseEvent) : void
+		{
+			if(_model.isPlayLv) {
+				if(!saveTip) {
+					saveTip = new SaveTip();
+					saveTip.x = 21;
+					saveTip.y = 50;
+					SFApplication.application.addChild(saveTip);
+				}
+			}
 		}
 		
 		private function toMainPage(event : MouseEvent):void
