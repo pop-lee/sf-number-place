@@ -16,7 +16,10 @@ package cn.sftech.www.model
 		
 		public var lvMapArr : Vector.<Object> = new Vector.<Object>();
 		
-		public var userResolveArr : Vector.<Vector.<int>> = new Vector.<Vector.<int>>(9);
+		public var userResolveArr : Vector.<Object>;
+		
+		//用户是否以开始玩本关，用来判断是否需要存储当前关
+		public var isPlayLv : Boolean = false;
 		
 		public var isResolve : Boolean = true;
 		

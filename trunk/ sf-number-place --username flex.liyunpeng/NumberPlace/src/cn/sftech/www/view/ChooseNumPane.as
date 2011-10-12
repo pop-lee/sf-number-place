@@ -6,10 +6,16 @@ package cn.sftech.www.view
 	
 	import flash.display.MovieClip;
 	import flash.events.MouseEvent;
+	
+	import flashx.textLayout.events.ModelChange;
 
 	public class ChooseNumPane extends SFContainer
 	{
 		private const BtnSize : uint = 70;
+		
+		private var _cancelBtn : SFMovieClip;
+		
+		private var _closeBtn : SFMovieClip;
 		
 		public function ChooseNumPane()
 		{
@@ -19,8 +25,10 @@ package cn.sftech.www.view
 		
 		private function init() : void
 		{
-			this.width = 230;
-			this.height = 230;
+			this.backgroundImage = chooseNumberPaneBackground;
+			
+			this.width = 190;
+			this.height = 190;
 			this.visible = false;
 			this.backgroundAlpha = 1;
 			this.backgroundColor = 0x0000ff;
@@ -38,6 +46,18 @@ package cn.sftech.www.view
 					addChild(numBtn);
 				}
 			}
+			
+			_cancelBtn = new SFMovieClip();
+			_cancelBtn.backgroundImage = CancelChooseNumBtn;
+			_cancelBtn.x = 15;
+			_cancelBtn.y = 150;
+			addChild(_cancelBtn);
+			
+			_closeBtn = new SFMovieClip();
+			_closeBtn.backgroundImage = CloseChooseNumBtn;
+			_closeBtn.x = 135;
+			_closeBtn.y = 150;
+			addChild(_closeBtn);
 		}
 		
 		public function show() : void

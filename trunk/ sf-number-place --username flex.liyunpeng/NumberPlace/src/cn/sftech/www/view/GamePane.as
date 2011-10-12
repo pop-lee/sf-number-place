@@ -123,6 +123,8 @@ package cn.sftech.www.view
 			addChild(newBlock);
 			//添加到用户的已填数字列表中
 			_model.userResolveArr[newBlock.indexY][newBlock.indexX] = newBlock.type;
+			//用户是否以开始本关
+			_model.isPlayLv = true;
 			//鉴证填写的数字快是否合理
 			checkNum(newBlock);
 		}
@@ -134,6 +136,7 @@ package cn.sftech.www.view
 				if(i == block.indexY) continue;
 				if(currentLvMap[i][block.indexX] == block.type) {
 					_model.isResolve = false;
+					block.isOld();
 					trace(i + "  " + block.indexX + "  " + block.type);
 				}
 			}
@@ -142,6 +145,7 @@ package cn.sftech.www.view
 				if(j == block.indexX) continue;
 				if(currentLvMap[block.indexY][j] == block.type) {
 					_model.isResolve = false;
+					block.isOld();
 					trace(block.indexY + "  " + j + "  " + block.type);
 				}
 			}
@@ -151,6 +155,7 @@ package cn.sftech.www.view
 					if(k == block.indexY && l == block.indexX) continue;
 					if(currentLvMap[k][l] == block.type) {
 						_model.isResolve = false;
+						block.isOld();
 						trace(k + "  " + l + "  " + block.type);
 					}
 				}
@@ -169,6 +174,7 @@ package cn.sftech.www.view
 		
 		private function buildMap(lv : uint) : void
 		{
+			_model.userResolveArr = new Vector.<Object>(9)
 			for(var b : int = 0;b<_model.userResolveArr.length;b++) {
 				_model.userResolveArr[b] = new Vector.<int>(9);
 			}
@@ -200,7 +206,7 @@ package cn.sftech.www.view
 						num.y = i*GameConfig.BLOCK_HEIGHT + 5.5  + i + int(i/3) + i*3;
 						num.indexX = j;
 						num.indexY = i;
-//						addChild(num);
+						addChild(num);
 					}
 				}
 			}

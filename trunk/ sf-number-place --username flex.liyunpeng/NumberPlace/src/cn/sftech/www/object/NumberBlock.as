@@ -1,5 +1,6 @@
 package cn.sftech.www.object
 {
+	import flash.display.MovieClip;
 	import flash.events.Event;
 
 	public class NumberBlock extends Block
@@ -24,7 +25,7 @@ package cn.sftech.www.object
 		
 		public function isOld() : void
 		{
-			
+			(this.backgroundImage as MovieClip).gotoAndStop(2);
 		}
 		
 		public function setData(x : int,y : int) : void
