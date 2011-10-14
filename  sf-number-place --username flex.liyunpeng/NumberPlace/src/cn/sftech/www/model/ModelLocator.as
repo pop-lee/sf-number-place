@@ -1,6 +1,7 @@
 package cn.sftech.www.model
 {
 	import cn.sftech.www.object.MapData;
+	import cn.sftech.www.object.NumberBlock;
 	
 	import flash.errors.IllegalOperationError;
 	import flash.utils.Timer;
@@ -20,8 +21,10 @@ package cn.sftech.www.model
 		
 		//用户是否以开始玩本关，用来判断是否需要存储当前关
 		public var isPlayLv : Boolean = false;
-		
+		//用户是当前解的违规状态 true代表没有违规的块 false代表有违规的块
 		public var isResolve : Boolean = true;
+		
+		public var _currentFocus : NumberBlock;
 		
 		public function ModelLocator()
 		{

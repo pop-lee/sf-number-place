@@ -36,20 +36,20 @@ package cn.sftech.www.util
 				}
 			}
 			while(!resolve(ANY));
-//			
-//			// 挖窟窿
-//			for(var k:int=0;k<black;)
-//			{
-//				i = Math.random()*100%81;
-//				j=i%9;
-//				i=int(i/9);
-//				if(map[i][j]>0)
-//				{
-//					map[i][j]=0;
-//					++k;
-//				}
-//			}
-//			
+			
+			// 挖窟窿
+			for(var k:int=0;k<black;)
+			{
+				i = Math.random()*100%81;
+				j=i%9;
+				i=int(i/9);
+				if(map[i][j]>0)
+				{
+					map[i][j]=0;
+					++k;
+				}
+			}
+			
 			return map;
 		}
 		
@@ -57,14 +57,15 @@ package cn.sftech.www.util
 		public function resolve(mod : int = ALL) : Boolean
 		{
 			smod=mod;
-			if(mod==ALL)
-			{
-				solves=0;
-				dfs();
-				return false;
-			}
-			else if(mod==ANY)
-			{
+			
+//			if(mod==ALL)
+//			{
+//				solves=0;
+//				dfs();
+//				return false;
+//			}
+//			else if(mod==ANY)
+//			{
 				try
 				{
 					dfs();
@@ -74,13 +75,16 @@ package cn.sftech.www.util
 				{
 					return true;
 				}
-			}
+//			}
 			return false;
-//			return true;
 		}
 		
+		private var temp : uint = 0;
 		private function dfs() : void
 		{
+			LogManager.print(temp++ + "");
+			trace(temp);
+			
 			var i : int , j : int,im : int=-1,jm : int;
 			var min : int = 10;
 			//			var mark[10] : vect;
@@ -104,21 +108,20 @@ package cn.sftech.www.util
 			}
 			if(im==-1)
 			{
-				if(smod==ALL)
-				{
-					++solves;
-					trace("No. "+solves+":\n");
-					display();
-					return;
-				}
-				else if(smod==ANY)
-				{
-//					throw(1);
+//				if(smod==ALL)
+//				{
+//					++solves;
+//					trace("No. "+solves+":\n");
+//					display();
+//					return;
+//				}
+//				else if(smod==ANY)
+//				{
+////					throw(1);
 					throw(new Error());
-				}
+//				}
 			}
-//			check(im,jm,mark);
-			LogManager.print("aa");
+			check(im,jm,mark);
 			for(i=1;i<=9;++i)
 			{
 				if(mark[i]==0)

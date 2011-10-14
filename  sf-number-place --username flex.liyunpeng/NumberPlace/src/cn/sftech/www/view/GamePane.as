@@ -26,7 +26,9 @@ package cn.sftech.www.view
 		
 		private var _model : ModelLocator = ModelLocator.getInstance();
 		
-		private var currentLvMap : Vector.<Vector.<int>>;
+		private var _currentLvMap : Vector.<Vector.<int>>;
+		
+		private var _currentLvBlock : Vector.<Vector.<NumberBlock>>;
 		
 		private var _currentBlock : NumberBlock;
 		
@@ -40,6 +42,12 @@ package cn.sftech.www.view
 		
 		private function init() : void
 		{
+			if(!_model.userResolveArr) {
+				_model.userResolveArr = new Vector.<Object>(9)
+				for(var b : int = 0;b<_model.userResolveArr.length;b++) {
+					_model.userResolveArr[b] = new Vector.<int>(9);
+				}
+			}
 //			for(var i : int = 0;i < 3;i++) {
 //				block9Map[i] = new Vector.<Block>(3);
 //				for(var j : int = 0;j < 3;j++) {
@@ -55,8 +63,8 @@ package cn.sftech.www.view
 		{
 			buildBlock();
 			_NumPane = new ChooseNumPane();
-			_NumPane.x = this.x + 4;
-			_NumPane.y = this.y + 4;
+			_NumPane.x = 20;
+			_NumPane.y = 50;
 			_NumPane.addEventListener(ChooseNumEvent.CHOOSE_NUM_EVENT,chooseNumHandle);
 			SFApplication.application.addChild(_NumPane);
 		}
@@ -107,8 +115,10 @@ package cn.sftech.www.view
 		
 		private function chooseNumHandle(event : ChooseNumEvent) :void
 		{
+			if(!event.data) return;
+			
 			//获取玩家新选择的数字
-			var newBlock : NumberBlock = GetNum.get(event.data);
+			var newBlock : NumberBlock = GetNum.get(uint(event.data));
 			//拷贝原来位置的坐标及数组索引
 			newBlock.copyData(_currentBlock);
 			//删除原位置上的数据块
@@ -116,7 +126,7 @@ package cn.sftech.www.view
 			//将当前位置块指定为新块
 			_currentBlock = newBlock;
 			//替换数组中的类型为最新选择的类型
-			currentLvMap[newBlock.indexY][newBlock.indexX] = newBlock.type;
+			_currentLvMap[newBlock.indexY][newBlock.indexX] = newBlock.type;
 			//为此块添加事件
 			newBlock.addEventListener(MouseEvent.CLICK,chooseNumPaneHandle);
 			//添加新数字块到显示列表
@@ -131,10 +141,12 @@ package cn.sftech.www.view
 		
 		private function checkNum(block : NumberBlock) : void
 		{
+			if(block.type == 0) return;
+			
 			//检测列
 			for(var i : int = 0;i < 9;i++) {
 				if(i == block.indexY) continue;
-				if(currentLvMap[i][block.indexX] == block.type) {
+				if(_currentLvMap[i][block.indexX] == block.type) {
 					_model.isResolve = false;
 					block.isOld();
 					trace(i + "  " + block.indexX + "  " + block.type);
@@ -143,7 +155,7 @@ package cn.sftech.www.view
 			//检测行
 			for(var j : int = 0;j < 9;j++) {
 				if(j == block.indexX) continue;
-				if(currentLvMap[block.indexY][j] == block.type) {
+				if(_currentLvMap[block.indexY][j] == block.type) {
 					_model.isResolve = false;
 					block.isOld();
 					trace(block.indexY + "  " + j + "  " + block.type);
@@ -153,7 +165,7 @@ package cn.sftech.www.view
 			for(var k: int = int(block.indexY/3)*3;k<int(block.indexY/3 + 1)*3;k++) {
 				for(var l: int = int(block.indexX/3)*3;l<int(block.indexX/3 + 1)*3;l++) {
 					if(k == block.indexY && l == block.indexX) continue;
-					if(currentLvMap[k][l] == block.type) {
+					if(_currentLvMap[k][l] == block.type) {
 						_model.isResolve = false;
 						block.isOld();
 						trace(k + "  " + l + "  " + block.type);
@@ -163,7 +175,7 @@ package cn.sftech.www.view
 			//验证是否全部填写完成
 			for(var m : int = 0;m < 9;m++) {
 				for(var n : int = 0;n < 9;n++) {
-					if(currentLvMap[m][n] == 0) { //还有空地没有填写数字
+					if(_currentLvMap[m][n] == 0) { //还有空地没有填写数字
 						
 					} else if(_model.isResolve) { //代表全部填写正确
 						
@@ -174,18 +186,15 @@ package cn.sftech.www.view
 		
 		private function buildMap(lv : uint) : void
 		{
-			_model.userResolveArr = new Vector.<Object>(9)
-			for(var b : int = 0;b<_model.userResolveArr.length;b++) {
-				_model.userResolveArr[b] = new Vector.<int>(9);
-			}
-			
-			currentLvMap = Vector.<Vector.<int>>(MapData.getLvData(lv));
+			_currentLvMap = Vector.<Vector.<int>>(MapData.getLvData(lv));
+			_currentLvBlock = new Vector.<Vector.<NumberBlock>>(_currentLvMap.length);
 			var num : NumberBlock;
-			for(var i : int = 0;i < currentLvMap.length;i++) {
-				for(var j : int = 0;j < currentLvMap[i].length;j++) {
+			for(var i : int = 0;i < _currentLvMap.length;i++) {
+				_currentLvBlock[i] = new Vector.<NumberBlock>(_currentLvMap[i].length);
+				for(var j : int = 0;j < _currentLvMap[i].length;j++) {
 					num = null;
-					num = GetNum.get(currentLvMap[i][j]);
-					if(currentLvMap[i][j] == 0) num.addEventListener(MouseEvent.CLICK,chooseNumPaneHandle);
+					num = GetNum.get(_currentLvMap[i][j]);
+					if(_currentLvMap[i][j] == 0) num.addEventListener(MouseEvent.CLICK,chooseNumPaneHandle);
 //					switch(currentLvMap[i][j]) {
 //						case 0:num = new Blank as MovieClip;num.addEventListener(MouseEvent.CLICK,clickHandle);break;
 //						case 1:num = new One() as MovieClip;break;
@@ -199,14 +208,25 @@ package cn.sftech.www.view
 //						case 9:num = new Nine() as MovieClip;break;
 //					}
 					if(num) {
-						j%(int(j/3)*3)
 //						num.x = (j-int(j/3)*3)*(GameConfig.BLOCK_WIDTH + GameConfig.BLOCK_LINESIZE) + GameConfig.BLOCK_SPACING + 1;
 //						num.y = (i-int(i/3)*3)*(GameConfig.BLOCK_HEIGHT + GameConfig.BLOCK_LINESIZE) + GameConfig.BLOCK_SPACING + 1;
 						num.x = j*GameConfig.BLOCK_WIDTH + 5 + j + int(j/3) + j*2;
 						num.y = i*GameConfig.BLOCK_HEIGHT + 5.5  + i + int(i/3) + i*3;
 						num.indexX = j;
 						num.indexY = i;
+						_currentLvBlock[i][j] = num;
 						addChild(num);
+					}
+				}
+			}
+			
+			//填入用户存储的关卡信息
+			if(_model.userResolveArr) {
+				for(var k : int = 0;k < _model.userResolveArr.length;k++) {
+					for(var l : int = 0;l < _model.userResolveArr[k].length;l++) {
+						if(_model.userResolveArr[k][l] == 0) continue;
+						_currentBlock = _currentLvBlock[k][l];
+						chooseNumHandle(new ChooseNumEvent(_model.userResolveArr[k][l]));
 					}
 				}
 			}
@@ -218,6 +238,7 @@ package cn.sftech.www.view
 		 */		
 		private function nextLv():void
 		{
+			_model.userResolveArr = null;
 			_model.currentLv ++;
 		}
 		

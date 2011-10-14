@@ -23,6 +23,11 @@ package cn.sftech.www.util
 		
 		private var _model : ModelLocator = ModelLocator.getInstance();
 		
+		private var initFlag : uint ;
+		
+		private var initDataCount : uint ;
+		
+		
 		//关卡地图是否初始化
 		private var lvMapInited : Boolean = false;
 		
@@ -32,6 +37,9 @@ package cn.sftech.www.util
 		
 		public function initData() : void
 		{
+//			initLvMapData();
+			LogManager.print("正在加载用户数据...");
+			initDataCount = 3;
 			queryLvMap();
 			queryUserSaveData();
 			MttScore.query(queryScoreHandle);
@@ -58,6 +66,7 @@ package cn.sftech.www.util
 			userLvData.saveLv = _model.currentLv;
 			userLvData.userLvData = _model.userResolveArr;
 			userLvDataObejct.writeObject(userLvData);
+			userLvDataObejct.position = 0;
 			MttGameData.put(USER_LV_DATA_KEY,userLvDataObejct,saveLvDataResult);
 		}
 		
@@ -98,7 +107,8 @@ package cn.sftech.www.util
 			if(result.code == 0) { //返回成功
 				_model.lvMapArr = Vector.<Object>(result.value.readObject());
 				lvMapInited = true;
-				SFApplication.application.dispatchEvent(new SFInitializeDataEvent());
+				
+				initCheck();
 			} else if(result.code == MttService.EIOERROR) { //网络原因出错
 				LogManager.print("因网络原因，查询失败");
 			} else {
@@ -109,9 +119,16 @@ package cn.sftech.www.util
 		private function queryUserLvDataResult(result : Object) : void
 		{
 			if(result.code == 0) { //返回成功
+//				var byteArray : ByteArray = result.value;
+//				byteArray.position = 0
+//				trace(byteArray.position);
+				result.value.position = 0;
+				trace(result.value.position);
 				var userLvData : Object = result.value.readObject();
 				_model.currentLv = userLvData.saveLv;
 				_model.userResolveArr = userLvData.userLvData;
+				
+				initCheck();
 			} else if(result.code == MttService.EIOERROR) { //网络原因出错
 				LogManager.print("因网络原因，提交失败");
 			} else if(result.code == MttService.ENOENT) { //没有相关的用户存储关卡数据
@@ -125,8 +142,8 @@ package cn.sftech.www.util
 		{
 			LogManager.print("正在为您的第一次游戏初始化数据...");
 			MapData.initLvData();
-			saveLvMap();
-			saveLvData();
+//			saveLvMap();
+//			saveLvData();
 		}
 		
 		private function queryScoreHandle(result : Object) : void
@@ -139,6 +156,16 @@ package cn.sftech.www.util
 					var _score: int = items[i].score;
 //					_model.topScoreArr[i] = _score;
 				}
+				
+				initCheck();
+			}
+		}
+		
+		private function initCheck() : void
+		{
+			initFlag++;
+			if(initFlag == initDataCount) {
+				SFApplication.application.dispatchEvent(new SFInitializeDataEvent());
 			}
 		}
 	}

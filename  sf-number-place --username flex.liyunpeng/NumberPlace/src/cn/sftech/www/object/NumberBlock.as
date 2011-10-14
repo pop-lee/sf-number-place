@@ -1,26 +1,41 @@
 package cn.sftech.www.object
 {
+	import cn.sftech.www.view.SFTextField;
+	
 	import flash.display.MovieClip;
 	import flash.events.Event;
+	import flash.text.TextField;
+	
+	import flashx.textLayout.formats.TextAlign;
 
 	public class NumberBlock extends Block
 	{
+		private var num : MovieClip = new MovieClip();
+		
 		public function NumberBlock(type : uint)
 		{
 			this.type = type;
 			if(type != 0) this.backgroundImage = NumberBlockBackground;
 			switch(type) {
-				case 0:this.addChild(new Blank());break;
-				case 1:this.addChild(new One());break;
-				case 2:this.addChild(new Two());break;
-				case 3:this.addChild(new Three());break;
-				case 4:this.addChild(new Four());break;
-				case 5:this.addChild(new Five());break;
-				case 6:this.addChild(new Six());break;
-				case 7:this.addChild(new Seven());break;
-				case 8:this.addChild(new Eight());break;
-				case 9:this.addChild(new Nine());break;
+				case 0:num = new Blank();break;
+				case 1:num = new One();break;
+				case 2:num = new Two();break;
+				case 3:num = new Three();break;
+				case 4:num = new Four();break;
+				case 5:num = new Five();break;
+				case 6:num = new Six();break;
+				case 7:num = new Seven();break;
+				case 8:num = new Eight();break;
+				case 9:num = new Nine();break;
+				default : num = new Blank();
 			}
+//			num.font = new GameConfig.font().fontName;
+//			num.size = 18;
+//			num.width = this.width;
+//			num.height = this.height;
+//			num.textAlign = TextAlign.CENTER;
+//			num.text = type + "";
+			addChild(num);
 		}
 		
 		public function isOld() : void
@@ -47,6 +62,19 @@ package cn.sftech.www.object
 			indexY = block.indexY;
 			this.x = block.x;
 			this.y = block.y;
+		}
+		
+		override public function set width(value:Number):void
+		{
+			super.width = value;
+//			backgroundImage.width = value;
+//			num.width = value;
+		}
+		override public function set height(value:Number):void
+		{
+			super.height = value;
+//			backgroundImage.height = value;
+//			num.height = value;
 		}
 	}
 }
