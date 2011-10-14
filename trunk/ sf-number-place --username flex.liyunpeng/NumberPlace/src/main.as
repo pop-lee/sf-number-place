@@ -1,5 +1,6 @@
 package
 {
+	import cn.sftech.www.event.ChangeGamePageEvent;
 	import cn.sftech.www.event.ChangePageEvent;
 	import cn.sftech.www.event.SFInitializeDataEvent;
 	import cn.sftech.www.model.ModelLocator;
@@ -69,6 +70,7 @@ package
 			var dataManager : DataManager = new DataManager();
 			SFApplication.application.addEventListener(SFInitializeDataEvent.INITIALIZE_DATA_EVENT,initializedData);
 			dataManager.initData();
+//			initializedData(new SFInitializeDataEvent());
 		}
 		
 		private function initializedData(event : SFInitializeDataEvent) : void
@@ -127,10 +129,13 @@ package
 					mainPage.canResume(false);
 				}
 			} else if(event.data == ChangePageEvent.TO_GAME_PAGE) {
-				gamePage.startGame();
+				_model.userResolveArr = null;
 			} else if(event.data == ChangePageEvent.TO_RESUME_PAGE) {
+				var changeGamePageEvent : ChangeGamePageEvent = new ChangeGamePageEvent();
+				changeGamePageEvent.data = ChangeGamePageEvent.TO_GAMEPANEL_PAGE;
+				gamePage.toGamePanel(changeGamePageEvent);
+				
 				event.data = ChangePageEvent.TO_GAME_PAGE;
-				gamePage.startGame();
 			}
 //			} else if(event.data == ChangePageEvent.EXIT) {
 //				MttService.exit();
