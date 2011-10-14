@@ -8,7 +8,6 @@ package cn.sftech.www.view
 	import cn.sftech.www.object.MapData;
 	import cn.sftech.www.object.NumberBlock;
 	import cn.sftech.www.util.GetNum;
-	import cn.sftech.www.view.ConnectLines;
 	
 	import flash.display.DisplayObject;
 	import flash.display.MovieClip;

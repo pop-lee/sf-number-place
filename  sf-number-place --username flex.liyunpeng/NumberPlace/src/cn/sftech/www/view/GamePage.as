@@ -1,19 +1,16 @@
 package cn.sftech.www.view
 {
+	import cn.sftech.www.event.ChangeGamePageEvent;
 	import cn.sftech.www.event.ChangePageEvent;
-	import cn.sftech.www.event.GameOverEvent;
 	import cn.sftech.www.model.ModelLocator;
 	
 	import flash.events.MouseEvent;
-	import flash.events.TimerEvent;
 	
-	public class GamePage extends SFContainer
+	public class GamePage extends SFViewStack
 	{
-		private var gamePane : GamePane;
+		private var levelListPage : LevelListPage;
 		
-		private var saveTip : SaveTip;
-		
-		private var _model : ModelLocator = ModelLocator.getInstance();
+		private var gamePanel : GamePanel;
 		
 		public function GamePage()
 		{
@@ -21,64 +18,22 @@ package cn.sftech.www.view
 			init();
 		}
 		
-		private function init():void
+		private function init() : void
 		{
 			this.backgroundImage = GamePageBackground;
 			
-			gamePane = new GamePane();
-			gamePane.width = 243;
-			gamePane.height = 268;
-			gamePane.x = 0;
-			gamePane.y = 26;
-			gamePane.backgroundAlpha = 0;
-			addChild(gamePane);
+			levelListPage = new LevelListPage();
+			levelListPage.backgroundAlpha = 0;
+			levelListPage.percentWidth = 100;
+			levelListPage.percentHeight = 100;
+			levelListPage.addEventListener(ChangeGamePageEvent.CHANGE_GAMEPAGE_EVENT,toGamePanel);
+			addItem(levelListPage);
 			
-			var _backMainBtn : SFMovieClip = new SFMovieClip;
-			_backMainBtn.backgroundImage = BackBtnBackground;
-			_backMainBtn.x = 4;
-			_backMainBtn.y = 4;
-//			_backMainBtn.backgroundAlpha = 0;
-			_backMainBtn.addEventListener(MouseEvent.CLICK,toMainPage);
-			addChild(_backMainBtn);
-			
-			var restartBtn : SFMovieClip = new SFMovieClip();
-			restartBtn.backgroundImage = RestartBtnBackground;
-			restartBtn.x = 4;
-			restartBtn.y = 300;
-			addChild(restartBtn);
-			
-			var prevStepBtn : SFMovieClip = new SFMovieClip();
-			prevStepBtn.backgroundImage = PrevStepBtnBackground;
-			prevStepBtn.x = 80;
-			prevStepBtn.y = 300;
-			prevStepBtn.addEventListener(MouseEvent.CLICK,prevStepHandle);
-			addChild(prevStepBtn);
-			
-			var helpBtn : SFMovieClip = new SFMovieClip();
-			helpBtn.backgroundImage = HelpBtnBackground;
-			helpBtn.x = 144;
-			helpBtn.y = 300;
-			addChild(helpBtn);
-			
-		}
-		
-		public function startGame() : void
-		{
-			//创建游戏界面
-			gamePane.initGame();
-			gamePane.startGame(_model.currentLv);
-		}
-		
-		private function prevStepHandle(event : MouseEvent) : void
-		{
-			if(_model.isPlayLv) {
-				if(!saveTip) {
-					saveTip = new SaveTip();
-					saveTip.x = 21;
-					saveTip.y = 50;
-					SFApplication.application.addChild(saveTip);
-				}
-			}
+			gamePanel = new GamePanel();
+			gamePanel.backgroundAlpha = 0;
+			gamePanel.percentWidth = 100;
+			gamePanel.percentHeight = 100;
+			addItem(gamePanel);
 		}
 		
 		private function toMainPage(event : MouseEvent):void
@@ -89,6 +44,14 @@ package cn.sftech.www.view
 				changePageEvent.data = ChangePageEvent.TO_MAIN_PAGE;
 				SFApplication.application.dispatchEvent(changePageEvent);
 //			}
+		}
+		
+		public function toGamePanel(event : ChangeGamePageEvent) : void
+		{
+			if(event.data == ChangeGamePageEvent.TO_GAMEPANEL_PAGE) {
+				gamePanel.startGame();
+			}
+			this.selectedIndex = event.data;
 		}
 		
 	}
