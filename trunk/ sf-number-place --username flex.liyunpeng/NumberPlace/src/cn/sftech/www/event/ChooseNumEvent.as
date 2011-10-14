@@ -6,9 +6,9 @@ package cn.sftech.www.event
 	{
 		public static const CHOOSE_NUM_EVENT : String = "chooseNumEvent";
 		
-		public var data : uint;
+		public var data : String;
 		
-		public function ChooseNumEvent(value : uint)
+		public function ChooseNumEvent(value : String = null)
 		{
 			data = value;
 			super(CHOOSE_NUM_EVENT);

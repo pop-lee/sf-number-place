@@ -130,6 +130,7 @@ package
 				gamePage.startGame();
 			} else if(event.data == ChangePageEvent.TO_RESUME_PAGE) {
 				event.data = ChangePageEvent.TO_GAME_PAGE;
+				gamePage.startGame();
 			}
 //			} else if(event.data == ChangePageEvent.EXIT) {
 //				MttService.exit();
