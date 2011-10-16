@@ -4,6 +4,7 @@ package cn.sftech.www.view
 	import cn.sftech.www.model.ModelLocator;
 	import cn.sftech.www.object.GameConfig;
 	
+	import flash.events.Event;
 	import flash.events.MouseEvent;
 
 	public class LevelList extends SFViewStack
@@ -32,6 +33,7 @@ package cn.sftech.www.view
 			this.backgroundAlpha = 1;
 			this.backgroundColor = 0xcccccc;
 			
+			this.addEventListener(MouseEvent.MOUSE_DOWN,mouseDownHandle);
 		}
 		
 		private function buildLevelBtn(type : uint) : void
@@ -74,6 +76,24 @@ package cn.sftech.www.view
 		{
 			_model.currentLv = (event.currentTarget as LevelListBtn).level;
 			this.dispatchEvent(new ChangeGamePageEvent());
+		}
+		
+		private function mouseDownHandle(event : MouseEvent) : void
+		{
+//			trace(event.stageY);
+			oldP = this.mouseY;
+			this.addEventListener(Event.ENTER_FRAME,drag);
+			this.addEventListener(MouseEvent.MOUSE_MOVE,mouseMoveHandle);
+		}
+		
+		private function mouseMoveHandle(event : MouseEvent) : void
+		{
+			this.y -= oldP - this.mouseY; 
+		}
+		
+		private function drag(event : Event) : void
+		{
+			
 		}
 		
 	}
