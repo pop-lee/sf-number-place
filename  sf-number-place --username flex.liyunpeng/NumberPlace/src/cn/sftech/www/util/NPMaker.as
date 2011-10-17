@@ -46,6 +46,7 @@ package cn.sftech.www.util
 					++k;
 				}
 			}
+			display();
 			
 			return map;
 		}
@@ -55,7 +56,7 @@ package cn.sftech.www.util
 		{
 			try
 			{
-				dfs();
+				dfs();  
 				return true;
 			}
 			catch(error : Error)
@@ -66,6 +67,7 @@ package cn.sftech.www.util
 		}
 		
 		private var temp : uint = 0;
+		//深度优先搜索
 		private function dfs() : void
 		{
 			LogManager.print(temp++ + "");
@@ -92,6 +94,7 @@ package cn.sftech.www.util
 					}
 				}
 			}
+			//无解情况
 			if(im==-1)
 			{
 				throw(new Error());
@@ -108,6 +111,7 @@ package cn.sftech.www.util
 			map[im][jm]=0;
 		}
 		
+		//返回有多少种可能值
 		private function check(y : int,x : int,mark : Vector.<int>) : int
 		{
 			var i : int,j : int;
@@ -115,12 +119,15 @@ package cn.sftech.www.util
 			var count : int = 0;
 			for(i=1;i<=9;++i)
 				mark[i]=0;
+			//所属列
 			for(i=0;i<9;++i)
 				mark[map[y][i]]=1;
+			//所属行
 			for(i=0;i<9;++i)
 				mark[map[i][x]]=1;
 			i_s=int(y/3)*3;
 			js=int(x/3)*3;
+			//所属9块
 			for(i=0;i<3;++i)
 			{
 				for(j=0;j<3;++j)
