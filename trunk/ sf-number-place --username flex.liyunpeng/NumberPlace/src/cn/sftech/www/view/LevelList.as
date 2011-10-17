@@ -30,10 +30,6 @@ package cn.sftech.www.view
 		
 		private function init() : void
 		{
-			this.backgroundAlpha = 1;
-			this.backgroundColor = 0xcccccc;
-			
-			this.addEventListener(MouseEvent.MOUSE_DOWN,mouseDownHandle);
 		}
 		
 		private function buildLevelBtn(type : uint) : void
@@ -56,19 +52,21 @@ package cn.sftech.www.view
 				lvBtn.width = 40;
 				lvBtn.height = 40;
 				lvBtn.x = (i-1)%col*(lvBtn.width+horizontalLeading) + 30;
-				lvBtn.y = int((i-1)/col)*(lvBtn.height + verticalLeading) + 30;
+//				lvBtn.y = int((i-1)/col)*(lvBtn.height + verticalLeading) + 30;
 				
-//				lvBtn.y = int(i/col)%row*(lvBtn.height + verticalLeading);
+				lvBtn.y = int(i/col)%row*(lvBtn.height + verticalLeading) + 30;
 				
 				var levelListPane : SFContainer;
-//				if(int(i/col)%row == 0) {
-//					levelListPane = new SFContainer;
-//					levelListPane.backgroundColor = 0xcccccc;
-//					levelListPane.percentWidth = 100;
-//					levelListPane.percentHeight = 100;
-//					this.addItem(levelListPane);
-//				}
-				this.addChild(lvBtn);
+				if(int(i%(col*row)) == 1) {
+					levelListPane = new SFContainer;
+					levelListPane.backgroundAlpha = 0;
+					levelListPane.percentWidth = 100;
+					levelListPane.percentHeight = 100;
+					
+					this.addItem(levelListPane);
+					
+				}
+				levelListPane.addChild(lvBtn);
 			}
 		}
 		
@@ -76,24 +74,6 @@ package cn.sftech.www.view
 		{
 			_model.currentLv = (event.currentTarget as LevelListBtn).level;
 			this.dispatchEvent(new ChangeGamePageEvent());
-		}
-		
-		private function mouseDownHandle(event : MouseEvent) : void
-		{
-//			trace(event.stageY);
-			oldP = this.mouseY;
-			this.addEventListener(Event.ENTER_FRAME,drag);
-			this.addEventListener(MouseEvent.MOUSE_MOVE,mouseMoveHandle);
-		}
-		
-		private function mouseMoveHandle(event : MouseEvent) : void
-		{
-			this.y -= oldP - this.mouseY; 
-		}
-		
-		private function drag(event : Event) : void
-		{
-			
 		}
 		
 	}

@@ -30,8 +30,8 @@ package cn.sftech.www.view
 			
 			startGameBtn = new SFMovieClip();
 			startGameBtn.backgroundImage = StartGameBtnBackground;
-			startGameBtn.x = 80;
-			startGameBtn.y = 168;
+			startGameBtn.x = 70;
+			startGameBtn.y = 165;
 //			startGameBtn.backgroundAlpha = 0;
 			startGameBtn.addEventListener(MouseEvent.CLICK,startGameHandle);
 			this.addChild(startGameBtn);
@@ -43,24 +43,24 @@ package cn.sftech.www.view
 			} else {
 				canResume(false);
 			}
-			resumeGameBtn.x = 80;
-			resumeGameBtn.y = 198;
+			resumeGameBtn.x = 70;
+			resumeGameBtn.y = 205;
 //			scoreListBtn.backgroundAlpha = 0;
 			resumeGameBtn.addEventListener(MouseEvent.CLICK,resumeGameBtntHandle);
 			this.addChild(resumeGameBtn);
 			
 			gameIntrBtn = new SFMovieClip();
 			gameIntrBtn.backgroundImage = GameIntrBtnBackground;
-			gameIntrBtn.x = 80;
-			gameIntrBtn.y = 228
+			gameIntrBtn.x = 70;
+			gameIntrBtn.y = 245
 //			intrGameBtn.backgroundAlpha = 0;
 			gameIntrBtn.addEventListener(MouseEvent.CLICK,gameIntrHandle);
 			this.addChild(gameIntrBtn);
 			
 			exitBtn = new SFMovieClip();
 			exitBtn.backgroundImage = ExitGameBtnBackground;
-			exitBtn.x = 80;
-			exitBtn.y = 258;
+			exitBtn.x = 70;
+			exitBtn.y = 285;
 //			exitBtn.backgroundAlpha = 0;
 			exitBtn.addEventListener(MouseEvent.CLICK,exitGameHandle);
 			this.addChild(exitBtn);
