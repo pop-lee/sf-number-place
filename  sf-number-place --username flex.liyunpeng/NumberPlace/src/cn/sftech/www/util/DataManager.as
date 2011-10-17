@@ -111,9 +111,10 @@ package cn.sftech.www.util
 				initCheck();
 			} else if(result.code == MttService.EIOERROR) { //网络原因出错
 				LogManager.print("因网络原因，查询失败");
-			} else {
+			} else if(result.code == MttService.ENOENT) { //没有相关的用户存储关卡数据
 				initLvMapData();
-//				LogManager.print("查询数据发生错误");
+			} else {
+				LogManager.print("查询数据发生错误,错误号" + result.code);
 			}
 		}
 		private function queryUserLvDataResult(result : Object) : void
@@ -134,14 +135,14 @@ package cn.sftech.www.util
 			} else if(result.code == MttService.ENOENT) { //没有相关的用户存储关卡数据
 				initLvMapData();
 			} else {
-				
+				LogManager.print("查询数据发生错误,错误号" + result.code);
 			}
 		}
 		
 		private function initLvMapData() : void
 		{
 			LogManager.print("正在为您的第一次游戏初始化数据...");
-//			MapData.initLvData();
+			MapData.initLvData();
 //			saveLvMap();
 //			saveLvData();
 		}

@@ -1,6 +1,7 @@
 package cn.sftech.www.view
 {
 	import cn.sftech.www.event.ChangeGamePageEvent;
+	import cn.sftech.www.event.ChangePageEvent;
 	import cn.sftech.www.object.GameConfig;
 	
 	import flash.events.MouseEvent;
@@ -23,6 +24,13 @@ package cn.sftech.www.view
 			mainLevelList.percentHeight = 100;
 			addItem(mainLevelList);
 			
+			backBtn = new SFMovieClip();
+			backBtn.backgroundImage = BackBtnBackground;
+			backBtn.x = 4;
+			backBtn.y = 4;
+			backBtn.addEventListener(MouseEvent.CLICK,toMainPage);
+			mainLevelList.addChild(backBtn);
+			
 			var easyBtn : SFMovieClip = new SFMovieClip();
 			easyBtn.backgroundImage = EasyBtnBackground;
 			easyBtn.x = 50;
@@ -40,14 +48,15 @@ package cn.sftech.www.view
 			easyLevelPane.percentWidth = 100;
 			easyLevelPane.percentHeight = 100;
 			easyLevelPane.backgroundAlpha = 0;
+			easyLevelPane.addEventListener(ChangeGamePageEvent.CHANGE_GAMEPAGE_EVENT,toLevelListPage);
 			
 			var easyLevelList : LevelList = new LevelList(GameConfig.EASY_LV);
 			easyLevelList.addEventListener(ChangeGamePageEvent.CHANGE_GAMEPAGE_EVENT,toGamePanel);
 			easyLevelList.x = 0;
-			easyLevelList.y = 30;
+			easyLevelList.y = 28;
 			easyLevelList.width = 243;
-			easyLevelList.height = 243;
-			easyLevelList.backgroundAlpha = 1;
+			easyLevelList.height = 268;
+			easyLevelList.backgroundAlpha = 0;
 			easyLevelPane.list = easyLevelList;
 			addItem(easyLevelPane);
 			
@@ -55,13 +64,14 @@ package cn.sftech.www.view
 			normalLevelPane.percentWidth = 100;
 			normalLevelPane.percentHeight = 100;
 			normalLevelPane.backgroundAlpha = 0;
+			normalLevelPane.addEventListener(ChangeGamePageEvent.CHANGE_GAMEPAGE_EVENT,toLevelListPage);
 			
 			var normalLevelList : LevelList = new LevelList(GameConfig.NORMAL_LV);
 			normalLevelList.x = 0;
-			normalLevelList.y = 30;
+			normalLevelList.y = 28;
 			normalLevelList.width = 243;
-			normalLevelList..height = 243;
-			normalLevelList.backgroundAlpha = 1;
+			normalLevelList..height = 268;
+			normalLevelList.backgroundAlpha = 0;
 			normalLevelList.addEventListener(ChangeGamePageEvent.CHANGE_GAMEPAGE_EVENT,toGamePanel);
 			normalLevelPane.list = normalLevelList;
 			addItem(normalLevelPane);
@@ -86,6 +96,18 @@ package cn.sftech.www.view
 			var changePageEvent : ChangeGamePageEvent = new ChangeGamePageEvent();
 			changePageEvent.data = ChangeGamePageEvent.TO_GAMEPANEL_PAGE;
 			this.dispatchEvent(changePageEvent);
+		}
+		
+		private function toLevelListPage(event : ChangeGamePageEvent) : void
+		{
+			this.selectedIndex = 0;
+		}
+		
+		private function toMainPage(event : MouseEvent) : void
+		{
+			var changePageEvent : ChangePageEvent = new ChangePageEvent();
+			changePageEvent.data = ChangePageEvent.TO_MAIN_PAGE;
+			SFApplication.application.dispatchEvent(changePageEvent);
 		}
 		
 	}

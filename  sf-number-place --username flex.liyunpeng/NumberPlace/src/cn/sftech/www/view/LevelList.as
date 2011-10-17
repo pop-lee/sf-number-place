@@ -37,14 +37,14 @@ package cn.sftech.www.view
 			var col : int = 4;
 			var row : int = 4;
 			var horizontalLeading : uint = 8;
-			var verticalLeading : uint = 8;
+			var verticalLeading : uint = 16;
 			
 			var base : uint = 0;
+			if(type > GameConfig.EASY_LV) base += GameConfig.EASY_LV;
+			if(type > GameConfig.NORMAL_LV) base += GameConfig.NORMAL_LV;
 			for(var i : int = 1;i <= type;i++) {
 				var lvBtn : LevelListBtn = new LevelListBtn();
 				lvBtn.backgroundImage = NumberBlockBackground;
-				if(type > GameConfig.EASY_LV) base += GameConfig.EASY_LV;
-				if(type > GameConfig.NORMAL_LV) base += GameConfig.NORMAL_LV;
 				
 				lvBtn.level = base + i;
 				lvBtn.addEventListener(MouseEvent.CLICK,selectLv);
@@ -52,9 +52,9 @@ package cn.sftech.www.view
 				lvBtn.width = 40;
 				lvBtn.height = 40;
 				lvBtn.x = (i-1)%col*(lvBtn.width+horizontalLeading) + 30;
+				lvBtn.y = int((i-1)/col)%row*(lvBtn.height + verticalLeading) + 30;
 //				lvBtn.y = int((i-1)/col)*(lvBtn.height + verticalLeading) + 30;
 				
-				lvBtn.y = int(i/col)%row*(lvBtn.height + verticalLeading) + 30;
 				
 				var levelListPane : SFContainer;
 				if(int(i%(col*row)) == 1) {
