@@ -141,7 +141,7 @@ package cn.sftech.www.util
 		private function initLvMapData() : void
 		{
 			LogManager.print("正在为您的第一次游戏初始化数据...");
-			MapData.initLvData();
+//			MapData.initLvData();
 //			saveLvMap();
 //			saveLvData();
 		}
