@@ -15,7 +15,7 @@ package cn.sftech.www.object
 		public function NumberBlock(type : uint)
 		{
 			this.type = type;
-			if(type != 0) this.backgroundImage = NumberBlockBackground;
+//			if(type != 0) this.backgroundImage = NumberBlockBackground;
 			switch(type) {
 				case 0:num = new Blank();break;
 				case 1:num = new One();break;
