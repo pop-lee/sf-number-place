@@ -1,5 +1,6 @@
 package cn.sftech.www.view
 {
+	import cn.sftech.www.event.ChangePageEvent;
 	import cn.sftech.www.model.ModelLocator;
 	
 	import flash.events.MouseEvent;
@@ -34,7 +35,7 @@ package cn.sftech.www.view
 			_backMainBtn.x = 4;
 			_backMainBtn.y = 4;
 			//			_backMainBtn.backgroundAlpha = 0;
-//			_backMainBtn.addEventListener(MouseEvent.CLICK,toMainPage);
+			_backMainBtn.addEventListener(MouseEvent.CLICK,toMainPage);
 			addChild(_backMainBtn);
 			
 			var restartBtn : SFMovieClip = new SFMovieClip();
@@ -75,6 +76,13 @@ package cn.sftech.www.view
 					SFApplication.application.addChild(saveTip);
 				}
 			}
+		}
+		
+		private function toMainPage(event : MouseEvent) : void
+		{
+			var changePageEvent : ChangePageEvent = new ChangePageEvent();
+			changePageEvent.data = ChangePageEvent.TO_MAIN_PAGE;
+			SFApplication.application.dispatchEvent(changePageEvent);
 		}
 	}
 }

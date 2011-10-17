@@ -19,8 +19,8 @@ package cn.sftech.www.util
 			}
 			var i : int,j : int;
 			
-//			do
-//			{
+			do
+			{
 				for(i=0;i<9;++i)
 				{
 					for(j=0;j<9;++j) {
@@ -29,10 +29,8 @@ package cn.sftech.www.util
 					j = Math.random()*10%9;
 					map[i][j]=i+1;
 				}
-//			}
-//			while(false);
-//			while(!resolve());
-			resolve();
+			}
+			while(!resolve());
 			
 			// 挖窟窿
 			for(var k:int=0;k<black;)
@@ -53,15 +51,15 @@ package cn.sftech.www.util
 		// 解数独
 		public function resolve() : Boolean
 		{
-			try
-			{
-				dfs();
-				return true;
-			}
-			catch(error : Error)
-			{
-				return true;
-			}
+				try
+				{
+					dfs();
+					return true;
+				}
+				catch(error : Error)
+				{
+					return true;
+				}
 			return false;
 		}
 		
@@ -94,7 +92,7 @@ package cn.sftech.www.util
 			}
 			if(im==-1)
 			{
-				throw(new Error());
+					throw(new Error());
 			}
 			check(im,jm,mark);
 			for(i=1;i<=9;++i)
