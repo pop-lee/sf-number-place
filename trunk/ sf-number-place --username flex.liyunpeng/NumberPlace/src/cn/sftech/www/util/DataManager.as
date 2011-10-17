@@ -37,12 +37,12 @@ package cn.sftech.www.util
 		
 		public function initData() : void
 		{
-//			initLvMapData();
+			initLvMapData();
 			LogManager.print("正在加载用户数据...");
 			initDataCount = 3;
-			queryLvMap();
-			queryUserSaveData();
-			MttScore.query(queryScoreHandle);
+//			queryLvMap();
+//			queryUserSaveData();
+//			MttScore.query(queryScoreHandle);
 		}
 		
 		/**
@@ -167,6 +167,7 @@ package cn.sftech.www.util
 			initFlag++;
 			if(initFlag == initDataCount) {
 				SFApplication.application.dispatchEvent(new SFInitializeDataEvent());
+				LogManager.hideLog();
 			}
 		}
 	}
