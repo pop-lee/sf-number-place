@@ -84,6 +84,7 @@ package test
 				
 				//当前解暂时可用，继续向下查找
 				if(currentBlock) {
+					check(currentBlock.indexY,currentBlock.indexX,currentMark);
 					for(var i : int=indexFlag;i<=9;++i)
 					{
 						//给目前可能性最小的空格添值
