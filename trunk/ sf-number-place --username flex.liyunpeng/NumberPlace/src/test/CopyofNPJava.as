@@ -5,12 +5,12 @@ package test{
 	import flash.geom.Point;
 	
 	public class NPJava extends Sprite{
-		private var map : Vector.<Vector.<int>> = new Vector.<Vector.<int>>(9);
+		private var map : Vector.<Vector.<int>> = new Vector.<Vector.<int>>(10);
 //		private int[][] map = new int[10][10];
 		
 		public function NPJava()
 		{
-			for(var i:int=0;i<9;i++){
+			for(var i:int=0;i<10;i++){
 				run();
 //				System.out.println();
 			}
@@ -23,9 +23,9 @@ package test{
 		}
 		
 		private function init() : void{
-			for(var i:int =0;i<9;i++){
-				map[i] = new Vector.<int>(9);
-				for(var j:int=0;j<9;j++){
+			for(var i:int =1;i<10;i++){
+				map[i] = new Vector.<int>(10);
+				for(var j:int=1;j<10;j++){
 					map[i][j] = 0;
 				}
 			}
@@ -34,8 +34,8 @@ package test{
 		
 		private function print() : void{
 			var str : String = "";
-			for(var i : int=0;i<9;i++){
-				for(var j: int=0;j<9;j++){
+			for(var i : int=1;i<10;i++){
+				for(var j: int=1;j<10;j++){
 					str += map[i][j];
 //					System.out.print(map[i][j] + "\t");
 				}
@@ -54,16 +54,16 @@ package test{
 //		}
 		
 		public function draw() : void{
-			var p : Point = new Point(1, 0);
-			var s : int = 0;
+			var p : Point = new Point(2, 1);
+			var s : int = 1;
 			
 			while(p != null){
 				if(!lay(p.x, p.y, s)){
 					p = previous(p.x, p.y);
-					s = map[p.x][p.y];
+					s = map[p.x][p.y] + 1;
 				}else{
 					p = next(p.x, p.y);
-					s = 0;
+					s = 1;
 				}
 			}
 		}
@@ -85,13 +85,13 @@ package test{
 				startNumbers[bIndex] = tmpNum;
 			}
 			
-			for(var k : int=0;k<9;k++){
-				map[k][1] = startNumbers[k];
+			for(var k : int=1;k<=9;k++){
+				map[k][1] = startNumbers[k - 1];
 			}
 		}
 		
 		public function lay(x : int, y : int, s : int) : Boolean{
-			for(var v : int=s;v<9;v++){
+			for(var v : int=s;v<10;v++){
 				map[x][y] = v;
 				if(isValid(x, y)){
 					return true;
@@ -102,28 +102,28 @@ package test{
 		}
 		
 		private function next( x : int, y : int) : Point{
-			if(x == 8 && y == 8){
+			if(x == 9 && y == 9){
 				return null;
-			}else if(x == 8){
-				return new Point(0, y+1);
+			}else if(x == 9){
+				return new Point(1, y+1);
 			}else{
 				return new Point(x+1, y);
 			}
 		}
 		
 		private function previous(x : int,y : int) : Point{
-			if(x == 0 && y == 0){
+			if(x == 1 && y == 1){
 				throw new Error("Nan solution found!");
 //				throw new RuntimeException("Nan solution found!");
-			}else if(x == 0){
-				return new Point(8, y-1);
+			}else if(x == 1){
+				return new Point(9, y-1);
 			}else{
 				return new Point(x-1, y);
 			}
 		}
 		
 		private function isValid(x : int, y : int) : Boolean{
-			for(var i : int=0;i<9;i++){
+			for(var i : int=1;i<10;i++){
 				if(i != y && map[x][i] == map[x][y]){
 					return false;
 				}
@@ -134,8 +134,8 @@ package test{
 			
 			var xStart : int = getZone(x)*3;
 			var yStart : int = getZone(y)*3;
-			for(var i : int=xStart;i<xStart+3;i++){
-				for(var j : int=yStart;j<yStart+3;j++){
+			for(var i : int=xStart+1;i<=xStart+3;i++){
+				for(var j : int=yStart+1;j<=yStart+3;j++){
 					if(map[i][j] == map[x][y] && !(x == i && y == j)){
 						return false;
 					}

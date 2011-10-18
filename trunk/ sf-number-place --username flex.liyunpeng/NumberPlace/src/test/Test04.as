@@ -76,8 +76,8 @@ package test
 			}
 
 //			Collections.shuffle(startNumbers);
-			for(var i : int=0;i<LENGTH;i++){
-				map[i][0] = startNumbers[i];
+			for(var j : int=0;j<LENGTH;j++){
+				map[j][0] = startNumbers[j];
 			}
 		}
 		

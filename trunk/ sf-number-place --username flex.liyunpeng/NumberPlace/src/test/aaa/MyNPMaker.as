@@ -1,16 +1,18 @@
-package cn.sftech.www.util
+package test.aaa
 {
 	import cn.sftech.www.object.Block;
-	
-	public class NPMaker
+
+	public class MyNPMaker
 	{
 		private var map : Vector.<Vector.<int>> = new Vector.<Vector.<int>>(9);
 		
 		private var _resolveHistory : Vector.<Block> = new Vector.<Block>();
 		
-		public function NPMaker()
+		
+		
+		public function MyNPMaker()
 		{
-			
+			makeNP(9);
 		}
 		
 		public function makeNP(black : uint) : Object
@@ -35,18 +37,18 @@ package cn.sftech.www.util
 			//			while(!resolve());
 			resolve();
 			
-//			// 挖窟窿
-//			for(var k:int=0;k<black;)
-//			{
-//				i = Math.random()*100%81;
-//				j=i%9;
-//				i=int(i/9);
-//				if(map[i][j]>0)
-//				{
-//					map[i][j]=0;
-//					++k;
-//				}
-//			}
+			//			// 挖窟窿
+			//			for(var k:int=0;k<black;)
+			//			{
+			//				i = Math.random()*100%81;
+			//				j=i%9;
+			//				i=int(i/9);
+			//				if(map[i][j]>0)
+			//				{
+			//					map[i][j]=0;
+			//					++k;
+			//				}
+			//			}
 			display();
 			
 			return map;
@@ -55,15 +57,15 @@ package cn.sftech.www.util
 		// 解数独
 		public function resolve() : Boolean
 		{
-//			try
-//			{
-				dfs();
-				return true;
-//			}
-//			catch(error : Error)
-//			{
-//				return true;
-//			}
+			//			try
+			//			{
+			dfs();
+			return true;
+			//			}
+			//			catch(error : Error)
+			//			{
+			//				return true;
+			//			}
 			return false;
 		}
 		
