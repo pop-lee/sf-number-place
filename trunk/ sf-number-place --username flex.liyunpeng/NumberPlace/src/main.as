@@ -95,7 +95,7 @@ package
 			
 			SFApplication.application.addEventListener(ChangePageEvent.CHANGE_PAGE_EVENT,changePageHandle);
 			
-			var mainPage : MainPage = new MainPage();
+			mainPage = new MainPage();
 			mainPage.percentWidth = 100;
 			mainPage.percentHeight = 100;
 			mainPage.backgroundAlpha = 0;
