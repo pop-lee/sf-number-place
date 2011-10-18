@@ -19,8 +19,8 @@ package cn.sftech.www.util
 			}
 			var i : int,j : int;
 			
-			do
-			{
+//			do
+//			{
 				for(i=0;i<9;++i)
 				{
 					for(j=0;j<9;++j) {
@@ -29,8 +29,10 @@ package cn.sftech.www.util
 					j = Math.random()*10%9;
 					map[i][j]=i+1;
 				}
-			}
-			while(!resolve());
+//			}
+//			while(false);
+//			while(!resolve());
+			resolve();
 			
 			// 挖窟窿
 			for(var k:int=0;k<black;)
@@ -44,6 +46,7 @@ package cn.sftech.www.util
 					++k;
 				}
 			}
+			display();
 			
 			return map;
 		}
@@ -51,19 +54,20 @@ package cn.sftech.www.util
 		// 解数独
 		public function resolve() : Boolean
 		{
-				try
-				{
-					dfs();
-					return true;
-				}
-				catch(error : Error)
-				{
-					return true;
-				}
+			try
+			{
+				dfs();  
+				return true;
+			}
+			catch(error : Error)
+			{
+				return true;
+			}
 			return false;
 		}
 		
 		private var temp : uint = 0;
+		//深度优先搜索
 		private function dfs() : void
 		{
 			LogManager.print(temp++ + "");
@@ -90,9 +94,10 @@ package cn.sftech.www.util
 					}
 				}
 			}
+			//以全部填完
 			if(im==-1)
 			{
-					throw(new Error());
+				throw(new Error());
 			}
 			check(im,jm,mark);
 			for(i=1;i<=9;++i)
@@ -106,6 +111,7 @@ package cn.sftech.www.util
 			map[im][jm]=0;
 		}
 		
+		//返回有多少种可能值
 		private function check(y : int,x : int,mark : Vector.<int>) : int
 		{
 			var i : int,j : int;
@@ -113,12 +119,15 @@ package cn.sftech.www.util
 			var count : int = 0;
 			for(i=1;i<=9;++i)
 				mark[i]=0;
+			//所属列
 			for(i=0;i<9;++i)
 				mark[map[y][i]]=1;
+			//所属行
 			for(i=0;i<9;++i)
 				mark[map[i][x]]=1;
 			i_s=int(y/3)*3;
 			js=int(x/3)*3;
+			//所属9块
 			for(i=0;i<3;++i)
 			{
 				for(j=0;j<3;++j)

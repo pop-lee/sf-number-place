@@ -1,16 +1,18 @@
-package cn.sftech.www.util
+package test
 {
 	import cn.sftech.www.object.Block;
 	
-	public class NPMaker
+	import flash.display.Sprite;
+	
+	public class TestTest extends Sprite
 	{
 		private var map : Vector.<Vector.<int>> = new Vector.<Vector.<int>>(9);
 		
 		private var _resolveHistory : Vector.<Block> = new Vector.<Block>();
-		
-		public function NPMaker()
+
+		public function TestTest()
 		{
-			
+			makeNP(9);
 		}
 		
 		public function makeNP(black : uint) : Object
@@ -35,18 +37,18 @@ package cn.sftech.www.util
 			//			while(!resolve());
 			resolve();
 			
-//			// 挖窟窿
-//			for(var k:int=0;k<black;)
-//			{
-//				i = Math.random()*100%81;
-//				j=i%9;
-//				i=int(i/9);
-//				if(map[i][j]>0)
-//				{
-//					map[i][j]=0;
-//					++k;
-//				}
-//			}
+			//			// 挖窟窿
+			//			for(var k:int=0;k<black;)
+			//			{
+			//				i = Math.random()*100%81;
+			//				j=i%9;
+			//				i=int(i/9);
+			//				if(map[i][j]>0)
+			//				{
+			//					map[i][j]=0;
+			//					++k;
+			//				}
+			//			}
 			display();
 			
 			return map;
@@ -55,15 +57,15 @@ package cn.sftech.www.util
 		// 解数独
 		public function resolve() : Boolean
 		{
-//			try
-//			{
-				dfs();
-				return true;
-//			}
-//			catch(error : Error)
-//			{
-//				return true;
-//			}
+			//			try
+			//			{
+			dfs();
+			return true;
+			//			}
+			//			catch(error : Error)
+			//			{
+			//				return true;
+			//			}
 			return false;
 		}
 		
@@ -73,10 +75,12 @@ package cn.sftech.www.util
 			//当前级别从indexFlag位置判断接下来的搜索
 			var indexFlag : uint = 1;
 			do{
+				display();
 				//当前块需要做的标记
 				var currentMark : Vector.<int> =  new Vector.<int>(10);
 				//当前空快
-				var currentBlock : Block = findBlankBlock(currentBlock,currentMark);
+				var currentBlock : Block = null;
+				currentBlock = findBlankBlock(currentBlock,currentMark);
 				
 				//当前解暂时可用，继续向下查找
 				if(currentBlock) {
@@ -101,7 +105,7 @@ package cn.sftech.www.util
 					map[lastBlock.indexY][lastBlock.indexX] = 0;
 				}
 				
-				//全部空块均填写完成
+			//全部空块均填写完成
 			}while(currentBlock);
 			
 		}
@@ -179,9 +183,9 @@ package cn.sftech.www.util
 					else
 						num += "[   ] ";
 				}
-				trace(num + "\n");
+				trace(num);
+				num = "";
 			}
-			num = "";
 			trace("\n");
 		}
 	}
