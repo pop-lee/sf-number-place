@@ -1,6 +1,10 @@
-package cn.sftech.www.util
+package test.aaa
 {
-	public class NPMaker
+	import cn.sftech.www.util.LogManager;
+	
+	import flash.display.Sprite;
+
+	public class CopyofNPMaker extends Sprite
 	{
 		private var solves : int;
 		
@@ -8,8 +12,9 @@ package cn.sftech.www.util
 		
 		private var map : Vector.<Vector.<int>> = new Vector.<Vector.<int>>(9);
 		
-		public function NPMaker()
+		public function CopyofNPMaker()
 		{
+			makeNP(5);
 		}
 		
 		public function makeNP(black : uint) : Object
@@ -19,8 +24,8 @@ package cn.sftech.www.util
 			}
 			var i : int,j : int;
 			
-//			do
-//			{
+			do
+			{
 				for(i=0;i<9;++i)
 				{
 					for(j=0;j<9;++j) {
@@ -29,10 +34,10 @@ package cn.sftech.www.util
 					j = Math.random()*10%9;
 					map[i][j]=i+1;
 				}
-//			}
+			}
+			while(!resolve());
 //			while(false);
-//			while(!resolve());
-			resolve();
+//			resolve();
 			
 			// 挖窟窿
 			for(var k:int=0;k<black;)
@@ -70,8 +75,8 @@ package cn.sftech.www.util
 		//深度优先搜索
 		private function dfs() : void
 		{
-			LogManager.print(temp++ + "");
-			trace(temp);
+//			LogManager.print(temp++ + "");
+//			trace(temp);
 			
 			var i : int , j : int,im : int=-1,jm : int;
 			var min : int = 10;
@@ -142,16 +147,21 @@ package cn.sftech.www.util
 		// 显示数独
 		public function display() : void
 		{
+			var text : String = "";
 			for(var i : int=0;i<9;++i)
 			{
+				text += "[";
 				for(var j : int=0;j<9;++j)
 				{
-					if(map[i][j]>0)
-						trace("< "+map[i][j]+" > ");
-					else
-						trace("[   ] ");
+					text += map[i][j];
+//					if(map[i][j]>0)
+//					else
+//						trace("[   ] ");
+					if(j < 9) text += ","
 				}
-				trace("\n");
+				text += "]";
+				trace(text);
+				text = "";
 			}
 		}
 	}
