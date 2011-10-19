@@ -6,6 +6,7 @@ package
 	import cn.sftech.www.model.ModelLocator;
 	import cn.sftech.www.object.MapData;
 	import cn.sftech.www.util.DataManager;
+	import cn.sftech.www.util.LevelMapData;
 	import cn.sftech.www.util.LogManager;
 	import cn.sftech.www.view.GamePage;
 	import cn.sftech.www.view.IntrPage;
@@ -129,7 +130,7 @@ package
 					mainPage.canResume(false);
 				}
 			} else if(event.data == ChangePageEvent.TO_GAME_PAGE) {
-				_model.userResolveArr = null;
+//				_model.userResolveArr = null;
 			} else if(event.data == ChangePageEvent.TO_RESUME_PAGE) {
 				var changeGamePageEvent : ChangeGamePageEvent = new ChangeGamePageEvent();
 				changeGamePageEvent.data = ChangeGamePageEvent.TO_GAMEPANEL_PAGE;

@@ -29,7 +29,6 @@ package cn.sftech.www.util
 		
 		private var isInitializing : Boolean = false;
 		
-		private var initDataCount : uint ;
 		
 		
 		//关卡地图是否初始化
@@ -43,23 +42,21 @@ package cn.sftech.www.util
 		{
 			LogManager.print("正在加载用户数据...");
 //			initLvMapData();
-			initDataCount = 3;
-			queryLvMap();
-			queryUserSaveData();
-			queryUnlockLevel();
+			initCheck();
+//			queryLvMap();
 //			MttScore.query(queryScoreHandle);
 		}
 		
-		/**
-		 * 存储用户的关卡地图数据
-		 */		
-		public function saveLvMap() : void
-		{
-			var lvMap : ByteArray = new ByteArray();
-			lvMap.writeObject(_model.lvMapArr);
-			lvMap.position = 0;
-			MttGameData.put(LV_MAP_KEY,lvMap,saveLvMapResult);
-		}
+//		/**
+//		 * 存储用户的关卡地图数据
+//		 */		
+//		public function saveLvMap() : void
+//		{
+//			var lvMap : ByteArray = new ByteArray();
+//			lvMap.writeObject(_model.lvMapArr);
+//			lvMap.position = 0;
+//			MttGameData.put(LV_MAP_KEY,lvMap,saveLvMapResult);
+//		}
 		
 		/**
 		 * 存储用户所玩的当前关数据
@@ -83,10 +80,10 @@ package cn.sftech.www.util
 			MttGameData.put(UNLOCK_LEVEL_KEY,unlockLevel,saveUnlockLevelResult);
 		}
 		
-		public function queryLvMap() : void
-		{
-			MttGameData.get(LV_MAP_KEY,queryLvMapResult);
-		}
+//		public function queryLvMap() : void
+//		{
+//			MttGameData.get(LV_MAP_KEY,queryLvMapResult);
+//		}
 		
 		private function queryUserSaveData() : void
 		{
@@ -98,19 +95,14 @@ package cn.sftech.www.util
 			MttGameData.get(UNLOCK_LEVEL_KEY,queryUnlockLevelResult);
 		}
 		
-		public function saveCurrentLv() : void
-		{
-			
-		}
-		
-		private function saveLvMapResult(result:Object) : void
-		{
-			if(result.code == 0) { //返回成功
-				
-			} else if(result.code == MttService.EIOERROR) { //网络原因出错
-				LogManager.print("因网络原因，提交失败");
-			}
-		}
+//		private function saveLvMapResult(result:Object) : void
+//		{
+//			if(result.code == 0) { //返回成功
+//				
+//			} else if(result.code == MttService.EIOERROR) { //网络原因出错
+//				LogManager.print("因网络原因，提交失败");
+//			}
+//		}
 		private function saveLvDataResult(result:Object) : void
 		{
 			if(result.code == 0) { //返回成功
@@ -129,22 +121,22 @@ package cn.sftech.www.util
 			} else { //其他错误
 			}
 		}
-		private function queryLvMapResult(result:Object) : void
-		{
-			if(result.code == 0) { //返回成功
-				LogManager.print("加载关卡地图成功");
-				_model.lvMapArr = Vector.<Object>(result.value.readObject());
-				lvMapInited = true;
-				
-				initCheck();
-			} else if(result.code == MttService.EIOERROR) { //网络原因出错
-				LogManager.print("因网络原因，查询失败");
-			} else if(result.code == MttService.ENOENT) { //没有相关的用户存储关卡数据
-				initLvMapData();
-			} else {
-				LogManager.print("查询数据发生错误,错误号" + result.code);
-			}
-		}
+//		private function queryLvMapResult(result:Object) : void
+//		{
+//			if(result.code == 0) { //返回成功
+//				LogManager.print("加载关卡地图成功");
+//				_model.lvMapArr = Vector.<Object>(result.value.readObject());
+//				lvMapInited = true;
+//				
+//				initCheck();
+//			} else if(result.code == MttService.EIOERROR) { //网络原因出错
+//				LogManager.print("因网络原因，查询失败");
+//			} else if(result.code == MttService.ENOENT) { //没有相关的用户存储关卡数据
+//				initLvMapData();
+//			} else {
+//				LogManager.print("查询数据发生错误,错误号" + result.code);
+//			}
+//		}
 		private function queryUserLvDataResult(result : Object) : void
 		{
 			if(result.code == 0) { //返回成功
@@ -162,6 +154,7 @@ package cn.sftech.www.util
 			} else if(result.code == MttService.EIOERROR) { //网络原因出错
 				LogManager.print("因网络原因，提交失败");
 			} else if(result.code == MttService.ENOENT) { //没有相关的用户存储关卡数据
+				LogManager.print("123");
 				initLvMapData();
 			} else {
 				LogManager.print("查询数据发生错误,错误号" + result.code);
@@ -171,7 +164,7 @@ package cn.sftech.www.util
 		{
 			if(result.code == 0) { //返回成功
 				LogManager.print("加载以解锁关卡成功");
-				_model.unlockLevel = uint(result.value.readObject());
+//				_model.unlockLevel = uint(result.value.readObject());
 				
 				initCheck();
 			} else if(result.code == MttService.EIOERROR) { //网络原因出错
@@ -188,8 +181,8 @@ package cn.sftech.www.util
 			if(isInitializing) return;
 			isInitializing = true;
 			LogManager.print("正在为您的第一次游戏初始化数据...");
-			MapData.initLvData();
-			saveLvMap();
+//			MapData.initLvData();
+//			saveLvMap();
 			saveLvData();
 			saveUnlockLevel();
 		}
@@ -213,10 +206,19 @@ package cn.sftech.www.util
 		private function initCheck() : void
 		{
 			initFlag++;
-			if(initFlag == initDataCount) {
-				SFApplication.application.dispatchEvent(new SFInitializeDataEvent());
-				LogManager.hideLog();
+			switch(initFlag) {
+				case 1:queryUnlockLevel();break;
+				case 2:queryUserSaveData();break;
+				
+				default:{
+					SFApplication.application.dispatchEvent(new SFInitializeDataEvent());
+					LogManager.hideLog();
+				}
 			}
+//			if(initFlag == initDataCount) {
+//				SFApplication.application.dispatchEvent(new SFInitializeDataEvent());
+//				LogManager.hideLog();
+//			}
 //			LogManager.print(initFlag + "");
 		}
 	}

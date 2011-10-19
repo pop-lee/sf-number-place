@@ -25,6 +25,10 @@ package cn.sftech.www.object
 		 */
 		public static const BLOCK_HEIGHT : uint = 25;
 		
+		/**
+		 * 保存最多步数 
+		 */		
+		public static const HISTORY_COUNT : uint = 30;
 //		/**
 //		 * 小块留边宽高
 //		 */		
