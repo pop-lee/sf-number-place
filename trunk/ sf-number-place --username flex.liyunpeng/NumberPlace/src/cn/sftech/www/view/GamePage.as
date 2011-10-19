@@ -33,6 +33,7 @@ package cn.sftech.www.view
 			gamePanel.backgroundAlpha = 0;
 			gamePanel.percentWidth = 100;
 			gamePanel.percentHeight = 100;
+			gamePanel.addEventListener(ChangeGamePageEvent.CHANGE_GAMEPAGE_EVENT,toLevelListPage);
 			addItem(gamePanel);
 		}
 		
@@ -50,6 +51,14 @@ package cn.sftech.www.view
 		{
 			if(event.data == ChangeGamePageEvent.TO_GAMEPANEL_PAGE) {
 				gamePanel.startGame();
+			}
+			this.selectedIndex = event.data;
+		}
+		
+		public function toLevelListPage(event : ChangeGamePageEvent) : void
+		{
+			if(event.data == ChangeGamePageEvent.TO_LVLIST_PAGE) {
+//				levelListPage.unlockLevel();
 			}
 			this.selectedIndex = event.data;
 		}

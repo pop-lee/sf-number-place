@@ -21,9 +21,13 @@ package cn.sftech.www.util
 		
 		public const USER_LV_DATA_KEY : String = "userLvDataKey";
 		
+		public const UNLOCK_LEVEL_KEY : String = "unlockLevel";
+		
 		private var _model : ModelLocator = ModelLocator.getInstance();
 		
 		private var initFlag : uint ;
+		
+		private var isInitializing : Boolean = false;
 		
 		private var initDataCount : uint ;
 		
@@ -37,11 +41,12 @@ package cn.sftech.www.util
 		
 		public function initData() : void
 		{
-			initLvMapData();
 			LogManager.print("正在加载用户数据...");
+//			initLvMapData();
 			initDataCount = 3;
-//			queryLvMap();
-//			queryUserSaveData();
+			queryLvMap();
+			queryUserSaveData();
+			queryUnlockLevel();
 //			MttScore.query(queryScoreHandle);
 		}
 		
@@ -70,6 +75,14 @@ package cn.sftech.www.util
 			MttGameData.put(USER_LV_DATA_KEY,userLvDataObejct,saveLvDataResult);
 		}
 		
+		public function saveUnlockLevel() : void
+		{
+			var unlockLevel : ByteArray = new ByteArray();
+			unlockLevel.writeObject(_model.unlockLevel);
+			unlockLevel.position = 0;
+			MttGameData.put(UNLOCK_LEVEL_KEY,unlockLevel,saveUnlockLevelResult);
+		}
+		
 		public function queryLvMap() : void
 		{
 			MttGameData.get(LV_MAP_KEY,queryLvMapResult);
@@ -78,6 +91,11 @@ package cn.sftech.www.util
 		private function queryUserSaveData() : void
 		{
 			MttGameData.get(USER_LV_DATA_KEY,queryUserLvDataResult);
+		}
+		
+		private function queryUnlockLevel() : void
+		{
+			MttGameData.get(UNLOCK_LEVEL_KEY,queryUnlockLevelResult);
 		}
 		
 		public function saveCurrentLv() : void
@@ -102,9 +120,19 @@ package cn.sftech.www.util
 			} else { //其他错误
 			}
 		}
+		private function saveUnlockLevelResult(result: Object) : void
+		{
+			if(result.code == 0) { //返回成功
+				LogManager.print("保存以解锁关卡成功");
+			} else if(result.code == MttService.EIOERROR) { //网络原因出错
+				LogManager.print("因网络原因，保存失败");
+			} else { //其他错误
+			}
+		}
 		private function queryLvMapResult(result:Object) : void
 		{
 			if(result.code == 0) { //返回成功
+				LogManager.print("加载关卡地图成功");
 				_model.lvMapArr = Vector.<Object>(result.value.readObject());
 				lvMapInited = true;
 				
@@ -120,6 +148,7 @@ package cn.sftech.www.util
 		private function queryUserLvDataResult(result : Object) : void
 		{
 			if(result.code == 0) { //返回成功
+				LogManager.print("加载用户数据成功");
 //				var byteArray : ByteArray = result.value;
 //				byteArray.position = 0
 //				trace(byteArray.position);
@@ -138,29 +167,48 @@ package cn.sftech.www.util
 				LogManager.print("查询数据发生错误,错误号" + result.code);
 			}
 		}
+		private function queryUnlockLevelResult(result:Object) : void
+		{
+			if(result.code == 0) { //返回成功
+				LogManager.print("加载以解锁关卡成功");
+				_model.unlockLevel = uint(result.value.readObject());
+				
+				initCheck();
+			} else if(result.code == MttService.EIOERROR) { //网络原因出错
+				LogManager.print("因网络原因，查询失败");
+			} else if(result.code == MttService.ENOENT) { //没有相关的用户存储关卡数据
+				initLvMapData();
+			} else {
+				LogManager.print("查询数据发生错误,错误号" + result.code);
+			}
+		}
 		
 		private function initLvMapData() : void
 		{
+			if(isInitializing) return;
+			isInitializing = true;
 			LogManager.print("正在为您的第一次游戏初始化数据...");
 			MapData.initLvData();
-//			saveLvMap();
-//			saveLvData();
+			saveLvMap();
+			saveLvData();
+			saveUnlockLevel();
 		}
 		
-		private function queryScoreHandle(result : Object) : void
-		{
-			if(result.code == 0) {
-				var items:Array = result.board as Array;
-				for (var i:int = 0; i < items.length; i++)
-				{
-//				sInfo += "\n好友[" + (i + 1) + "]:" + items[i].nickName + " " + items[i].score + " " + items[i].playTime;
-					var _score: int = items[i].score;
-//					_model.topScoreArr[i] = _score;
-				}
-				
-				initCheck();
-			}
-		}
+//		private function queryScoreHandle(result : Object) : void
+//		{
+//			if(result.code == 0) {
+//				LogManager.print("加载积分榜成功");
+//				var items:Array = result.board as Array;
+//				for (var i:int = 0; i < items.length; i++)
+//				{
+////				sInfo += "\n好友[" + (i + 1) + "]:" + items[i].nickName + " " + items[i].score + " " + items[i].playTime;
+//					var _score: int = items[i].score;
+////					_model.topScoreArr[i] = _score;
+//				}
+//				
+//				initCheck();
+//			}
+//		}
 		
 		private function initCheck() : void
 		{
@@ -169,6 +217,7 @@ package cn.sftech.www.util
 				SFApplication.application.dispatchEvent(new SFInitializeDataEvent());
 				LogManager.hideLog();
 			}
+//			LogManager.print(initFlag + "");
 		}
 	}
 }

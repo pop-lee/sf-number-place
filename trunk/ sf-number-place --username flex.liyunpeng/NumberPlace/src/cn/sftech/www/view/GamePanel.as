@@ -1,5 +1,6 @@
 package cn.sftech.www.view
 {
+	import cn.sftech.www.event.ChangeGamePageEvent;
 	import cn.sftech.www.event.ChangePageEvent;
 	import cn.sftech.www.model.ModelLocator;
 	
@@ -28,6 +29,7 @@ package cn.sftech.www.view
 			gamePane.x = 0;
 			gamePane.y = 26;
 			gamePane.backgroundAlpha = 0;
+			gamePane.addEventListener(ChangeGamePageEvent.CHANGE_GAMEPAGE_EVENT,toLvListPage);
 			addChild(gamePane);
 			
 			var _backMainBtn : SFMovieClip = new SFMovieClip;
@@ -83,6 +85,11 @@ package cn.sftech.www.view
 			var changePageEvent : ChangePageEvent = new ChangePageEvent();
 			changePageEvent.data = ChangePageEvent.TO_MAIN_PAGE;
 			SFApplication.application.dispatchEvent(changePageEvent);
+		}
+		
+		private function toLvListPage(event : ChangeGamePageEvent) : void
+		{
+			this.dispatchEvent(event);
 		}
 	}
 }

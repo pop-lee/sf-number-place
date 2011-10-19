@@ -1,5 +1,6 @@
 package cn.sftech.www.view
 {
+	import cn.sftech.www.event.ChangeGamePageEvent;
 	import cn.sftech.www.event.ChooseNumEvent;
 	import cn.sftech.www.event.GameOverEvent;
 	import cn.sftech.www.model.ModelLocator;
@@ -177,7 +178,7 @@ package cn.sftech.www.view
 					if(_currentLvMap[m][n] == 0) { //还有空地没有填写数字
 						
 					} else if(_model.isResolve) { //代表全部填写正确
-						
+						successLv();
 					}
 				}
 			}
@@ -231,13 +232,19 @@ package cn.sftech.www.view
 			}
 		}
 		
+		private function successLv() : void
+		{
+			_model.userResolveArr = null;
+			_model.unlockLevel ++;
+			this.dispatchEvent(new ChangeGamePageEvent());
+		}
+		
 		/**
 		 * 下一关
 		 * 
 		 */		
 		private function nextLv():void
 		{
-			_model.userResolveArr = null;
 			_model.currentLv ++;
 		}
 		

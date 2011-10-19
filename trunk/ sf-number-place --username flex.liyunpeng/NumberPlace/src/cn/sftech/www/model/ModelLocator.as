@@ -19,6 +19,8 @@ package cn.sftech.www.model
 		
 		public var userResolveArr : Vector.<Object>;
 		
+		public var unlockLevel : uint = 1;
+		
 		//用户是否以开始玩本关，用来判断是否需要存储当前关
 		public var isPlayLv : Boolean = false;
 		//用户是当前解的违规状态 true代表没有违规的块 false代表有违规的块

@@ -4,8 +4,10 @@ package cn.sftech.www.view
 	import cn.sftech.www.model.ModelLocator;
 	import cn.sftech.www.object.GameConfig;
 	
+	import flash.display.DisplayObject;
 	import flash.events.Event;
 	import flash.events.MouseEvent;
+	import flash.system.System;
 
 	public class LevelList extends SFViewStack
 	{
@@ -21,18 +23,18 @@ package cn.sftech.www.view
 		 * --NORMAL_LV
 		 * 
 		 */
-		public function LevelList(type : uint)
+		public function LevelList()
 		{
 			super();
-			init();
-			buildLevelBtn(type);
+//			init();
+//			buildLevelBtn(type);
 		}
 		
-		private function init() : void
-		{
-		}
+//		private function init() : void
+//		{
+//		}
 		
-		private function buildLevelBtn(type : uint) : void
+		public function buildLevelBtn(type : uint) : void
 		{
 			var col : int = 4;
 			var row : int = 4;
@@ -42,12 +44,21 @@ package cn.sftech.www.view
 			var base : uint = 0;
 			if(type > GameConfig.EASY_LV) base += GameConfig.EASY_LV;
 			if(type > GameConfig.NORMAL_LV) base += GameConfig.NORMAL_LV;
+			
+			cleanBuild();
 			for(var i : int = 1;i <= type;i++) {
 				var lvBtn : LevelListBtn = new LevelListBtn();
 				lvBtn.backgroundImage = NumberBlockBackground;
 				
 				lvBtn.level = base + i;
-				lvBtn.addEventListener(MouseEvent.CLICK,selectLv);
+				//未解锁的关显示
+				if(lvBtn.level > _model.unlockLevel) {
+					
+				//解锁的关显示
+				} else {
+					lvBtn.addEventListener(MouseEvent.CLICK,selectLv);
+					
+				}
 				
 				lvBtn.width = 40;
 				lvBtn.height = 40;
@@ -70,10 +81,27 @@ package cn.sftech.www.view
 			}
 		}
 		
+		private function cleanBuild() : void
+		{
+			while(this.numChildren > 0) {
+				for each(var child : LevelListBtn in this.getChildAt(0)) {
+					if(child.hasEventListener(MouseEvent.CLICK)) {
+						child.removeEventListener(MouseEvent.CLICK,selectLv);
+					}
+					removeChild(child);
+					child = null;
+				}
+				removeChildAt(0);
+			}
+			System.gc();
+		}
+		
 		private function selectLv(event : MouseEvent) : void
 		{
 			_model.currentLv = (event.currentTarget as LevelListBtn).level;
 			this.dispatchEvent(new ChangeGamePageEvent());
+			
+			cleanBuild();
 		}
 		
 	}
