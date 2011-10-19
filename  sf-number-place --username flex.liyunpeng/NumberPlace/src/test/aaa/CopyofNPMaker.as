@@ -12,9 +12,57 @@ package test.aaa
 		
 		private var map : Vector.<Vector.<int>> = new Vector.<Vector.<int>>(9);
 		
+		private var count : uint = 1;
+		
 		public function CopyofNPMaker()
 		{
-			makeNP(5);
+			//入门
+//			makeNP(10);
+//			makeNP(11);
+//			makeNP(12);
+//			makeNP(15);
+//			makeNP(16);
+			//标准
+//			makeNP(25);  //6
+//			makeNP(25);  //7
+//			makeNP(25);  //8
+//			makeNP(25);  //9
+//			makeNP(25);  //10
+//			makeNP(25);  //11
+//			makeNP(26);  //12
+//			makeNP(27);  //13
+//			makeNP(28);  //14
+//			makeNP(29);  //15
+//			makeNP(30);  //16
+//			makeNP(31);  //17
+//			makeNP(32);  //18
+//			makeNP(33);  //19
+//			makeNP(34);  //20
+//			makeNP(35);  //21
+//			makeNP(36);  //22
+//			makeNP(37);  //23
+//			makeNP(38);  //24
+//			makeNP(39);  //25
+//			makeNP(40);  //26
+//			makeNP(40);  //27
+//			makeNP(41);  //28
+//			makeNP(42);  //29
+//			makeNP(43);  //30
+//			makeNP(44);  //31
+//			makeNP(45);  //32
+//			makeNP(45);  //33
+//			makeNP(45);  //34
+//			makeNP(45);  //35
+			makeNP(45);  //36
+			makeNP(45);  //37
+			makeNP(45);  //38
+			makeNP(45);  //39
+			makeNP(45);  //40
+			makeNP(45);  //41
+			makeNP(45);  //42
+			makeNP(45);  //43
+			makeNP(45);  //44
+			makeNP(45);  //45
 		}
 		
 		public function makeNP(black : uint) : Object
@@ -51,7 +99,14 @@ package test.aaa
 					++k;
 				}
 			}
+			trace("//" + count);
 			display();
+			if(count == 5) {
+				count = 1;
+				trace("//-----------------");
+			} else {
+				count ++;
+			}
 			
 			return map;
 		}
@@ -148,21 +203,25 @@ package test.aaa
 		public function display() : void
 		{
 			var text : String = "";
+			text += "["+ "\n";
 			for(var i : int=0;i<9;++i)
 			{
-				text += "[";
+				text += "	[";
 				for(var j : int=0;j<9;++j)
 				{
 					text += map[i][j];
 //					if(map[i][j]>0)
 //					else
 //						trace("[   ] ");
-					if(j < 9) text += ","
+					if(j < 8) text += ",";
 				}
 				text += "]";
+				if(i < 8) text += ",";
 				trace(text);
 				text = "";
 			}
+			text += "],";
+			trace(text);
 		}
 	}
 }

@@ -106,16 +106,15 @@ package cn.sftech.www.util
 				}
 				//当前解无解，回退上一层解
 				if(resolveFlag == 0) {
-//					//					currentBlock = null;
-//					if(_resolveHistory.length - 1 < 0) {trace("当前数独无解");return;}
-//					var lastBlock : Block = _resolveHistory[_resolveHistory.length-1] as Block;
-//					indexFlag = lastBlock.type +1;
-////					if(indexFlag == 10) {
-////						resolveFlag = 0;
-////					}
-//					_resolveHistory.splice(_resolveHistory.length-1,1);
-//					map[lastBlock.indexY][lastBlock.indexX] = 0;
-					return;
+					//					currentBlock = null;
+					if(_resolveHistory.length - 1 < 0) {trace("当前数独无解");return;}
+					var lastBlock : Block = _resolveHistory[_resolveHistory.length-1] as Block;
+					indexFlag = lastBlock.type +1;
+//					if(indexFlag == 10) {
+//						resolveFlag = 0;
+//					}
+					_resolveHistory.splice(_resolveHistory.length-1,1);
+					map[lastBlock.indexY][lastBlock.indexX] = 0;
 				}
 				
 			//全部空块均填写完成
