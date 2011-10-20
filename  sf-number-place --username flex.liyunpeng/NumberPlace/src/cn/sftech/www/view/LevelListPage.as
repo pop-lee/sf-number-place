@@ -10,9 +10,9 @@ package cn.sftech.www.view
 	{
 		private var backBtn : SFMovieClip;
 		
-		private var easyLevelList : LevelList;
+		private var easyLevelPane : LevelListPane;
 		
-		private var normalLevelList : LevelList;
+		private var normalLevelPane : LevelListPane;
 		
 		public function LevelListPage()
 		{
@@ -45,16 +45,16 @@ package cn.sftech.www.view
 			normalBtn.backgroundImage = NormalBtnBackground;
 			normalBtn.x = 50;
 			normalBtn.y = 100;
-			normalBtn.addEventListener(MouseEvent.CLICK,toNoramlList);
+			normalBtn.addEventListener(MouseEvent.CLICK,toNormalList);
 			mainLevelList.addChild(normalBtn);
 			
-			var easyLevelPane : LevelListPane = new LevelListPane();
+			easyLevelPane = new LevelListPane();
 			easyLevelPane.percentWidth = 100;
 			easyLevelPane.percentHeight = 100;
 			easyLevelPane.backgroundAlpha = 0;
 			easyLevelPane.addEventListener(ChangeGamePageEvent.CHANGE_GAMEPAGE_EVENT,toLevelListPage);
 			
-			easyLevelList = new LevelList();
+			var easyLevelList : LevelList = new LevelList();
 			easyLevelList.addEventListener(ChangeGamePageEvent.CHANGE_GAMEPAGE_EVENT,toGamePanel);
 			easyLevelList.x = 0;
 			easyLevelList.y = 28;
@@ -64,13 +64,13 @@ package cn.sftech.www.view
 			easyLevelPane.list = easyLevelList;
 			addItem(easyLevelPane);
 			
-			var normalLevelPane : LevelListPane = new LevelListPane();
+			normalLevelPane = new LevelListPane();
 			normalLevelPane.percentWidth = 100;
 			normalLevelPane.percentHeight = 100;
 			normalLevelPane.backgroundAlpha = 0;
 			normalLevelPane.addEventListener(ChangeGamePageEvent.CHANGE_GAMEPAGE_EVENT,toLevelListPage);
 			
-			normalLevelList = new LevelList();
+			var normalLevelList : LevelList = new LevelList();
 			normalLevelList.x = 0;
 			normalLevelList.y = 28;
 			normalLevelList.width = 243;
@@ -84,16 +84,16 @@ package cn.sftech.www.view
 			
 		}
 		
-		private function toEasyList(event : MouseEvent) : void
+		public function toEasyList(event : MouseEvent = null) : void
 		{
 			this.selectedIndex = 1;
-			easyLevelList.buildLevelBtn(GameConfig.EASY_LV);
+			easyLevelPane.buildLevelBtn(GameConfig.EASY_LV);
 		}
 		
-		private function toNoramlList(event : MouseEvent) : void
+		public function toNormalList(event : MouseEvent = null) : void
 		{
 			this.selectedIndex = 2;
-			normalLevelList.buildLevelBtn(GameConfig.NORMAL_LV);
+			normalLevelPane.buildLevelBtn(GameConfig.NORMAL_LV);
 		}
 		
 		private function toGamePanel(event : ChangeGamePageEvent) : void

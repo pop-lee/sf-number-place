@@ -70,8 +70,8 @@ package
 		{
 			var dataManager : DataManager = new DataManager();
 			SFApplication.application.addEventListener(SFInitializeDataEvent.INITIALIZE_DATA_EVENT,initializedData);
-			dataManager.initData();
-//			initializedData(new SFInitializeDataEvent());
+//			dataManager.initData();
+			initializedData(new SFInitializeDataEvent());
 		}
 		
 		private function initializedData(event : SFInitializeDataEvent) : void
@@ -132,16 +132,14 @@ package
 			} else if(event.data == ChangePageEvent.TO_GAME_PAGE) {
 //				_model.userResolveArr = null;
 			} else if(event.data == ChangePageEvent.TO_RESUME_PAGE) {
-				var changeGamePageEvent : ChangeGamePageEvent = new ChangeGamePageEvent();
-				changeGamePageEvent.data = ChangeGamePageEvent.TO_GAMEPANEL_PAGE;
-				gamePage.toGamePanel(changeGamePageEvent);
-				
+				gamePage.resumeGame()
 				event.data = ChangePageEvent.TO_GAME_PAGE;
+			} else if(event.data == ChangePageEvent.TO_INTR_PAGE) {
+				intrPage.init();
+			} else if(event.data == ChangePageEvent.EXIT) {
+				MttService.exit();
+				return;
 			}
-//			} else if(event.data == ChangePageEvent.EXIT) {
-//				MttService.exit();
-//				return;
-//			}
 			vs.selectedIndex = event.data;
 		}
 		

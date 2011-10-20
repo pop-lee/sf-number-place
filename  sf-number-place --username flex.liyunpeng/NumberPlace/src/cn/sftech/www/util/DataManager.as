@@ -1,6 +1,7 @@
 package cn.sftech.www.util
 {
 	import cn.sftech.www.event.SFInitializeDataEvent;
+	import cn.sftech.www.event.SaveGameEvent;
 	import cn.sftech.www.model.ModelLocator;
 	import cn.sftech.www.object.MapData;
 	import cn.sftech.www.object.UserLvData;
@@ -107,10 +108,13 @@ package cn.sftech.www.util
 		{
 			if(result.code == 0) { //返回成功
 				LogManager.print("保存当前关成功");
+				SFApplication.application.dispatchEvent(new SaveGameEvent(SaveGameEvent.SAVED));
+				return;
 			} else if(result.code == MttService.EIOERROR) { //网络原因出错
 				LogManager.print("因网络原因，保存失败");
 			} else { //其他错误
 			}
+			SFApplication.application.dispatchEvent(new SaveGameEvent(SaveGameEvent.SAVE_ERROR));
 		}
 		private function saveUnlockLevelResult(result: Object) : void
 		{
@@ -147,7 +151,7 @@ package cn.sftech.www.util
 				result.value.position = 0;
 				trace(result.value.position);
 				var userLvData : Object = result.value.readObject();
-				_model.currentLv = userLvData.saveLv;
+				_model.userSaveLv = userLvData.saveLv;
 				_model.userResolveArr = userLvData.userLvData;
 				
 				initCheck();

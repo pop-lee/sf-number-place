@@ -8,6 +8,7 @@ package cn.sftech.www.view
 	import flash.events.Event;
 	import flash.events.MouseEvent;
 	import flash.net.URLRequest;
+	import flash.system.System;
 	import flash.text.TextField;
 	import flash.text.TextFormat;
 	
@@ -22,19 +23,21 @@ package cn.sftech.www.view
 //			"■使用时间越少，则最后积分越高。\n" +
 //			"■我们将记录玩家每一关的最高记录，以算去所有以解锁的关卡的总分数进行排名。";
 		
-		private var label : SFLabel = new SFLabel();
+		private var label : SFLabel;
+		
+		private var backMainBtn : SFMovieClip;
 		
 		private var tf : TextFormat = new TextFormat();
 		
 		public function IntrPage()
 		{
 			super();
-			init();
+//			init();
 		}
 		
-		private function init() : void
+		public function init() : void
 		{
-			
+			label = new SFLabel();
 			label.text = _intr;
 			label.bold = true;
 			label.wordWrap = true;
@@ -47,12 +50,10 @@ package cn.sftech.www.view
 			addChild(label);
 			
 			
-			var backMainBtn : SFButton = new SFButton();
-			backMainBtn.width = 38;
-			backMainBtn.height = 26;
-			backMainBtn.x = 15;
-			backMainBtn.y = 290;
-			backMainBtn.backgroundAlpha = 0;
+			backMainBtn = new SFMovieClip();
+			backMainBtn.backgroundImage = BackBtnBackground;
+			backMainBtn.x = 4;
+			backMainBtn.y = 4;
 			backMainBtn.addEventListener(MouseEvent.CLICK,toMainPage);
 			addChild(backMainBtn);
 		}
@@ -64,6 +65,15 @@ package cn.sftech.www.view
 		
 		private function toMainPage(event : MouseEvent) : void
 		{
+			removeChild(label);
+			label = null;
+			if(backMainBtn.hasEventListener(MouseEvent.CLICK)) {
+				backMainBtn.removeEventListener(MouseEvent.CLICK,toMainPage);
+			}
+			removeChild(backMainBtn);
+			backMainBtn = null;
+			System.gc();
+			
 			var changePageEvent : ChangePageEvent = new ChangePageEvent();
 			changePageEvent.data = ChangePageEvent.TO_MAIN_PAGE;
 			SFApplication.application.dispatchEvent(changePageEvent);

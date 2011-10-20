@@ -28,7 +28,7 @@ package cn.sftech.www.object
 		/**
 		 * 保存最多步数 
 		 */		
-		public static const HISTORY_COUNT : uint = 30;
+		public static const HISTORY_COUNT : uint = 1;
 //		/**
 //		 * 小块留边宽高
 //		 */		

@@ -6,7 +6,7 @@ package cn.sftech.www.view
 
 	public class LevelListPane extends SFContainer
 	{
-		public var _list : SFViewStack;
+		public var _list : LevelList;
 		
 		private var backBtn : SFMovieClip;
 		
@@ -64,6 +64,12 @@ package cn.sftech.www.view
 			addChild(_list);
 		}
 		
+		public function buildLevelBtn(type : uint) : void
+		{
+			_list.buildLevelBtn(type);
+			checkBtnVisible();
+		}
+		
 		private function checkBtnVisible() : void
 		{
 			prevPageBtn.visible = _list.selectedIndex == 0?false : true;
@@ -72,6 +78,7 @@ package cn.sftech.www.view
 		
 		private function backHandle(event : MouseEvent) : void
 		{
+			_list.cleanBuild();
 			this.dispatchEvent(new ChangeGamePageEvent());
 		}
 	}

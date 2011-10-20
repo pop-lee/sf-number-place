@@ -1,6 +1,7 @@
 package cn.sftech.www.view
 {
 	import cn.sftech.www.event.ChangePageEvent;
+	import cn.sftech.www.event.SaveGameEvent;
 	import cn.sftech.www.model.ModelLocator;
 	import cn.sftech.www.util.DataManager;
 	
@@ -14,6 +15,8 @@ package cn.sftech.www.view
 		private var notSaveLvBtn : SFMovieClip;
 		
 		private var cancelSaveLvBtn : SFMovieClip;
+		
+		private var okBtn : SFMovieClip;
 		
 		public function SaveTip()
 		{
@@ -45,6 +48,14 @@ package cn.sftech.www.view
 			cancelSaveLvBtn.y = 148;
 			cancelSaveLvBtn.addEventListener(MouseEvent.CLICK,cancelHandle);
 			addChild(cancelSaveLvBtn);
+			
+			okBtn = new SFMovieClip();
+			okBtn.backgroundImage = OkBtnBackground;
+			okBtn.visible = false;
+			okBtn.x = 60;
+			okBtn.y = 98;
+			okBtn.addEventListener(MouseEvent.CLICK,okHandle);
+			addChild(okBtn);
 		}
 		
 		private function cancelHandle(event : MouseEvent = null) : void
@@ -58,16 +69,37 @@ package cn.sftech.www.view
 		
 		private function saveLvDataHandle(event : MouseEvent) : void
 		{
+			this.backgroundImage.gotoAndStop(2);
+			saveLvBtn.visible = false;
+			notSaveLvBtn.visible = false;
+			cancelSaveLvBtn.visible = false;
+			SFApplication.application.addEventListener(SaveGameEvent.SAVE_GAME_EVENT,saveHandle);
 			var dataManager : DataManager = new DataManager();
 			dataManager.saveLvData();
-			cancelHandle();
 		}
 		
 		private function notSaveLvDataHandle(event : MouseEvent) : void
 		{
-			var changePageEvent : ChangePageEvent = new ChangePageEvent();
-			changePageEvent.data = ChangePageEvent.TO_MAIN_PAGE;
-			SFApplication.application.dispatchEvent(changePageEvent);
+			this.dispatchEvent(new SaveGameEvent(SaveGameEvent.SAVE_ERROR));
+			cancelHandle();
+		}
+		
+		private function saveHandle(event : SaveGameEvent) : void
+		{
+			if(event.saveType == SaveGameEvent.SAVED) {
+				this.backgroundImage.gotoAndStop(3);
+				okBtn.visible = true;
+			} else {
+				this.backgroundImage.gotoAndStop(4);
+				okBtn.visible = false;
+				saveLvBtn.visible = true;
+				notSaveLvBtn.visible = true;
+			}
+		}
+		
+		private function okHandle(event : MouseEvent) : void
+		{
+			this.dispatchEvent(new SaveGameEvent(SaveGameEvent.SAVED));
 			cancelHandle();
 		}
 		

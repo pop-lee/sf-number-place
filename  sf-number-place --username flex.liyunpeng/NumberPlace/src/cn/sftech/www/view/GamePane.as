@@ -10,6 +10,7 @@ package cn.sftech.www.view
 	import cn.sftech.www.object.GameConfig;
 	import cn.sftech.www.object.MapData;
 	import cn.sftech.www.object.NumberBlock;
+	import cn.sftech.www.util.DataManager;
 	import cn.sftech.www.util.GetNum;
 	
 	import flash.display.DisplayObject;
@@ -122,10 +123,12 @@ package cn.sftech.www.view
 			if(!event.data) return;
 			
 			if(_model.userResolveHistory.length == GameConfig.HISTORY_COUNT) {
-				_model.userResolveHistory.slice(0,1);
+				_model.userResolveHistory[0] = null;
+				_model.userResolveHistory.splice(0,1);
 			}
 			//将填入的放入历史中
 			_model.userResolveHistory.push(_currentBlock);
+			
 			//派发时间，来更改“上一步”的显示状态
 			this.dispatchEvent(new StartResolveEvent());
 			//获取玩家新选择的数字
@@ -151,6 +154,8 @@ package cn.sftech.www.view
 			_model.isPlayLv = true;
 			//鉴证填写的数字快是否合理
 			checkNum(newBlock);
+			
+			System.gc();
 		}
 		
 		private function checkNum(block : NumberBlock) : void
@@ -190,69 +195,69 @@ package cn.sftech.www.view
 			for(var m : int = 0;m < 9;m++) {
 				for(var n : int = 0;n < 9;n++) {
 					if(_currentLvMap[m][n] == 0) { //还有空地没有填写数字
-						
-					} else if(_model.isResolve) { //代表全部填写正确
-						successLv();
+						return;
 					}
 				}
 			}
+			if(_model.isResolve) successLv();
 		}
 		
 		private function buildMap(lv : uint) : void
 		{
 			_currentLvMap = MapData.getLvData(lv);
 			_currentLvBlock = new Vector.<Vector.<NumberBlock>>(_currentLvMap.length);
-//			var num : NumberBlock;
-//			for(var i : int = 0;i < _currentLvMap.length;i++) {
-//				_currentLvBlock[i] = new Vector.<NumberBlock>(_currentLvMap[i].length);
-//				for(var j : int = 0;j < _currentLvMap[i].length;j++) {
-//					num = null;
-//					num = GetNum.get(_currentLvMap[i][j]);
-//					if(_currentLvMap[i][j] == 0) num.addEventListener(MouseEvent.CLICK,chooseNumPaneHandle);
-////					switch(currentLvMap[i][j]) {
-////						case 0:num = new Blank as MovieClip;num.addEventListener(MouseEvent.CLICK,clickHandle);break;
-////						case 1:num = new One() as MovieClip;break;
-////						case 2:num = new Two() as MovieClip;break;
-////						case 3:num = new Three() as MovieClip;break;
-////						case 4:num = new Four() as MovieClip;break;
-////						case 5:num = new Five() as MovieClip;break;
-////						case 6:num = new Six() as MovieClip;break;
-////						case 7:num = new Seven() as MovieClip;break;
-////						case 8:num = new Eight() as MovieClip;break;
-////						case 9:num = new Nine() as MovieClip;break;
-////					}
-//					if(num) {
-////						num.x = (j-int(j/3)*3)*(GameConfig.BLOCK_WIDTH + GameConfig.BLOCK_LINESIZE) + GameConfig.BLOCK_SPACING + 1;
-////						num.y = (i-int(i/3)*3)*(GameConfig.BLOCK_HEIGHT + GameConfig.BLOCK_LINESIZE) + GameConfig.BLOCK_SPACING + 1;
-//						num.x = j*(GameConfig.BLOCK_WIDTH + 2) + 3 + int(j/3) + j%9; //2左侧空出位置宽度 ===========int(j/3)*2 粗线宽度===========int(j/9)细线宽度
-////						num.x = j*GameConfig.BLOCK_WIDTH + 5 + j + int(j/3) + j*2;
-//						num.y = i*(GameConfig.BLOCK_HEIGHT + 3) + 3 + int(i/3) + i%9;//2上侧空出位置宽度 ===========int(i/3)*2 粗线高度===========int(i/9)细线高度
-////						num.y = i*GameConfig.BLOCK_HEIGHT + 5.5  + i + int(i/3) + i*3;
-//						num.indexX = j;
-//						num.indexY = i;
-//						_currentLvBlock[i][j] = num;
-//						addChild(num);
+			var num : NumberBlock;
+			for(var i : int = 0;i < _currentLvMap.length;i++) {
+				_currentLvBlock[i] = new Vector.<NumberBlock>(_currentLvMap[i].length);
+				for(var j : int = 0;j < _currentLvMap[i].length;j++) {
+					num = null;
+					num = GetNum.get(_currentLvMap[i][j]);
+					if(_currentLvMap[i][j] == 0) num.addEventListener(MouseEvent.CLICK,chooseNumPaneHandle);
+//					switch(currentLvMap[i][j]) {
+//						case 0:num = new Blank as MovieClip;num.addEventListener(MouseEvent.CLICK,clickHandle);break;
+//						case 1:num = new One() as MovieClip;break;
+//						case 2:num = new Two() as MovieClip;break;
+//						case 3:num = new Three() as MovieClip;break;
+//						case 4:num = new Four() as MovieClip;break;
+//						case 5:num = new Five() as MovieClip;break;
+//						case 6:num = new Six() as MovieClip;break;
+//						case 7:num = new Seven() as MovieClip;break;
+//						case 8:num = new Eight() as MovieClip;break;
+//						case 9:num = new Nine() as MovieClip;break;
 //					}
-//				}
-//			}
-//			
-//			//填入用户存储的关卡信息
-//			if(_model.userResolveArr) {
-//				for(var k : int = 0;k < _model.userResolveArr.length;k++) {
-//					for(var l : int = 0;l < _model.userResolveArr[k].length;l++) {
-//						if(_model.userResolveArr[k][l] == 0) continue;
-//						_currentBlock = _currentLvBlock[k][l];
-//						chooseNumHandle(new ChooseNumEvent(_model.userResolveArr[k][l]));
-//					}
-//				}
-//				_model.userResolveHistory = new Vector.<Block>();
-//			}
+					if(num) {
+//						num.x = (j-int(j/3)*3)*(GameConfig.BLOCK_WIDTH + GameConfig.BLOCK_LINESIZE) + GameConfig.BLOCK_SPACING + 1;
+//						num.y = (i-int(i/3)*3)*(GameConfig.BLOCK_HEIGHT + GameConfig.BLOCK_LINESIZE) + GameConfig.BLOCK_SPACING + 1;
+						num.x = j*(GameConfig.BLOCK_WIDTH + 2) + 3 + int(j/3) + j%9; //2左侧空出位置宽度 ===========int(j/3)*2 粗线宽度===========int(j/9)细线宽度
+//						num.x = j*GameConfig.BLOCK_WIDTH + 5 + j + int(j/3) + j*2;
+						num.y = i*(GameConfig.BLOCK_HEIGHT + 3) + 3 + int(i/3) + i%9;//2上侧空出位置宽度 ===========int(i/3)*2 粗线高度===========int(i/9)细线高度
+//						num.y = i*GameConfig.BLOCK_HEIGHT + 5.5  + i + int(i/3) + i*3;
+						num.indexX = j;
+						num.indexY = i;
+						_currentLvBlock[i][j] = num;
+						addChild(num);
+					}
+				}
+			}
+			
+			//填入用户存储的关卡信息
+			if(_model.userResolveArr) {
+				for(var k : int = 0;k < _model.userResolveArr.length;k++) {
+					for(var l : int = 0;l < _model.userResolveArr[k].length;l++) {
+						if(_model.userResolveArr[k][l] == 0) continue;
+						_currentBlock = _currentLvBlock[k][l];
+						chooseNumHandle(new ChooseNumEvent(_model.userResolveArr[k][l]));
+					}
+				}
+				_model.userResolveHistory = new Vector.<Block>();
+			}
 		}
 		
 		private function successLv() : void
 		{
-			_model.userResolveArr = null;
 			_model.unlockLevel ++;
+			var dataManager : DataManager = new DataManager();
+			dataManager.saveUnlockLevel();
 			this.dispatchEvent(new ChangeGamePageEvent());
 		}
 		

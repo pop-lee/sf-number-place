@@ -3,6 +3,7 @@ package cn.sftech.www.view
 	import cn.sftech.www.event.ChangeGamePageEvent;
 	import cn.sftech.www.event.ChangePageEvent;
 	import cn.sftech.www.event.GameOverEvent;
+	import cn.sftech.www.event.SaveGameEvent;
 	import cn.sftech.www.event.StartResolveEvent;
 	import cn.sftech.www.model.ModelLocator;
 	
@@ -34,7 +35,7 @@ package cn.sftech.www.view
 			gamePane.x = 0;
 			gamePane.y = 26;
 			gamePane.backgroundAlpha = 0;
-			gamePane.addEventListener(ChangeGamePageEvent.CHANGE_GAMEPAGE_EVENT,toLvListPage);
+			gamePane.addEventListener(ChangeGamePageEvent.CHANGE_GAMEPAGE_EVENT,successLv);
 			gamePane.addEventListener(StartResolveEvent.START_RESOLVE_EVENT,startResolve);
 			addChild(gamePane);
 			
@@ -104,10 +105,12 @@ package cn.sftech.www.view
 //			SFApplication.application.dispatchEvent(changePageEvent);
 //		}
 		
-		private function toLvListPage(event : Event) : void
+		private function successLv(event : ChangeGamePageEvent) : void
 		{
 			_model.userResolveArr = null;
-			this.dispatchEvent(event);
+			var changeGamePageEvent : ChangeGamePageEvent = new ChangeGamePageEvent();
+			changeGamePageEvent.data = event.data;
+			this.dispatchEvent(changeGamePageEvent);
 		}
 		
 		private function saveTipHandle(event : MouseEvent) : void
@@ -117,8 +120,13 @@ package cn.sftech.www.view
 					saveTip = new SaveTip();
 					saveTip.x = 21;
 					saveTip.y = 50;
+					saveTip.addEventListener(SaveGameEvent.SAVE_GAME_EVENT,saveFinishHandle);
 					SFApplication.application.addChild(saveTip);
 				}
+			} else {
+				var changeGamePageEvent : ChangeGamePageEvent = new ChangeGamePageEvent();
+				changeGamePageEvent.data = ChangeGamePageEvent.TO_LVLIST_PAGE;
+				this.dispatchEvent(changeGamePageEvent);
 			}
 //			gameOverPage = new GameOverPage();
 //			gameOverPage.addEventListener(GameOverEvent.GAME_OVER_EVENT,cleanGamePane);
@@ -128,11 +136,21 @@ package cn.sftech.www.view
 //			SFApplication.application.addChild(gameOverPage);
 		}
 		
-		private function cleanGamePane(event : GameOverEvent = null) : void
+		public function cleanGamePane(event : GameOverEvent = null) : void
 		{
 			gamePane.cleanGamePane();
 			prevStepBtn.backgroundImage.gotoAndStop(2);
 		}
 		
+		private function saveFinishHandle(event : SaveGameEvent) : void
+		{
+			if(event.type == SaveGameEvent.SAVE_ERROR) {
+				_model.userResolveArr = null;
+			}
+			var changeGamePageEvent : ChangeGamePageEvent = new ChangeGamePageEvent();
+			changeGamePageEvent.data = ChangeGamePageEvent.TO_LVLIST_PAGE;
+			this.dispatchEvent(changeGamePageEvent);
+			saveTip = null;
+		}
 	}
 }
