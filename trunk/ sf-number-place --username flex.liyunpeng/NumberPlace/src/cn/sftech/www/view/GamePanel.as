@@ -115,7 +115,7 @@ package cn.sftech.www.view
 		
 		private function saveTipHandle(event : MouseEvent) : void
 		{
-			if(_model.isPlayLv) {
+			if(_model.isStartPlay) {
 				if(!saveTip) {
 					saveTip = new SaveTip();
 					saveTip.x = 21;
@@ -144,13 +144,14 @@ package cn.sftech.www.view
 		
 		private function saveFinishHandle(event : SaveGameEvent) : void
 		{
-			if(event.type == SaveGameEvent.SAVE_ERROR) {
+			if(event.saveType == SaveGameEvent.SAVE_ERROR) {
 				_model.userResolveArr = null;
 			}
 			var changeGamePageEvent : ChangeGamePageEvent = new ChangeGamePageEvent();
 			changeGamePageEvent.data = ChangeGamePageEvent.TO_LVLIST_PAGE;
 			this.dispatchEvent(changeGamePageEvent);
 			saveTip = null;
+			
 		}
 	}
 }

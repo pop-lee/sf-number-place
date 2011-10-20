@@ -107,11 +107,11 @@ package cn.sftech.www.util
 		private function saveLvDataResult(result:Object) : void
 		{
 			if(result.code == 0) { //返回成功
-				LogManager.print("保存当前关成功");
+//				LogManager.print("保存当前关成功");
 				SFApplication.application.dispatchEvent(new SaveGameEvent(SaveGameEvent.SAVED));
 				return;
 			} else if(result.code == MttService.EIOERROR) { //网络原因出错
-				LogManager.print("因网络原因，保存失败");
+//				LogManager.print("因网络原因，保存失败");
 			} else { //其他错误
 			}
 			SFApplication.application.dispatchEvent(new SaveGameEvent(SaveGameEvent.SAVE_ERROR));
@@ -119,9 +119,9 @@ package cn.sftech.www.util
 		private function saveUnlockLevelResult(result: Object) : void
 		{
 			if(result.code == 0) { //返回成功
-				LogManager.print("保存以解锁关卡成功");
+//				LogManager.print("保存以解锁关卡成功");
 			} else if(result.code == MttService.EIOERROR) { //网络原因出错
-				LogManager.print("因网络原因，保存失败");
+//				LogManager.print("因网络原因，保存失败");
 			} else { //其他错误
 			}
 		}
@@ -144,39 +144,37 @@ package cn.sftech.www.util
 		private function queryUserLvDataResult(result : Object) : void
 		{
 			if(result.code == 0) { //返回成功
-				LogManager.print("加载用户数据成功");
+//				LogManager.print("加载用户数据成功");
 //				var byteArray : ByteArray = result.value;
 //				byteArray.position = 0
 //				trace(byteArray.position);
 				result.value.position = 0;
-				trace(result.value.position);
 				var userLvData : Object = result.value.readObject();
 				_model.userSaveLv = userLvData.saveLv;
 				_model.userResolveArr = userLvData.userLvData;
 				
 				initCheck();
 			} else if(result.code == MttService.EIOERROR) { //网络原因出错
-				LogManager.print("因网络原因，提交失败");
+//				LogManager.print("因网络原因，提交失败");
 			} else if(result.code == MttService.ENOENT) { //没有相关的用户存储关卡数据
-				LogManager.print("123");
 				initLvMapData();
 			} else {
-				LogManager.print("查询数据发生错误,错误号" + result.code);
+//				LogManager.print("查询数据发生错误,错误号" + result.code);
 			}
 		}
 		private function queryUnlockLevelResult(result:Object) : void
 		{
 			if(result.code == 0) { //返回成功
-				LogManager.print("加载以解锁关卡成功");
+//				LogManager.print("加载以解锁关卡成功");
 //				_model.unlockLevel = uint(result.value.readObject());
 				
 				initCheck();
 			} else if(result.code == MttService.EIOERROR) { //网络原因出错
-				LogManager.print("因网络原因，查询失败");
+//				LogManager.print("因网络原因，查询失败");
 			} else if(result.code == MttService.ENOENT) { //没有相关的用户存储关卡数据
 				initLvMapData();
 			} else {
-				LogManager.print("查询数据发生错误,错误号" + result.code);
+//				LogManager.print("查询数据发生错误,错误号" + result.code);
 			}
 		}
 		

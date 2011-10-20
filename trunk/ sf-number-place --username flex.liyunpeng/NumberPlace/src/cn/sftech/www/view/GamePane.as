@@ -74,6 +74,7 @@ package cn.sftech.www.view
 		
 		private function initLv(lv : uint) : void
 		{
+			_model.isStartPlay = false;
 		}
 		
 		/**
@@ -133,6 +134,7 @@ package cn.sftech.www.view
 			this.dispatchEvent(new StartResolveEvent());
 			//获取玩家新选择的数字
 			var newBlock : NumberBlock = GetNum.get(uint(event.data));
+			newBlock.isOld();
 			if(newBlock.type != 0) newBlock.backgroundImage = NumberBlockBackground;
 			//拷贝原来位置的坐标及数组索引
 			newBlock.copyData(_currentBlock);
@@ -151,7 +153,7 @@ package cn.sftech.www.view
 			//添加到用户的已填数字列表中
 			_model.userResolveArr[newBlock.indexY][newBlock.indexX] = newBlock.type;
 			//用户是否以开始本关
-			_model.isPlayLv = true;
+			_model.isStartPlay = true;
 			//鉴证填写的数字快是否合理
 			checkNum(newBlock);
 			
@@ -160,24 +162,28 @@ package cn.sftech.www.view
 		
 		private function checkNum(block : NumberBlock) : void
 		{
-			if(block.type == 0) return;
-			
 			//检测列
 			for(var i : int = 0;i < 9;i++) {
 				if(i == block.indexY) continue;
 				if(_currentLvMap[i][block.indexX] == block.type) {
-					_model.isResolve = false;
-					block.isOld();
-					trace(i + "  " + block.indexX + "  " + block.type);
+					_model.resolveIsTrue = false;
+					if(block.type == 0) continue;
+					block.makeError();
+					_currentLvBlock[i][block.indexX].makeError();
+				} else {
+					_currentLvBlock[i][block.indexX].notMakeError();
 				}
 			}
 			//检测行
 			for(var j : int = 0;j < 9;j++) {
 				if(j == block.indexX) continue;
 				if(_currentLvMap[block.indexY][j] == block.type) {
-					_model.isResolve = false;
-					block.isOld();
-					trace(block.indexY + "  " + j + "  " + block.type);
+					_model.resolveIsTrue = false;
+					if(block.type == 0) continue;
+					block.makeError();
+					_currentLvBlock[block.indexY][j].makeError();
+				} else {
+					_currentLvBlock[block.indexY][j].notMakeError();
 				}
 			}
 			//检测所在九格
@@ -185,9 +191,12 @@ package cn.sftech.www.view
 				for(var l: int = int(block.indexX/3)*3;l<int(block.indexX/3 + 1)*3;l++) {
 					if(k == block.indexY && l == block.indexX) continue;
 					if(_currentLvMap[k][l] == block.type) {
-						_model.isResolve = false;
-						block.isOld();
-						trace(k + "  " + l + "  " + block.type);
+						_model.resolveIsTrue = false;
+						if(block.type == 0) continue;
+						block.makeError();
+						_currentLvBlock[k][l].makeError();
+					} else {
+						_currentLvBlock[k][l].notMakeError();
 					}
 				}
 			}
@@ -199,7 +208,7 @@ package cn.sftech.www.view
 					}
 				}
 			}
-			if(_model.isResolve) successLv();
+			if(_model.resolveIsTrue) successLv();
 		}
 		
 		private function buildMap(lv : uint) : void
@@ -242,6 +251,7 @@ package cn.sftech.www.view
 			
 			//填入用户存储的关卡信息
 			if(_model.userResolveArr) {
+				_model.userResolveHistory = new Vector.<Block>();
 				for(var k : int = 0;k < _model.userResolveArr.length;k++) {
 					for(var l : int = 0;l < _model.userResolveArr[k].length;l++) {
 						if(_model.userResolveArr[k][l] == 0) continue;
@@ -249,7 +259,6 @@ package cn.sftech.www.view
 						chooseNumHandle(new ChooseNumEvent(_model.userResolveArr[k][l]));
 					}
 				}
-				_model.userResolveHistory = new Vector.<Block>();
 			}
 		}
 		
@@ -277,6 +286,7 @@ package cn.sftech.www.view
 					removeBlock(_currentLvBlock[i][j]);
 				}
 			}
+			_currentLvBlock = null;
 			if(_NumPane.hasEventListener(ChooseNumEvent.CHOOSE_NUM_EVENT)) {
 				_NumPane.removeEventListener(ChooseNumEvent.CHOOSE_NUM_EVENT,chooseNumHandle);
 			}

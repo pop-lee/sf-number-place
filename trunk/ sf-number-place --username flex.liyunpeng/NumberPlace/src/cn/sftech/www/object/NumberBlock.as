@@ -1,5 +1,6 @@
 package cn.sftech.www.object
 {
+	import cn.sftech.www.view.SFMovieClip;
 	import cn.sftech.www.view.SFTextField;
 	
 	import flash.display.MovieClip;
@@ -10,7 +11,8 @@ package cn.sftech.www.object
 
 	public class NumberBlock extends Block
 	{
-		private var num : MovieClip = new MovieClip();
+		private var num : MovieClip;
+		private var errorTip : MovieClip = new ErrorTip();
 		
 		public function NumberBlock(type : uint)
 		{
@@ -35,12 +37,28 @@ package cn.sftech.www.object
 //			num.height = this.height;
 //			num.textAlign = TextAlign.CENTER;
 //			num.text = type + "";
+			num.stop();
+			errorTip.x = 15;
+			errorTip.y = 18;
+			errorTip.visible = false;
+			
+			
 			addChild(num);
+			addChild(errorTip);
 		}
 		
 		public function isOld() : void
 		{
-			(this.backgroundImage as MovieClip).gotoAndStop(2);
+			num.gotoAndStop(2);
+		}
+		
+		public function makeError() : void
+		{
+			errorTip.visible = true;
+		}
+		public function notMakeError() : void
+		{
+			errorTip.visible = false;
 		}
 		
 		public function setData(x : int,y : int) : void
