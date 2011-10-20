@@ -46,7 +46,6 @@ package cn.sftech.www.view
 			resumeGameBtn.x = 70;
 			resumeGameBtn.y = 205;
 //			scoreListBtn.backgroundAlpha = 0;
-			resumeGameBtn.addEventListener(MouseEvent.CLICK,resumeGameBtntHandle);
 			this.addChild(resumeGameBtn);
 			
 			gameIntrBtn = new SFMovieClip();
@@ -70,8 +69,13 @@ package cn.sftech.www.view
 		{
 			if(value) {
 				(resumeGameBtn.backgroundImage as MovieClip).gotoAndStop(1);
+				if(resumeGameBtn.hasEventListener(MouseEvent.CLICK)) return;
+				resumeGameBtn.addEventListener(MouseEvent.CLICK,resumeGameBtntHandle);
 			} else {
 				(resumeGameBtn.backgroundImage as MovieClip).gotoAndStop(2);
+				if(resumeGameBtn.hasEventListener(MouseEvent.CLICK)) {
+					resumeGameBtn.removeEventListener(MouseEvent.CLICK,resumeGameBtntHandle);
+				}
 			}
 		}
 		

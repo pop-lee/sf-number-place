@@ -47,6 +47,10 @@ package cn.sftech.www.view
 				lvBtn.backgroundImage = NumberBlockBackground;
 				
 				lvBtn.level = getBase(type) + i;
+				var levelNum : LevelNum = new LevelNum();
+				levelNum.label.selectable = false;
+				levelNum.label.text = lvBtn.level.toString();
+				lvBtn.addChild(levelNum);
 				//未解锁的关显示
 				if(lvBtn.level > _model.unlockLevel) {
 					
@@ -97,6 +101,7 @@ package cn.sftech.www.view
 		private function selectLv(event : MouseEvent) : void
 		{
 			_model.currentLv = (event.currentTarget as LevelListBtn).level;
+			_model.userResolveArr = null;
 			this.dispatchEvent(new ChangeGamePageEvent());
 			
 			cleanBuild();

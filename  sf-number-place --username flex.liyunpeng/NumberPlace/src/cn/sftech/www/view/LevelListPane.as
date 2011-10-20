@@ -1,6 +1,7 @@
 package cn.sftech.www.view
 {
 	import cn.sftech.www.event.ChangeGamePageEvent;
+	import cn.sftech.www.object.GameConfig;
 	
 	import flash.events.MouseEvent;
 
@@ -10,12 +11,17 @@ package cn.sftech.www.view
 		
 		private var backBtn : SFMovieClip;
 		
+		private var title : SFMovieClip;
+		
 		private var prevPageBtn : SFMovieClip;
 		
 		private var nextPageBtn : SFMovieClip;
 		
-		public function LevelListPane()
+		private var type : uint;
+		
+		public function LevelListPane(type : uint)
 		{
+			this.type = type;
 			super();
 			init();
 		}
@@ -28,6 +34,17 @@ package cn.sftech.www.view
 			backBtn.y = 4;
 			backBtn.addEventListener(MouseEvent.CLICK,backHandle);
 			addChild(backBtn);
+			
+			title = new SFMovieClip();
+			title.backgroundImage = LevelTitleBackground;
+			title.x = 165;
+			title.y = 4;
+			switch(type) {
+				case GameConfig.EASY_LV:title.backgroundImage.gotoAndStop(2); break;
+				case GameConfig.NORMAL_LV:title.backgroundImage.gotoAndStop(3); break;
+			}
+			addChild(title);
+			
 			
 			prevPageBtn = new SFMovieClip();
 			prevPageBtn.backgroundImage = prevPageBtnBackground;

@@ -28,7 +28,7 @@ package cn.sftech.www.object
 		/**
 		 * 保存最多步数 
 		 */		
-		public static const HISTORY_COUNT : uint = 1;
+		public static const HISTORY_COUNT : uint = 30;
 //		/**
 //		 * 小块留边宽高
 //		 */		
@@ -39,15 +39,10 @@ package cn.sftech.www.object
 //		 */
 //		public static const BLOCK_LINESIZE : uint = 1;
 		
-		/**
-		 * 行列数
-		 */		
+//		/**
+//		 * 行列数
+//		 */		
 //		public static const NUMBER_RC : uint = 9;
-		
-		/**
-		 * 每大格的间距
-		 */		
-		public static const MAP_LEADING : uint = 0;
 		
 		/**
 		 * EASY级别的游戏关数

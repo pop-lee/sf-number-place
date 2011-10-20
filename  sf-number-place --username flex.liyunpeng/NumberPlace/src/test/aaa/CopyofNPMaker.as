@@ -16,7 +16,7 @@ package test.aaa
 		
 		public function CopyofNPMaker()
 		{
-			makeNP(1);
+//			makeNP(1);
 			//入门
 //			makeNP(10);
 //			makeNP(11);
@@ -64,6 +64,12 @@ package test.aaa
 //			makeNP(45);  //43
 //			makeNP(45);  //44
 //			makeNP(45);  //45
+			makeNP(45);  //41
+			makeNP(45);  //42
+			makeNP(45);  //43
+			makeNP(45);  //44
+			makeNP(45);  //45
+			
 		}
 		
 		public function makeNP(black : uint) : Object

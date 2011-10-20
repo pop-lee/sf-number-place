@@ -48,7 +48,7 @@ package cn.sftech.www.view
 			normalBtn.addEventListener(MouseEvent.CLICK,toNormalList);
 			mainLevelList.addChild(normalBtn);
 			
-			easyLevelPane = new LevelListPane();
+			easyLevelPane = new LevelListPane(GameConfig.EASY_LV);
 			easyLevelPane.percentWidth = 100;
 			easyLevelPane.percentHeight = 100;
 			easyLevelPane.backgroundAlpha = 0;
@@ -64,7 +64,7 @@ package cn.sftech.www.view
 			easyLevelPane.list = easyLevelList;
 			addItem(easyLevelPane);
 			
-			normalLevelPane = new LevelListPane();
+			normalLevelPane = new LevelListPane(GameConfig.NORMAL_LV);
 			normalLevelPane.percentWidth = 100;
 			normalLevelPane.percentHeight = 100;
 			normalLevelPane.backgroundAlpha = 0;
@@ -86,14 +86,14 @@ package cn.sftech.www.view
 		
 		public function toEasyList(event : MouseEvent = null) : void
 		{
-			this.selectedIndex = 1;
 			easyLevelPane.buildLevelBtn(GameConfig.EASY_LV);
+			this.selectedIndex = 1;
 		}
 		
 		public function toNormalList(event : MouseEvent = null) : void
 		{
-			this.selectedIndex = 2;
 			normalLevelPane.buildLevelBtn(GameConfig.NORMAL_LV);
+			this.selectedIndex = 2;
 		}
 		
 		private function toGamePanel(event : ChangeGamePageEvent) : void
