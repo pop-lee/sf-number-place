@@ -41,16 +41,12 @@ package cn.sftech.www.view
 			var horizontalLeading : uint = 8;
 			var verticalLeading : uint = 16;
 			
-			var base : uint = 0;
-			if(type > GameConfig.EASY_LV) base += GameConfig.EASY_LV;
-			if(type > GameConfig.NORMAL_LV) base += GameConfig.NORMAL_LV;
-			
-			cleanBuild();
+//			cleanBuild();
 			for(var i : int = 1;i <= type;i++) {
 				var lvBtn : LevelListBtn = new LevelListBtn();
 				lvBtn.backgroundImage = NumberBlockBackground;
 				
-				lvBtn.level = base + i;
+				lvBtn.level = getBase(type) + i;
 				//未解锁的关显示
 				if(lvBtn.level > _model.unlockLevel) {
 					
@@ -79,9 +75,11 @@ package cn.sftech.www.view
 				}
 				levelListPane.addChild(lvBtn);
 			}
+			
+			this.selectedIndex = (Math.min(_model.unlockLevel,type) - getBase(type))/(col*row);
 		}
 		
-		private function cleanBuild() : void
+		public function cleanBuild() : void
 		{
 			while(this.numChildren > 0) {
 				for each(var child : LevelListBtn in this.getChildAt(0)) {
@@ -104,5 +102,16 @@ package cn.sftech.www.view
 			cleanBuild();
 		}
 		
+		private function getBase(type : uint) : uint
+		{
+			var _base : uint = 0;
+			if(type == GameConfig.EASY_LV) {
+				
+			}
+			if(type == GameConfig.NORMAL_LV) {
+				_base = GameConfig.EASY_LV;
+			}
+			return _base;
+		}
 	}
 }

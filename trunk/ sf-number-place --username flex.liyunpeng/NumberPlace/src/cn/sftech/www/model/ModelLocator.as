@@ -16,11 +16,15 @@ package cn.sftech.www.model
 		 */		
 		public var currentLv : uint = 1;
 		
+		public var userSaveLv : uint = 1;
+		
 		public var lvMapArr : Vector.<Object> = new Vector.<Object>();
 		
+		//用户当前填写在面板上的解
 		public var userResolveArr : Vector.<Object>;
 		
-		public var unlockLevel : uint = 45;
+		//以解锁的关数
+		public var unlockLevel : uint = 20;
 		
 		//用户是否以开始玩本关，用来判断是否需要存储当前关
 		public var isPlayLv : Boolean = false;
