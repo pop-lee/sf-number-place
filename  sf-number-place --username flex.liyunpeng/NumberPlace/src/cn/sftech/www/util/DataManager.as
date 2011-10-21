@@ -64,6 +64,8 @@ package cn.sftech.www.util
 		 */		
 		public function saveLvData() : void
 		{
+			_model.userSaveLv = _model.currentLv;
+			
 			var userLvDataObejct : ByteArray = new ByteArray();
 			var userLvData : UserLvData = new UserLvData();
 			userLvData.saveLv = _model.currentLv;
