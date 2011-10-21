@@ -31,7 +31,7 @@ package cn.sftech.www.model
 		//用户是当前解的违规状态 true代表没有违规的块 false代表有违规的块
 		public var resolveIsTrue : Boolean = true;
 		// 保存用户求解的历史
-		public var userResolveHistory : Vector.<Block>;
+		public var userResolveHistory : Vector.<NumberBlock>;
 		
 		public var _currentFocus : NumberBlock;
 		

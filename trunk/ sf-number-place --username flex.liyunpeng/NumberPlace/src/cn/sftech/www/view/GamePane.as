@@ -75,6 +75,7 @@ package cn.sftech.www.view
 		private function initLv(lv : uint) : void
 		{
 			_model.isStartPlay = false;
+			_model.resolveIsTrue = true;
 		}
 		
 		/**
@@ -138,6 +139,8 @@ package cn.sftech.www.view
 			if(newBlock.type != 0) newBlock.backgroundImage = NumberBlockBackground;
 			//拷贝原来位置的坐标及数组索引
 			newBlock.copyData(_currentBlock);
+			//先将与原块发生冲突的恢复
+			restore(_currentBlock);
 			//删除原位置上的数据块
 			removeBlock(_currentBlock);
 			//将当前位置块指定为新块
@@ -154,23 +157,28 @@ package cn.sftech.www.view
 			_model.userResolveArr[newBlock.indexY][newBlock.indexX] = newBlock.type;
 			//用户是否以开始本关
 			_model.isStartPlay = true;
-			//鉴证填写的数字快是否合理
-			checkNum(newBlock);
+			for(var i : int = 0; i <_model.userResolveArr.length;i++) {
+				for(var j : int = 0; j < _model.userResolveArr[i].length;j++) {
+					if(_model.userResolveArr[i][j] == 0) continue;
+					//鉴证填写的数字快是否合理
+					if(checkNum(_currentLvBlock[i][j])) {
+						successLv();
+						return;
+					}
+				}
+			}
 			
 			System.gc();
 		}
 		
-		private function checkNum(block : NumberBlock) : void
+		//先将与原块发生冲突的恢复
+		private function restore(block : NumberBlock) : void
 		{
+			if(block.type == 0) return;
 			//检测列
 			for(var i : int = 0;i < 9;i++) {
 				if(i == block.indexY) continue;
 				if(_currentLvMap[i][block.indexX] == block.type) {
-					_model.resolveIsTrue = false;
-					if(block.type == 0) continue;
-					block.makeError();
-					_currentLvBlock[i][block.indexX].makeError();
-				} else {
 					_currentLvBlock[i][block.indexX].notMakeError();
 				}
 			}
@@ -178,11 +186,6 @@ package cn.sftech.www.view
 			for(var j : int = 0;j < 9;j++) {
 				if(j == block.indexX) continue;
 				if(_currentLvMap[block.indexY][j] == block.type) {
-					_model.resolveIsTrue = false;
-					if(block.type == 0) continue;
-					block.makeError();
-					_currentLvBlock[block.indexY][j].makeError();
-				} else {
 					_currentLvBlock[block.indexY][j].notMakeError();
 				}
 			}
@@ -191,12 +194,45 @@ package cn.sftech.www.view
 				for(var l: int = int(block.indexX/3)*3;l<int(block.indexX/3 + 1)*3;l++) {
 					if(k == block.indexY && l == block.indexX) continue;
 					if(_currentLvMap[k][l] == block.type) {
-						_model.resolveIsTrue = false;
-						if(block.type == 0) continue;
-						block.makeError();
-						_currentLvBlock[k][l].makeError();
-					} else {
 						_currentLvBlock[k][l].notMakeError();
+					}
+				}
+			}
+			_model.resolveIsTrue = true;
+		}
+		
+		private function checkNum(block : NumberBlock) : Boolean
+		{
+			if(block.type == 0) return false;
+			//检测列
+			for(var i : int = 0;i < 9;i++) {
+				if(i == block.indexY) continue;
+				if(_currentLvMap[i][block.indexX] == block.type) {
+					_model.resolveIsTrue = false;
+					block.makeError();
+					trace(i + "  " + block.indexX);
+					_currentLvBlock[i][block.indexX].makeError();
+				}
+			}
+			//检测行
+			for(var j : int = 0;j < 9;j++) {
+				if(j == block.indexX) continue;
+				if(_currentLvMap[block.indexY][j] == block.type) {
+					_model.resolveIsTrue = false;
+					block.makeError();
+					trace(block.indexY + "  " + j);
+					_currentLvBlock[block.indexY][j].makeError();
+				}
+			}
+			//检测所在九格
+			for(var k: int = int(block.indexY/3)*3;k<int(block.indexY/3 + 1)*3;k++) {
+				for(var l: int = int(block.indexX/3)*3;l<int(block.indexX/3 + 1)*3;l++) {
+					if(k == block.indexY && l == block.indexX) continue;
+					if(_currentLvMap[k][l] == block.type) {
+						_model.resolveIsTrue = false;
+						block.makeError();
+						trace(k + "  " + l);
+						_currentLvBlock[k][l].makeError();
 					}
 				}
 			}
@@ -204,11 +240,11 @@ package cn.sftech.www.view
 			for(var m : int = 0;m < 9;m++) {
 				for(var n : int = 0;n < 9;n++) {
 					if(_currentLvMap[m][n] == 0) { //还有空地没有填写数字
-						return;
+						return false;
 					}
 				}
 			}
-			if(_model.resolveIsTrue) successLv();
+			return _model.resolveIsTrue ?true:false;
 		}
 		
 		private function buildMap(lv : uint) : void
@@ -251,7 +287,7 @@ package cn.sftech.www.view
 			
 			//填入用户存储的关卡信息
 			if(_model.userResolveArr) {
-				_model.userResolveHistory = new Vector.<Block>();
+				_model.userResolveHistory = new Vector.<NumberBlock>();
 				for(var k : int = 0;k < _model.userResolveArr.length;k++) {
 					for(var l : int = 0;l < _model.userResolveArr[k].length;l++) {
 						if(_model.userResolveArr[k][l] == 0) continue;
@@ -264,9 +300,11 @@ package cn.sftech.www.view
 		
 		private function successLv() : void
 		{
-			_model.unlockLevel ++;
-			var dataManager : DataManager = new DataManager();
-			dataManager.saveUnlockLevel();
+			if(_model.currentLv == _model.unlockLevel) {
+				_model.unlockLevel ++;
+				var dataManager : DataManager = new DataManager();
+				dataManager.saveUnlockLevel();
+			}
 			this.dispatchEvent(new ChangeGamePageEvent());
 		}
 		

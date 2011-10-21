@@ -83,6 +83,7 @@ package cn.sftech.www.view
 			_model.userResolveArr = null;
 			gamePane.initGame();
 			gamePane.startGame(_model.currentLv);
+			trace("a");
 		}
 		
 		private function prevStepHandle(event : MouseEvent) : void
@@ -116,14 +117,13 @@ package cn.sftech.www.view
 		private function saveTipHandle(event : MouseEvent) : void
 		{
 			if(_model.isStartPlay) {
-				if(!saveTip) {
-					saveTip = new SaveTip();
-					saveTip.x = 21;
-					saveTip.y = 50;
-					saveTip.addEventListener(SaveGameEvent.SAVE_GAME_EVENT,saveFinishHandle);
-					SFApplication.application.addChild(saveTip);
-				}
+				saveTip = new SaveTip();
+				saveTip.x = 21;
+				saveTip.y = 50;
+				saveTip.addEventListener(SaveGameEvent.SAVE_GAME_EVENT,saveFinishHandle);
+				SFApplication.application.addChild(saveTip);
 			} else {
+				_model.userResolveArr = null;
 				var changeGamePageEvent : ChangeGamePageEvent = new ChangeGamePageEvent();
 				changeGamePageEvent.data = ChangeGamePageEvent.TO_LVLIST_PAGE;
 				this.dispatchEvent(changeGamePageEvent);
@@ -144,14 +144,14 @@ package cn.sftech.www.view
 		
 		private function saveFinishHandle(event : SaveGameEvent) : void
 		{
+			saveTip = null;
 			if(event.saveType == SaveGameEvent.SAVE_ERROR) {
 				_model.userResolveArr = null;
 			}
+			
 			var changeGamePageEvent : ChangeGamePageEvent = new ChangeGamePageEvent();
 			changeGamePageEvent.data = ChangeGamePageEvent.TO_LVLIST_PAGE;
 			this.dispatchEvent(changeGamePageEvent);
-			saveTip = null;
-			
 		}
 	}
 }
