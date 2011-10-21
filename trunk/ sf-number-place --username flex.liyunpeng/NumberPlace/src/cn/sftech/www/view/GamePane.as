@@ -4,6 +4,7 @@ package cn.sftech.www.view
 	import cn.sftech.www.event.ChooseNumEvent;
 	import cn.sftech.www.event.GameOverEvent;
 	import cn.sftech.www.event.StartResolveEvent;
+	import cn.sftech.www.event.SuccessEvent;
 	import cn.sftech.www.model.ModelLocator;
 	import cn.sftech.www.object.Block;
 	import cn.sftech.www.object.Block9;
@@ -36,6 +37,8 @@ package cn.sftech.www.view
 		private var _currentBlock : NumberBlock;
 		
 		private var _NumPane : ChooseNumPane;
+		
+		private var successPage : SuccessPage;
 		
 		public function GamePane()
 		{
@@ -305,17 +308,27 @@ package cn.sftech.www.view
 				var dataManager : DataManager = new DataManager();
 				dataManager.saveUnlockLevel();
 			}
+			successPage = new SuccessPage();
+			successPage.x = 21;
+			successPage.y = 50;
+			successPage.addEventListener(SuccessEvent.SUCCESS_EVENT,successHandle);
+			SFApplication.application.addChild(successPage);
+		}
+		
+		private function successHandle(event : SuccessEvent) : void
+		{
+			successPage = null;
 			this.dispatchEvent(new ChangeGamePageEvent());
 		}
 		
-		/**
-		 * 下一关
-		 * 
-		 */		
-		private function nextLv():void
-		{
-			_model.currentLv ++;
-		}
+//		/**
+//		 * 下一关
+//		 * 
+//		 */		
+//		private function nextLv():void
+//		{
+//			_model.currentLv ++;
+//		}
 		
 		public function cleanGamePane() : void
 		{
