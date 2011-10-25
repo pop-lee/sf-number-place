@@ -30,7 +30,7 @@ package com.qq.openapi
          */
         public static function put(key:String, value:ByteArray, callback:Function):void
         {
-            MttService.sapi(ProtocolHelper.SetGameDataEncode(key, value), onLoadFinish);
+            MttService.sapi(MttService.APPID_KDATA, ProtocolHelper.SetGameDataEncode(key, value), onLoadFinish);
 
             function onLoadFinish(scode:int, data:ByteArray):void
             {
@@ -53,7 +53,7 @@ package com.qq.openapi
          */     
         public static function get(key:String, callback:Function):void
         {
-            MttService.sapi(ProtocolHelper.GetGameDataEncode(key), onLoadFinish);
+            MttService.sapi(MttService.APPID_KDATA, ProtocolHelper.GetGameDataEncode(key), onLoadFinish);
 
             function onLoadFinish(scode:int, data:ByteArray):void
             {

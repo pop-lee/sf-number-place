@@ -44,18 +44,19 @@ package cn.sftech.www.view
 //			cleanBuild();
 			for(var i : int = 1;i <= type;i++) {
 				var lvBtn : LevelListBtn = new LevelListBtn();
-				lvBtn.backgroundImage = NumberBlockBackground;
+				lvBtn.backgroundImage = LevelBtnBackground;
 				
 				lvBtn.level = getBase(type) + i;
 				var levelNum : LevelNum = new LevelNum();
 				levelNum.label.selectable = false;
-				levelNum.label.text = lvBtn.level.toString();
+				levelNum.label.text = i.toString();
 				lvBtn.addChild(levelNum);
 				//未解锁的关显示
 				if(lvBtn.level > _model.unlockLevel) {
-					
+					lvBtn.backgroundImage.gotoAndStop(2);
 				//解锁的关显示
 				} else {
+					lvBtn.backgroundImage.gotoAndStop(1);
 					lvBtn.addEventListener(MouseEvent.CLICK,selectLv);
 					
 				}

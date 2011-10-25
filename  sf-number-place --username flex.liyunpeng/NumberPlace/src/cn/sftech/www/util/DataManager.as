@@ -45,7 +45,6 @@ package cn.sftech.www.util
 //			initLvMapData();
 			initCheck();
 //			queryLvMap();
-//			MttScore.query(queryScoreHandle);
 		}
 		
 //		/**
@@ -58,6 +57,11 @@ package cn.sftech.www.util
 //			lvMap.position = 0;
 //			MttGameData.put(LV_MAP_KEY,lvMap,saveLvMapResult);
 //		}
+		
+		public function submitScore() : void
+		{
+			MttScore.submit(_model.currentScore,submitScoreResult);
+		}
 		
 		/**
 		 * 存储用户所玩的当前关数据
@@ -121,11 +125,16 @@ package cn.sftech.www.util
 		private function saveUnlockLevelResult(result: Object) : void
 		{
 			if(result.code == 0) { //返回成功
+				submitScore();
 //				LogManager.print("保存以解锁关卡成功");
 			} else if(result.code == MttService.EIOERROR) { //网络原因出错
 //				LogManager.print("因网络原因，保存失败");
 			} else { //其他错误
 			}
+		}
+		private function submitScoreResult(result:Object) : void
+		{
+			
 		}
 //		private function queryLvMapResult(result:Object) : void
 //		{
@@ -194,7 +203,7 @@ package cn.sftech.www.util
 //		private function queryScoreHandle(result : Object) : void
 //		{
 //			if(result.code == 0) {
-//				LogManager.print("加载积分榜成功");
+////				LogManager.print("加载积分榜成功");
 //				var items:Array = result.board as Array;
 //				for (var i:int = 0; i < items.length; i++)
 //				{
@@ -213,6 +222,7 @@ package cn.sftech.www.util
 			switch(initFlag) {
 				case 1:queryUnlockLevel();break;
 				case 2:queryUserSaveData();break;
+//				case 3:MttScore.query(queryScoreHandle);break;
 				
 				default:{
 					SFApplication.application.dispatchEvent(new SFInitializeDataEvent());

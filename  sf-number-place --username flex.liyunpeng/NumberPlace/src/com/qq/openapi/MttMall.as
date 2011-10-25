@@ -14,13 +14,13 @@ package com.qq.openapi
     public class MttMall
     {
         /**
-         *  查询用户易贝余额
+         *  单机游戏查询玩家易贝余额，网络游戏查询玩家当前游戏的支付币余额
          * 
          *  @param onFinish 回调函数
          */
         public static function coins(callback:Function):void
         {
-            MttService.sapi(ProtocolHelper.MallCoinsEncode(), onLoadFinish);
+            MttService.sapi(MttService.APPID_MALL, ProtocolHelper.MallCoinsEncode(), onLoadFinish);
 
             function onLoadFinish(scode:int, data:ByteArray):void
             {
@@ -35,7 +35,7 @@ package com.qq.openapi
          */
         public static function store(callback:Function):void
         {
-            MttService.sapi(ProtocolHelper.MallStoreEncode(), onLoadFinish);
+            MttService.sapi(MttService.APPID_MALL, ProtocolHelper.MallStoreEncode(), onLoadFinish);
 
             function onLoadFinish(scode:int, data:ByteArray):void
             {
@@ -50,7 +50,7 @@ package com.qq.openapi
          */
         public static function list(callback:Function):void
         {
-            MttService.sapi(ProtocolHelper.MallListEncode(), onLoadFinish);
+            MttService.sapi(MttService.APPID_MALL, ProtocolHelper.MallListEncode(), onLoadFinish);
 
             function onLoadFinish(scode:int, data:ByteArray):void
             {
@@ -67,7 +67,7 @@ package com.qq.openapi
          */
         public static function purchase(propId:uint, num:uint, callback:Function):void
         {
-            MttService.sapi(ProtocolHelper.MallPurchaseEncode(propId, num), onLoadFinish);
+            MttService.sapi(MttService.APPID_MALL, ProtocolHelper.MallPurchaseEncode(propId, num), onLoadFinish);
 
             function onLoadFinish(scode:int, data:ByteArray):void
             {
@@ -84,7 +84,7 @@ package com.qq.openapi
          */
         public static function present(propId:uint, num:uint, desc:String, callback:Function):void
         {
-            MttService.sapi(ProtocolHelper.MallPresentEncode(propId, num, desc), onLoadFinish);
+            MttService.sapi(MttService.APPID_MALL, ProtocolHelper.MallPresentEncode(propId, num, desc), onLoadFinish);
 
             function onLoadFinish(scode:int, data:ByteArray):void
             {
@@ -101,7 +101,7 @@ package com.qq.openapi
          */
         public static function consume(propId:uint, num:uint, callback:Function):void
         {
-            MttService.sapi(ProtocolHelper.MallConsumeEncode(propId, num), onLoadFinish);
+            MttService.sapi(MttService.APPID_MALL, ProtocolHelper.MallConsumeEncode(propId, num), onLoadFinish);
 
             function onLoadFinish(scode:int, data:ByteArray):void
             {

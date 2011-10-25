@@ -42,7 +42,7 @@ package cn.sftech.www.view
 			var _backMainBtn : SFMovieClip = new SFMovieClip;
 			_backMainBtn.backgroundImage = BackBtnBackground;
 			_backMainBtn.x = 4;
-			_backMainBtn.y = 4;
+			_backMainBtn.y = 2;
 			//			_backMainBtn.backgroundAlpha = 0;
 			_backMainBtn.addEventListener(MouseEvent.CLICK,saveTipHandle);
 			addChild(_backMainBtn);
@@ -57,16 +57,10 @@ package cn.sftech.www.view
 			prevStepBtn = new SFMovieClip();
 			prevStepBtn.backgroundImage = PrevStepBtnBackground;
 			prevStepBtn.backgroundImage.gotoAndStop(2);
-			prevStepBtn.x = 80;
+			prevStepBtn.x = 100;
 			prevStepBtn.y = 300;
 			prevStepBtn.addEventListener(MouseEvent.CLICK,prevStepHandle);
 			addChild(prevStepBtn);
-			
-			var helpBtn : SFMovieClip = new SFMovieClip();
-			helpBtn.backgroundImage = HelpBtnBackground;
-			helpBtn.x = 144;
-			helpBtn.y = 300;
-			addChild(helpBtn);
 			
 		}
 		
@@ -83,7 +77,6 @@ package cn.sftech.www.view
 			_model.userResolveArr = null;
 			gamePane.initGame();
 			gamePane.startGame(_model.currentLv);
-			trace("a");
 		}
 		
 		private function prevStepHandle(event : MouseEvent) : void
@@ -117,11 +110,13 @@ package cn.sftech.www.view
 		private function saveTipHandle(event : MouseEvent) : void
 		{
 			if(_model.isStartPlay) {
-				saveTip = new SaveTip();
-				saveTip.x = 21;
-				saveTip.y = 50;
-				saveTip.addEventListener(SaveGameEvent.SAVE_GAME_EVENT,saveFinishHandle);
-				SFApplication.application.addChild(saveTip);
+				if(saveTip == null) {
+					saveTip = new SaveTip();
+					saveTip.x = 21;
+					saveTip.y = 50;
+					saveTip.addEventListener(SaveGameEvent.SAVE_GAME_EVENT,saveFinishHandle);
+					SFApplication.application.addChild(saveTip);
+				}
 			} else {
 				_model.userResolveArr = null;
 				var changeGamePageEvent : ChangeGamePageEvent = new ChangeGamePageEvent();

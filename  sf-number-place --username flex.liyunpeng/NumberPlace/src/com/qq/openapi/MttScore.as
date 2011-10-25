@@ -2,11 +2,11 @@ package com.qq.openapi
 {
     import com.qq.openapi.MttService;
     import com.qq.protocol.ProtocolHelper;
+    
     import flash.display.Sprite;
     import flash.events.Event;
     import flash.events.MouseEvent;
     import flash.text.TextField;
-    import flash.text.TextFieldAutoSize;
     import flash.text.TextFormat;
     import flash.text.TextFormatAlign;
     import flash.utils.ByteArray;
@@ -16,10 +16,33 @@ package com.qq.openapi
      *
      *  <p>支持Flash游戏结束后的用户积分上传，以支持游戏积分排行榜、好友积分排行榜的运营。</p>
      *  @author Tencent
-     * 
-     */ 
+     *
+     */
     public class MttScore
     {
+        /**
+         *  内部隐藏存储方式的积分数值
+         */        
+        public static function set score(value:int):void
+        {
+            if (MttService.loaded)
+            {
+                MttService.lib.SetScoreValue(value);
+            }
+            else
+            {
+                mScore = value;
+            }
+        }
+
+        /**
+         *  内部隐藏存储方式的积分数值
+         */
+        public static function get score():int
+        {
+            return MttService.loaded?MttService.lib.GetScoreValue():mScore;
+        }
+
         /**
          *  提交“当前游戏”、“当前玩家”的游戏积分。
          *  <p>本次请求成功或者失败，以参数形式传入的回调函数callback都将被调用。开发者可在该函数中判断调用结果，并取得当前玩家的积分数据。</p>
@@ -49,7 +72,7 @@ package com.qq.openapi
                 return ;
             }
 
-            MttService.sapi(ProtocolHelper.ScoreEncode(1, score, 0), onLoadFinish);
+            MttService.sapi(MttService.APPID_SCORE, ProtocolHelper.ScoreEncode(1, score, 0), onLoadFinish);
 
             function onLoadFinish(scode:int, data:ByteArray):void
             {
@@ -65,7 +88,7 @@ package com.qq.openapi
          */
         public static function query(callback:Function):void
         {
-            MttService.sapi(ProtocolHelper.ScoreEncode(2, 0, 10), onLoadFinish);
+            MttService.sapi(MttService.APPID_SCORE, ProtocolHelper.ScoreEncode(2, 0, 10), onLoadFinish);
 
             function onLoadFinish(scode:int, data:ByteArray):void
             {
@@ -84,7 +107,7 @@ package com.qq.openapi
             //如果资源已经加载成功
             if (MttService.loaded)
             {
-                MttService.container.scoreShowUpload(score, ps);
+                MttService.lib.scoreShowUpload(score, ps);
                 return ;
             }
 
@@ -115,7 +138,7 @@ package com.qq.openapi
         {
             if (mLocal != null) return ;
             mLocal  = new Sprite();
-            MttService.container.addChild(mLocal);
+            MttService.lib.addChild(mLocal);
 
             var cover:Sprite    = createCover();
             mLocal.addChild(cover);
@@ -186,5 +209,6 @@ package com.qq.openapi
         //  内部使用变量数据
         private static var mLocal:Sprite    = null;
         private static var mText :TextField = null;
+        private static var mScore:int       = 0;
     }
 }

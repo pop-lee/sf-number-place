@@ -47,12 +47,14 @@ package cn.sftech.www.object
 		/**
 		 * EASY级别的游戏关数
 		 */		
-		public static const EASY_LV : uint = 5;
+		public static const EASY_LV : uint = 4;
 		
 		/**
 		 * NORMAL级别游戏关数
 		 */
-		public static const NORMAL_LV : uint = 45;
+		public static const NORMAL_LV : uint = 48;
+		
+		public static const UNLOCK_INIT_LV : uint = 5;
 		
 	}
 }
