@@ -15,7 +15,6 @@ package
 	import cn.sftech.www.view.SFLogo;
 	import cn.sftech.www.view.SFScoreList;
 	import cn.sftech.www.view.SFViewStack;
-	import cn.sftech.www.view.ScoreListPage;
 	
 	import com.qq.openapi.MttScore;
 	import com.qq.openapi.MttService;
@@ -33,8 +32,6 @@ package
 		
 		private var mainPage : MainPage;
 		private var gamePage : GamePage;
-		private var intrPage : IntrPage;
-		private var scoreListPage : ScoreListPage;
 		
 		private var logo : SFLogo;
 		
@@ -108,17 +105,6 @@ package
 			gamePage.backgroundAlpha = 0;
 			vs.addItem(gamePage);
 			
-			intrPage = new IntrPage();
-			intrPage.percentWidth = 100;
-			intrPage.percentHeight = 100;
-			intrPage.backgroundAlpha = 0;
-			vs.addItem(intrPage);
-			
-			scoreListPage = new ScoreListPage();
-			scoreListPage.percentWidth = 100;
-			scoreListPage.percentHeight = 100;
-			scoreListPage.backgroundAlpha = 0
-			vs.addItem(scoreListPage);
 		}
 		
 		private function changePageHandle(event : ChangePageEvent):void
@@ -135,7 +121,8 @@ package
 				gamePage.resumeGame()
 				event.data = ChangePageEvent.TO_GAME_PAGE;
 			} else if(event.data == ChangePageEvent.TO_INTR_PAGE) {
-				intrPage.init();
+				_model.popIntrPage();
+				return;
 			} else if(event.data == ChangePageEvent.EXIT) {
 				MttService.exit();
 				return;

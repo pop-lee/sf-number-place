@@ -82,6 +82,24 @@ package com.qq.openapi
         public static const ETAGAIN     :String = "AGAIN";
 
         /**
+         *  上传积分的APPID。
+         *  @private
+         */
+        public static const APPID_SCORE :String = "6";
+
+        /**
+         *  KEY/VALUE数据的APPID。
+         *  @private 
+         */
+        public static const APPID_KDATA :String = "7";
+
+        /**
+         *  商城的APPID。
+         *  @private
+         */        
+        public static const APPID_MALL  :String = "8";
+
+        /**
          *  用于判断当前运行环境是否是QQ手机浏览器。 
          */
         public static function get qqbrowser():Boolean                      
@@ -154,7 +172,7 @@ package com.qq.openapi
          *  获取库的容器
          *  @private
          */
-        public static function get container():MovieClip
+        public static function get lib():MovieClip
         {
             mParent.setChildIndex(mLib, mParent.numChildren - 1);
 
@@ -172,6 +190,15 @@ package com.qq.openapi
 
         /**
          *  当前游戏玩家的Token
+         *  @private
+         */     
+        public static function set token(token:String):void
+        {
+            mToken = token;
+        }
+
+        /**
+         *  当前游戏玩家的Token
          *  @private 
          */     
         public static function get token():String
@@ -180,12 +207,30 @@ package com.qq.openapi
         }
 
         /**
-         *  当前游戏玩家的Token
-         *  @private
-         */     
-        public static function set token(token:String):void
+         *  当前游戏的GameID 
+         *  @param gameId
+         */        
+        public static function set gameid(gameId:String):void
         {
-            mToken = token;
+            mGameId = gameId;
+        }
+
+        /**
+         *  当前游戏的GameID 
+         *  @return 
+         */        
+        public static function get gameid():String
+        {
+            return mGameId;
+        }
+
+        /**
+         *  判断用户是否已经登录 
+         *  @return true为已经登录，false为未登录 
+         */        
+        public static function isLogin():Boolean
+        {
+            return mToken != null && mToken.length > 5;
         }
 
         /**
@@ -364,9 +409,9 @@ package com.qq.openapi
          *  @param onFinish
          * 
          */     
-        public static function sapi(req:ByteArray, onFinish:Function):void
+        public static function sapi(appid:String, req:ByteArray, onFinish:Function):void
         {
-            send(urlApiProxy, AID_FORAPI, req, onFinish);
+            send(qqbrowser?("imtts://appid=" + appid):URL_APIHTTP, appid, req, onFinish);
         }
 
         /**
@@ -518,19 +563,11 @@ package com.qq.openapi
             return mMttProtocol;
         }
 
-        //后台API服务器地址，被API内部代码使用，开发者忽略该参数。 
-        public static function get urlApiProxy():String
-        {
-            return qqbrowser?URL_APIIMTTS:URL_APIHTTP;
-        }
-
         //加载远程素材成功
         private static function onLoader(e:Event):void
         {
             mLib = MovieClip(LoaderInfo(e.target).loader.content);
-            mLib.setEvent(MttService);
-            mLib.setToken(MttService.token);
-
+            mLib.initialize(MttService, MttService.token, MttService.gameid);
             mParent.addChild(mLib);
         }
 
@@ -543,23 +580,22 @@ package com.qq.openapi
 
         ///////////////////////////////////////////////////////////////////////////////////////////
         //  私有常量数据
-        private static const NUM_VERSION    : uint   = 310006;
-        private static const STR_VERSION    : String = "AS3V1.0.6";
-        private static const URL_APIIMTTS   : String = "imtts://appid=3";
+        private static const NUM_VERSION    : uint   = 310008;
+        private static const STR_VERSION    : String = "AS3V1.0.8";
         private static const URL_URLJUMP    : String = "imtts://appid=5";
         private static const URL_LOGINDEV   : String = "http://fgdev.imtt.qq.com/flash?action=singleGame&version=v1.0&gameId=";
         private static const URL_LOGINREAL  : String = "http://fg.imtt.qq.com/flash?action=singleGame&version=v1.0&gameId=";
-        private static const URL_MLHTTP     : String = "180/MLib/assets/mttlib3.swf";
-        private static const URL_MLIMTT     : String = "imtt://180/MLib/assets/mttlib3.swf";
+        private static const URL_MLHTTP     : String = "180/MLib/assets/mttlib4.swf";
+        private static const URL_MLIMTT     : String = "imtt://180/MLib/assets/mttlib4.swf";
 
         private static const GID_FORTEST    : String = "180";
-        private static const AID_FORAPI     : String = "3";
         private static const AID_FORURLJUMP : String = "5";
-
+		
         private static const URL_APIHTTP    : String = "http://120.196.211.166:18200/http";
         private static const URL_REQUEST    : String = "http://120.196.211.166:18200/http";
         private static const URL_RESOURCE   : String = "http://120.196.211.166/flash/";
-
+		
+		
         ///////////////////////////////////////////////////////////////////////////////////////////
         //  内部变量数据
         private static var mResources       : Object = new Object();
@@ -583,10 +619,9 @@ package com.qq.openapi
 }
 
 import com.qq.utils.HttpRequest;
-import com.qq.openapi.MttService;
 class HttpRequestItem
 {
-    public var idle:Boolean         = true;
+    public var idle:Boolean     = true;
     public var http:HttpRequest = null;
 
     public function HttpRequestItem(v:Boolean = true)

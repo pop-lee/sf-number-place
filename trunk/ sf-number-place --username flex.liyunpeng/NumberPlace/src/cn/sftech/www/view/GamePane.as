@@ -305,6 +305,7 @@ package cn.sftech.www.view
 		{
 			if(_model.currentLv == _model.unlockLevel) {
 				_model.unlockLevel ++;
+				_model.currentScore = (_model.unlockLevel - GameConfig.UNLOCK_INIT_LV)*10;
 				var dataManager : DataManager = new DataManager();
 				dataManager.saveUnlockLevel();
 			}
@@ -317,6 +318,7 @@ package cn.sftech.www.view
 		
 		private function successHandle(event : SuccessEvent) : void
 		{
+			successPage.removeEventListener(SuccessEvent.SUCCESS_EVENT,successHandle);
 			successPage = null;
 			this.dispatchEvent(new ChangeGamePageEvent());
 		}
