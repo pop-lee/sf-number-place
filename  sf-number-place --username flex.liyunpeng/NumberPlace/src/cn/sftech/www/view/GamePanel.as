@@ -73,6 +73,7 @@ package cn.sftech.www.view
 		
 		private function restartHandle(event : MouseEvent) : void
 		{
+			if(_model.isSuccess) return;
 			cleanGamePane();
 			_model.userResolveArr = null;
 			gamePane.initGame();
@@ -81,6 +82,7 @@ package cn.sftech.www.view
 		
 		private function prevStepHandle(event : MouseEvent) : void
 		{
+			if(_model.isSuccess) return;
 			gamePane.prevStep();
 			if(_model.userResolveHistory.length == 0) {
 				prevStepBtn.backgroundImage.gotoAndStop(2);
@@ -109,6 +111,7 @@ package cn.sftech.www.view
 		
 		private function saveTipHandle(event : MouseEvent) : void
 		{
+			if(_model.isSuccess) return;
 			if(_model.isStartPlay) {
 				if(saveTip == null) {
 					saveTip = new SaveTip();

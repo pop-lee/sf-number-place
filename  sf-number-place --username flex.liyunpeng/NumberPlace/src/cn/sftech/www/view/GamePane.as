@@ -79,6 +79,7 @@ package cn.sftech.www.view
 		{
 			_model.isStartPlay = false;
 			_model.resolveIsTrue = true;
+			_model.isSuccess = false;
 		}
 		
 		/**
@@ -118,7 +119,6 @@ package cn.sftech.www.view
 		
 		private function chooseNumPaneHandle(event : MouseEvent) : void
 		{
-			trace(mouseX + "     " + mouseY) ;
 			_currentBlock = event.currentTarget as NumberBlock;
 			_NumPane.visible = true;
 		}
@@ -309,6 +309,7 @@ package cn.sftech.www.view
 				var dataManager : DataManager = new DataManager();
 				dataManager.saveUnlockLevel();
 			}
+			_model.isSuccess = true;
 			successPage = new SuccessPage();
 			successPage.x = 21;
 			successPage.y = 50;
