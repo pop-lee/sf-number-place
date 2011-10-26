@@ -29,12 +29,14 @@ package cn.sftech.www.model
 		public var userResolveArr : Vector.<Object>;
 		
 		//以解锁的关数
-		public var unlockLevel : uint = GameConfig.UNLOCK_INIT_LV;
+		public var unlockLevel : uint = 5;
 		
 		//用户是否以开始玩本关，用来判断是否需要存储当前关
 		public var isStartPlay : Boolean = false;
 		//用户是当前解的违规状态 true代表没有违规的块 false代表有违规的块
 		public var resolveIsTrue : Boolean = true;
+		//当前关是否以完成
+		public var isSuccess : Boolean = false;
 		// 保存用户求解的历史
 		public var userResolveHistory : Vector.<NumberBlock>;
 		

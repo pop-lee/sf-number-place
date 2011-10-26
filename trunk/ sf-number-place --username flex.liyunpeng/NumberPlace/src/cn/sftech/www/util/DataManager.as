@@ -27,6 +27,7 @@ package cn.sftech.www.util
 		private var _model : ModelLocator = ModelLocator.getInstance();
 		
 		private var initFlag : uint ;
+		private var saveFlag : uint;
 		
 		private var isInitializing : Boolean = false;
 		
@@ -114,6 +115,7 @@ package cn.sftech.www.util
 		{
 			if(result.code == 0) { //返回成功
 //				LogManager.print("保存当前关成功");
+				saveCheck();
 				SFApplication.application.dispatchEvent(new SaveGameEvent(SaveGameEvent.SAVED));
 				return;
 			} else if(result.code == MttService.EIOERROR) { //网络原因出错
@@ -125,7 +127,7 @@ package cn.sftech.www.util
 		private function saveUnlockLevelResult(result: Object) : void
 		{
 			if(result.code == 0) { //返回成功
-				submitScore();
+				saveCheck();
 //				LogManager.print("保存以解锁关卡成功");
 			} else if(result.code == MttService.EIOERROR) { //网络原因出错
 //				LogManager.print("因网络原因，保存失败");
@@ -134,7 +136,7 @@ package cn.sftech.www.util
 		}
 		private function submitScoreResult(result:Object) : void
 		{
-			
+			saveCheck();
 		}
 //		private function queryLvMapResult(result:Object) : void
 //		{
@@ -196,8 +198,9 @@ package cn.sftech.www.util
 			LogManager.print("正在为您的第一次游戏初始化数据...");
 //			MapData.initLvData();
 //			saveLvMap();
-			saveLvData();
-			saveUnlockLevel();
+			saveCheck();
+//			saveLvData();
+//			saveUnlockLevel();
 		}
 		
 //		private function queryScoreHandle(result : Object) : void
@@ -216,17 +219,35 @@ package cn.sftech.www.util
 //			}
 //		}
 		
+		private function saveCheck() : void
+		{
+			saveFlag++;
+			switch(saveFlag) {
+				case 1:saveLvData();break;
+//				case 2:saveUnlockLevel();break;
+//				case 3:submitScore();break;
+				case 2:submitScore();break;
+				
+				default:{
+					saveFlag = 0;
+				}
+			}
+		}
+		
 		private function initCheck() : void
 		{
 			initFlag++;
 			switch(initFlag) {
-				case 1:queryUnlockLevel();break;
-				case 2:queryUserSaveData();break;
+//				case 1:queryUnlockLevel();break;
+//				case 2:queryUserSaveData();break;
+				case 1:queryUserSaveData();break;
 //				case 3:MttScore.query(queryScoreHandle);break;
 				
 				default:{
 					SFApplication.application.dispatchEvent(new SFInitializeDataEvent());
 					LogManager.hideLog();
+					initFlag = 0;
+					_model.popIntrPage();
 				}
 			}
 //			if(initFlag == initDataCount) {

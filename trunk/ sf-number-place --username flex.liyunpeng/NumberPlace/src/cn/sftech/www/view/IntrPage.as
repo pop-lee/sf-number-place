@@ -19,7 +19,7 @@ package cn.sftech.www.view
 		{
 			this.backgroundImage = IntrPageBackground;
 			this.backgroundImage.stop();
-			this.addEventListener(MouseEvent.CLICK,nextPage);
+			this.addEventListener(MouseEvent.MOUSE_DOWN,nextPage);
 		}
 		
 		private function nextPage(event : MouseEvent) : void
@@ -33,8 +33,8 @@ package cn.sftech.www.view
 		
 		private function exitIntr() : void
 		{
-			if(this.hasEventListener(MouseEvent.CLICK)) {
-				this.removeEventListener(MouseEvent.CLICK,nextPage);
+			if(this.hasEventListener(MouseEvent.MOUSE_DOWN)) {
+				this.removeEventListener(MouseEvent.MOUSE_DOWN,nextPage);
 			}
 			this.dispatchEvent(new CloseEvent());
 		}

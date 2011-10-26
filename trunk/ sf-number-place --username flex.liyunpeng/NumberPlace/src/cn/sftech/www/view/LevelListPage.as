@@ -38,13 +38,13 @@ package cn.sftech.www.view
 			var easyBtn : SFMovieClip = new SFMovieClip();
 			easyBtn.backgroundImage = EasyBtnBackground;
 			easyBtn.x = 70;
-			easyBtn.y = 50;
+			easyBtn.y = 70;
 			easyBtn.addEventListener(MouseEvent.CLICK,toEasyList);
 			mainLevelList.addChild(easyBtn);
 			var normalBtn : SFMovieClip = new SFMovieClip();
 			normalBtn.backgroundImage = NormalBtnBackground;
 			normalBtn.x = 70;
-			normalBtn.y = 100;
+			normalBtn.y = 130;
 			normalBtn.addEventListener(MouseEvent.CLICK,toNormalList);
 			mainLevelList.addChild(normalBtn);
 			
