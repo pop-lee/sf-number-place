@@ -38,6 +38,8 @@ package cn.sftech.www.view
 		
 		private var _NumPane : ChooseNumPane;
 		
+		private var _isInit : Boolean = false;
+		
 		private var successPage : SuccessPage;
 		
 		public function GamePane()
@@ -131,11 +133,13 @@ package cn.sftech.www.view
 				_model.userResolveHistory[0] = null;
 				_model.userResolveHistory.splice(0,1);
 			}
-			//将填入的放入历史中
-			_model.userResolveHistory.push(_currentBlock);
+			if(!_isInit) {
+				//将填入的放入历史中
+				_model.userResolveHistory.push(_currentBlock);
+				//派发时间，来更改“上一步”的显示状态
+				this.dispatchEvent(new StartResolveEvent());
+			}
 			
-			//派发时间，来更改“上一步”的显示状态
-			this.dispatchEvent(new StartResolveEvent());
 			//获取玩家新选择的数字
 			var newBlock : NumberBlock = GetNum.get(uint(event.data));
 			newBlock.isOld();
@@ -291,6 +295,7 @@ package cn.sftech.www.view
 			//填入用户存储的关卡信息
 			if(_model.userResolveArr) {
 				_model.userResolveHistory = new Vector.<NumberBlock>();
+				_isInit = true;
 				for(var k : int = 0;k < _model.userResolveArr.length;k++) {
 					for(var l : int = 0;l < _model.userResolveArr[k].length;l++) {
 						if(_model.userResolveArr[k][l] == 0) continue;
@@ -298,6 +303,7 @@ package cn.sftech.www.view
 						chooseNumHandle(new ChooseNumEvent(_model.userResolveArr[k][l]));
 					}
 				}
+				_isInit = false;
 			}
 		}
 		

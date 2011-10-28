@@ -21,6 +21,9 @@ package
 	
 	import flash.display.Sprite;
 	import flash.events.Event;
+	import flash.events.TimerEvent;
+	import flash.utils.Timer;
+	import flash.utils.setTimeout;
 	
 	[SWF(width="243",height="324")]
 	public class main extends SFApplication
@@ -73,8 +76,12 @@ package
 		
 		private function initializedData(event : SFInitializeDataEvent) : void
 		{
-			this.addEventListener(Event.ENTER_FRAME,hideLogo);
 			initUI();
+			setTimeout(hideLogoTime,1000);
+		}
+		private function hideLogoTime() : void
+		{
+			this.addEventListener(Event.ENTER_FRAME,hideLogo);
 		}
 		
 		private function onLogout(e:Event):void
