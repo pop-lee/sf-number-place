@@ -2,6 +2,7 @@ package cn.sftech.www.view
 {
 	import cn.sftech.www.event.ChangeGamePageEvent;
 	import cn.sftech.www.event.ChangePageEvent;
+	import cn.sftech.www.model.ModelLocator;
 	import cn.sftech.www.object.GameConfig;
 	
 	import flash.events.MouseEvent;
@@ -86,6 +87,7 @@ package cn.sftech.www.view
 		
 		public function toEasyList(event : MouseEvent = null) : void
 		{
+			ModelLocator.getInstance().popIntrPage();
 			easyLevelPane.buildLevelBtn(GameConfig.EASY_LV);
 			this.selectedIndex = 1;
 		}
