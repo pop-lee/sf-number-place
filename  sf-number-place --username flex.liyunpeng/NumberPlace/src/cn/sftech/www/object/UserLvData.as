@@ -18,7 +18,7 @@ package cn.sftech.www.object
 		/**
 		 * 用户保存的当前关以填入数字
 		 */		
-		public var userLvData : Vector.<Object>;
+		public var userLvData : Array;
 		
 		public function UserLvData()
 		{

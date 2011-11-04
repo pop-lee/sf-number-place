@@ -79,6 +79,12 @@ package cn.sftech.www.view
 		{
 			_list = list;
 			addChild(_list);
+			if(type == GameConfig.EASY_LV) {
+				var easyTip : EasyTip = new EasyTip();
+				easyTip.x = 40;
+				easyTip.y = 215;
+				addChild(easyTip);
+			}
 		}
 		
 		public function buildLevelBtn(type : uint) : void

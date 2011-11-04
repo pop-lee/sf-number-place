@@ -27,7 +27,7 @@ package cn.sftech.www.object
 //			getLvData(4);
 		}
 		
-		public static function getLvData(lv : uint) : Vector.<Vector.<int>>
+		public static function getLvData(lv : uint) : Array
 		{
 //			if(_model.lvMapArr.length - lv < 1) {
 //				var npMaker : NPMaker = new NPMaker();
@@ -65,15 +65,16 @@ package cn.sftech.www.object
 //			return _model.lvMapArr[lv-1];
 			
 			var levelMapData : LevelMapData = new LevelMapData();
-			var arr : Array = levelMapData.GAME_MAP_DATA[lv-1] as Array;
-			var mapArr : Vector.<Vector.<int>> = new Vector.<Vector.<int>>(9);
-			for(var i:int = 0;i < arr.length;i++) {
-				mapArr[i] = new Vector.<int>(arr[i].length);
-				for(var j:int = 0;j < arr[i].length;j++) {
-					mapArr[i][j] = arr[i][j];
-				}
-			}
-			return mapArr;
+//			var arr : Array = levelMapData.GAME_MAP_DATA[lv-1] as Array;
+//			var mapArr : Vector.<Vector.<int>> = new Vector.<Vector.<int>>(9);
+//			for(var i:int = 0;i < arr.length;i++) {
+//				mapArr[i] = new Vector.<int>(arr[i].length);
+//				for(var j:int = 0;j < arr[i].length;j++) {
+//					mapArr[i][j] = arr[i][j];
+//				}
+//			}
+			
+			return levelMapData.GAME_MAP_DATA[lv-1] as Array;
 		}
 		
 	}

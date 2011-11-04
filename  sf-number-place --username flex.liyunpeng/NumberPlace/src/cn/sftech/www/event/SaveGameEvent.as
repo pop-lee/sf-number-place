@@ -10,6 +10,10 @@ package cn.sftech.www.event
 		
 		public static const SAVE_ERROR : String = "saveError";
 		
+		public static const NOT_SAVE : String = "notSave";
+		
+		public static const CANCEL_SAVE : String = "cancelSave"
+		
 		public var saveType : String;
 		
 		public function SaveGameEvent(type : String)

@@ -69,6 +69,7 @@ package cn.sftech.www.view
 		public function resumeGame() : void
 		{
 			_model.currentLv = _model.userSaveLv;
+//			_model.showHelpTip = false;
 			
 			var changeGamePageEvent : ChangeGamePageEvent = new ChangeGamePageEvent();
 			changeGamePageEvent.data = ChangeGamePageEvent.TO_GAMEPANEL_PAGE;

@@ -1,12 +1,13 @@
 package cn.sftech.www.util
 {
 	import cn.sftech.www.object.Block;
+	import cn.sftech.www.object.NumberBlock;
 	
 	public class NPMaker
 	{
-		private var map : Vector.<Vector.<int>> = new Vector.<Vector.<int>>(9);
+		private var map : Array = new Array(9);
 		
-		private var _resolveHistory : Vector.<Block> = new Vector.<Block>();
+		private var _resolveHistory : Vector.<NumberBlock> = new Vector.<NumberBlock>();
 		
 		public function NPMaker()
 		{
@@ -16,7 +17,7 @@ package cn.sftech.www.util
 		public function makeNP(black : uint) : Object
 		{
 			for(var a : int = 1;a <= map.length;a++) {
-				map[a-1] = new Vector.<int>(9);
+				map[a-1] = new Array(9);
 			}
 			var i : int,j : int;
 			
@@ -79,7 +80,7 @@ package cn.sftech.www.util
 				//当前空快
 				var currentBlock : Block = new Block();
 				//当前块需要做的标记
-				var currentMark : Vector.<int> =  new Vector.<int>(10);
+				var currentMark : Array =  new Array();
 				
 				resolveFlag = findBlankBlock(currentBlock,currentMark);
 				
@@ -123,7 +124,7 @@ package cn.sftech.www.util
 		}
 		
 		//判断是否有可填写的空快，若块无解返回false，若块可填写，则确定填写可能性最少的空格
-		private function findBlankBlock(currentBlock : Block,mark : Vector.<int>) : int
+		private function findBlankBlock(currentBlock : Block,mark : Array) : int
 		{
 			var min : int = 10;
 			var m : int = -1;
@@ -158,7 +159,7 @@ package cn.sftech.www.util
 		}
 		
 		//返回有多少种可能值
-		private function check(y : int,x : int,mark : Vector.<int>) : int
+		private function check(y : int,x : int,mark : Array) : int
 		{
 			var i : int,j : int;
 			var i_s : int , js : int

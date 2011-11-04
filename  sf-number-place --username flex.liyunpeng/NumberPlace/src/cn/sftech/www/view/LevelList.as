@@ -3,6 +3,7 @@ package cn.sftech.www.view
 	import cn.sftech.www.event.ChangeGamePageEvent;
 	import cn.sftech.www.model.ModelLocator;
 	import cn.sftech.www.object.GameConfig;
+	import cn.sftech.www.util.DataManager;
 	
 	import flash.display.DisplayObject;
 	import flash.events.Event;
@@ -103,6 +104,8 @@ package cn.sftech.www.view
 		{
 			_model.currentLv = (event.currentTarget as LevelListBtn).level;
 			_model.userResolveArr = null;
+//			var dataManager : DataManager = new DataManager();
+//			dataManager.saveCheck();
 			this.dispatchEvent(new ChangeGamePageEvent());
 			
 			cleanBuild();

@@ -70,8 +70,8 @@ package
 		{
 			var dataManager : DataManager = new DataManager();
 			SFApplication.application.addEventListener(SFInitializeDataEvent.INITIALIZE_DATA_EVENT,initializedData);
-//			dataManager.initData();
-			initializedData(new SFInitializeDataEvent());
+			dataManager.initData();
+//			initializedData(new SFInitializeDataEvent());
 		}
 		
 		private function initializedData(event : SFInitializeDataEvent) : void
