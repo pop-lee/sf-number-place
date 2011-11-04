@@ -6,7 +6,7 @@ package cn.sftech.www.util
 		
 		private var black : uint = 9;
 		
-		private var map : Vector.<Vector.<int>> = new Vector.<Vector.<int>>(9);
+		private var map : Array = new Array(9);
 		
 		public function NPMaker()
 		{
@@ -15,7 +15,7 @@ package cn.sftech.www.util
 		public function makeNP(black : uint) : Object
 		{
 			for(var a : int = 1;a <= map.length;a++) {
-				map[a-1] = new Vector.<int>(9);
+				map[a-1] = new Array(9);
 			}
 			var i : int,j : int;
 			
@@ -72,7 +72,7 @@ package cn.sftech.www.util
 			var i : int , j : int,im : int=-1,jm : int;
 			var min : int = 10;
 			//			var mark[10] : vect;
-			var mark : Vector.<int> =  new Vector.<int>(10);
+			var mark : Array =  new Array(10);
 			for(i=0;i<9;++i)
 			{
 				for(j=0;j<9;++j)
@@ -106,7 +106,7 @@ package cn.sftech.www.util
 			map[im][jm]=0;
 		}
 		
-		private function check(y : int,x : int,mark : Vector.<int>) : int
+		private function check(y : int,x : int,mark : Array) : int
 		{
 			var i : int,j : int;
 			var i_s : int , js : int

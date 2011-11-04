@@ -1,5 +1,6 @@
 package test.aaa
 {
+	import cn.sftech.www.util.LevelMapData;
 	import cn.sftech.www.util.LogManager;
 	
 	import flash.display.Sprite;
@@ -64,12 +65,38 @@ package test.aaa
 //			makeNP(45);  //43
 //			makeNP(45);  //44
 //			makeNP(45);  //45
-			makeNP(45);  //41
-			makeNP(45);  //42
-			makeNP(45);  //43
-			makeNP(45);  //44
-			makeNP(45);  //45
 			
+//			makeNP(45);  //41
+//			makeNP(45);  //42
+//			makeNP(45);  //43
+//			makeNP(45);  //44
+//			makeNP(45);  //45
+			
+			var levelMapData : LevelMapData = new LevelMapData();
+			for(var i : int = 0;i< 6;i++) {
+				trace(i+1 + " 关");
+				getResolveMap(levelMapData.GAME_MAP_DATA[i]);
+			}
+			
+		}
+		
+		public function getResolveMap(map : Array) : void {
+			for(var a : int = 1;a <= map.length;a++) {
+				this.map[a-1] = new Vector.<int>(9);
+			}
+			
+			for(var i : int =0;i<map.length;i++) {
+				for(var j : int = 0;j<map[i].length;j++) {
+					this.map[i][j] = map[i][j];
+				}
+			}
+			display();
+			resolve();
+			trace("解");
+			
+			display();
+			
+			trace("---------------------");
 		}
 		
 		public function makeNP(black : uint) : Object

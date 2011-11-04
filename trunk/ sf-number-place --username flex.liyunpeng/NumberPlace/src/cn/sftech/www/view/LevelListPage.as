@@ -4,6 +4,7 @@ package cn.sftech.www.view
 	import cn.sftech.www.event.ChangePageEvent;
 	import cn.sftech.www.model.ModelLocator;
 	import cn.sftech.www.object.GameConfig;
+	import cn.sftech.www.util.DataManager;
 	
 	import flash.events.MouseEvent;
 
@@ -14,6 +15,8 @@ package cn.sftech.www.view
 		private var easyLevelPane : LevelListPane;
 		
 		private var normalLevelPane : LevelListPane;
+		
+		private var _model : ModelLocator = ModelLocator.getInstance();
 		
 		public function LevelListPage()
 		{
@@ -87,15 +90,27 @@ package cn.sftech.www.view
 		
 		public function toEasyList(event : MouseEvent = null) : void
 		{
-			ModelLocator.getInstance().popIntrPage();
+			showHelp();
 			easyLevelPane.buildLevelBtn(GameConfig.EASY_LV);
 			this.selectedIndex = 1;
 		}
 		
 		public function toNormalList(event : MouseEvent = null) : void
 		{
+			showHelp();
 			normalLevelPane.buildLevelBtn(GameConfig.NORMAL_LV);
 			this.selectedIndex = 2;
+		}
+		
+		private function showHelp() : void
+		{
+			if(_model.unlockLevel < 2) {
+				ModelLocator.getInstance().popIntrPage();
+				_model.unlockLevel = GameConfig.UNLOCK_INIT_LV;
+				var dataManager : DataManager = new DataManager();
+				dataManager.saveCheck();
+//				_model.showHelpTip = false;
+			}
 		}
 		
 		private function toGamePanel(event : ChangeGamePageEvent) : void

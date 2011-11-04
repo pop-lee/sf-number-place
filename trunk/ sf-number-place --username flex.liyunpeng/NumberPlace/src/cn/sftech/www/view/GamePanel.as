@@ -143,8 +143,10 @@ package cn.sftech.www.view
 		private function saveFinishHandle(event : SaveGameEvent) : void
 		{
 			saveTip = null;
-			if(event.saveType == SaveGameEvent.SAVE_ERROR) {
+			if(event.saveType == SaveGameEvent.NOT_SAVE) {
 				_model.userResolveArr = null;
+			} else if(event.saveType == SaveGameEvent.CANCEL_SAVE) {
+				return;
 			}
 			
 			var changeGamePageEvent : ChangeGamePageEvent = new ChangeGamePageEvent();

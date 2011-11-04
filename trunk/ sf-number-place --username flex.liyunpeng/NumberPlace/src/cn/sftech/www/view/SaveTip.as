@@ -18,6 +18,8 @@ package cn.sftech.www.view
 		
 		private var okBtn : SFMovieClip;
 		
+		private var _model : ModelLocator = ModelLocator.getInstance();
+		
 		public function SaveTip()
 		{
 			super();
@@ -58,13 +60,19 @@ package cn.sftech.www.view
 			addChild(okBtn);
 		}
 		
-		private function cancelHandle(event : MouseEvent = null) : void
+		private function removeSelf() : void
 		{
 			SFApplication.application.removeChild(this);
 			cancelSaveLvBtn.removeEventListener(MouseEvent.CLICK,cancelHandle);
 			saveLvBtn.removeEventListener(MouseEvent.CLICK,saveLvDataHandle);
 			notSaveLvBtn.removeEventListener(MouseEvent.CLICK,notSaveLvDataHandle);
 			System.gc();
+		}
+		
+		private function cancelHandle(event : MouseEvent = null) : void
+		{
+			this.dispatchEvent(new SaveGameEvent(SaveGameEvent.CANCEL_SAVE));
+			removeSelf();
 		}
 		
 		private function saveLvDataHandle(event : MouseEvent) : void
@@ -80,8 +88,11 @@ package cn.sftech.www.view
 		
 		private function notSaveLvDataHandle(event : MouseEvent) : void
 		{
-			this.dispatchEvent(new SaveGameEvent(SaveGameEvent.SAVE_ERROR));
-			cancelHandle();
+			_model.userResolveArr = null;
+			var dataManager : DataManager = new DataManager();
+			dataManager.saveLvData();
+			this.dispatchEvent(new SaveGameEvent(SaveGameEvent.NOT_SAVE));
+			removeSelf();
 		}
 		
 		private function saveHandle(event : SaveGameEvent) : void

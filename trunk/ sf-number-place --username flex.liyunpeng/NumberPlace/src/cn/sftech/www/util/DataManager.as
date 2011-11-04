@@ -114,8 +114,8 @@ package cn.sftech.www.util
 		private function saveLvDataResult(result:Object) : void
 		{
 			if(result.code == 0) { //返回成功
-				LogManager.print("保存当前关成功");
-				saveCheck();
+//				LogManager.print("保存当前关成功");
+//				saveCheck();
 				SFApplication.application.dispatchEvent(new SaveGameEvent(SaveGameEvent.SAVED));
 				return;
 			} else if(result.code == MttService.EIOERROR) { //网络原因出错
@@ -128,7 +128,7 @@ package cn.sftech.www.util
 		{
 			if(result.code == 0) { //返回成功
 				saveCheck();
-				LogManager.print("保存以解锁关卡成功");
+//				LogManager.print("保存以解锁关卡成功");
 			} else if(result.code == MttService.EIOERROR) { //网络原因出错
 //				LogManager.print("因网络原因，保存失败");
 			} else { //其他错误
@@ -157,15 +157,15 @@ package cn.sftech.www.util
 		private function queryUserLvDataResult(result : Object) : void
 		{
 			if(result.code == 0) { //返回成功
-				LogManager.print("加载用户数据成功");
+//				LogManager.print("加载用户数据成功");
 //				var byteArray : ByteArray = result.value;
 //				byteArray.position = 0
 //				trace(byteArray.position);
 				result.value.position = 0;
 				var userLvData : Object = result.value.readObject();
 				_model.userSaveLv = userLvData.saveLv;
-				LogManager.print((userLvData.userLvData.length) + "");
 				_model.userResolveArr = userLvData.userLvData;
+				
 				initCheck();
 			} else if(result.code == MttService.EIOERROR) { //网络原因出错
 //				LogManager.print("因网络原因，提交失败");
@@ -178,8 +178,8 @@ package cn.sftech.www.util
 		private function queryUnlockLevelResult(result:Object) : void
 		{
 			if(result.code == 0) { //返回成功
-				LogManager.print("加载以解锁关卡成功");
-//				_model.unlockLevel = uint(result.value.readObject());
+//				LogManager.print("加载以解锁关卡成功");
+				_model.unlockLevel = uint(result.value.readObject());
 				
 				initCheck();
 			} else if(result.code == MttService.EIOERROR) { //网络原因出错
@@ -197,6 +197,7 @@ package cn.sftech.www.util
 			LogManager.print("正在为您的第一次游戏初始化数据...");
 //			MapData.initLvData();
 //			saveLvMap();
+			isInitializing = true;
 			saveCheck();
 //			saveLvData();
 //			saveUnlockLevel();
@@ -218,28 +219,31 @@ package cn.sftech.www.util
 //			}
 //		}
 		
-		private function saveCheck() : void
+		public function saveCheck() : void
 		{
-			if(isInitializing) return;
-			
 			saveFlag++;
 			switch(saveFlag) {
-				case 1:saveLvData();break;
-				case 2:saveUnlockLevel();break;
+				case 1:saveUnlockLevel();break;
+				case 2:submitScore();break;
+//				case 2:saveLvData();break;
 //				case 3:submitScore();break;
-//				case 2:submitScore();break;
 				
 				default:{
-					isInitializing = true;
+					saveLvData();
 					saveFlag = 0;
+					if(!isInitializing) {
+						isInitializing = false;
+						SFApplication.application.dispatchEvent(new SFInitializeDataEvent());
+						LogManager.hideLog();
+					}
 				}
 			}
 		}
 		
 		private function initCheck() : void
 		{
+//			isInitializing = true;
 			initFlag++;
-			LogManager.print(initFlag + " ");
 			switch(initFlag) {
 				case 1:queryUnlockLevel();break;
 				case 2:queryUserSaveData();break;

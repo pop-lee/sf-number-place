@@ -30,9 +30,9 @@ package cn.sftech.www.view
 		
 		private var _model : ModelLocator = ModelLocator.getInstance();
 		
-		private var _currentLvMap : Vector.<Vector.<int>>;
+		private var _currentLvMap : Array;
 		
-		private var _currentLvBlock : Vector.<Vector.<NumberBlock>>;
+		private var _currentLvBlock : Array;
 		
 		private var _currentBlock : NumberBlock;
 		
@@ -93,9 +93,9 @@ package cn.sftech.www.view
 			this.backgroundImage = Block9Background;
 			
 			if(!_model.userResolveArr) {
-				_model.userResolveArr = new Vector.<Object>(9);
+				_model.userResolveArr = new Array(9);
 				for(var b : int = 0;b<_model.userResolveArr.length;b++) {
-					_model.userResolveArr[b] = new Vector.<int>(9);
+					_model.userResolveArr[b] = new Array(9);
 				}
 			}
 			
@@ -217,7 +217,7 @@ package cn.sftech.www.view
 				if(_currentLvMap[i][block.indexX] == block.type) {
 					_model.resolveIsTrue = false;
 					block.makeError();
-					trace(i + "  " + block.indexX);
+//					trace(i + "  " + block.indexX);
 					_currentLvBlock[i][block.indexX].makeError();
 				}
 			}
@@ -227,7 +227,7 @@ package cn.sftech.www.view
 				if(_currentLvMap[block.indexY][j] == block.type) {
 					_model.resolveIsTrue = false;
 					block.makeError();
-					trace(block.indexY + "  " + j);
+//					trace(block.indexY + "  " + j);
 					_currentLvBlock[block.indexY][j].makeError();
 				}
 			}
@@ -238,7 +238,7 @@ package cn.sftech.www.view
 					if(_currentLvMap[k][l] == block.type) {
 						_model.resolveIsTrue = false;
 						block.makeError();
-						trace(k + "  " + l);
+//						trace(k + "  " + l);
 						_currentLvBlock[k][l].makeError();
 					}
 				}
@@ -257,10 +257,10 @@ package cn.sftech.www.view
 		private function buildMap(lv : uint) : void
 		{
 			_currentLvMap = MapData.getLvData(lv);
-			_currentLvBlock = new Vector.<Vector.<NumberBlock>>(_currentLvMap.length);
+			_currentLvBlock = new Array(_currentLvMap.length);
 			var num : NumberBlock;
 			for(var i : int = 0;i < _currentLvMap.length;i++) {
-				_currentLvBlock[i] = new Vector.<NumberBlock>(_currentLvMap[i].length);
+				_currentLvBlock[i] = new Array(_currentLvMap[i].length);
 				for(var j : int = 0;j < _currentLvMap[i].length;j++) {
 					num = null;
 					num = GetNum.get(_currentLvMap[i][j]);
@@ -312,8 +312,6 @@ package cn.sftech.www.view
 			if(_model.currentLv == _model.unlockLevel) {
 				_model.unlockLevel ++;
 				_model.currentScore = (_model.unlockLevel - GameConfig.UNLOCK_INIT_LV)*10;
-				var dataManager : DataManager = new DataManager();
-				dataManager.saveUnlockLevel();
 			}
 			_model.isSuccess = true;
 			successPage = new SuccessPage();

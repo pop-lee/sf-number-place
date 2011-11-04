@@ -61,7 +61,7 @@ package cn.sftech.www.view
 			addChild(_closeBtn);
 		}
 		
-		override public function show() : void
+		public function show() : void
 		{
 			this.visible = true;
 		}
