@@ -229,9 +229,9 @@ package cn.sftech.www.util
 //				case 3:submitScore();break;
 				
 				default:{
-					saveLvData();
 					saveFlag = 0;
-					if(!isInitializing) {
+					if(isInitializing) {
+						saveLvData();
 						isInitializing = false;
 						SFApplication.application.dispatchEvent(new SFInitializeDataEvent());
 						LogManager.hideLog();
