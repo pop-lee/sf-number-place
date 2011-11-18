@@ -312,6 +312,8 @@ package cn.sftech.www.view
 			if(_model.currentLv == _model.unlockLevel) {
 				_model.unlockLevel ++;
 				_model.currentScore = (_model.unlockLevel - GameConfig.UNLOCK_INIT_LV)*10;
+				var dataManager : DataManager = new DataManager();
+				dataManager.saveCheck();
 			}
 			_model.isSuccess = true;
 			successPage = new SuccessPage();
