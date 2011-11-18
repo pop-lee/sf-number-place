@@ -13,6 +13,7 @@ package cn.sftech.www.view
 	import cn.sftech.www.object.NumberBlock;
 	import cn.sftech.www.util.DataManager;
 	import cn.sftech.www.util.GetNum;
+	import cn.sftech.www.util.LevelMapData;
 	
 	import flash.display.DisplayObject;
 	import flash.display.MovieClip;
@@ -309,11 +310,13 @@ package cn.sftech.www.view
 		
 		private function successLv() : void
 		{
-			if(_model.currentLv == _model.unlockLevel) {
-				_model.unlockLevel ++;
-				_model.currentScore = (_model.unlockLevel - GameConfig.UNLOCK_INIT_LV)*10;
-				var dataManager : DataManager = new DataManager();
-				dataManager.saveCheck();
+			if(_model.mapDataClass == LevelMapData) {
+				if(_model.currentLv == _model.unlockLevel) {
+					_model.unlockLevel ++;
+					_model.currentScore = (_model.unlockLevel - GameConfig.UNLOCK_INIT_LV)*10;
+					var dataManager : DataManager = new DataManager();
+					dataManager.saveCheck();
+				}
 			}
 			_model.isSuccess = true;
 			successPage = new SuccessPage();

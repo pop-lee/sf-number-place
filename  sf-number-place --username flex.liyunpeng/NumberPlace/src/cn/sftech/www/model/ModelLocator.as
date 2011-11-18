@@ -25,11 +25,16 @@ package cn.sftech.www.model
 		
 		public var lvMapArr : Array = new Array();
 		
+		//描述数据类型 是普通的还是需要收费的
+		public var mapDataClass : Class;
+		
 		//用户当前填写在面板上的解
 		public var userResolveArr : Array;
 		
 		//以解锁的关数
 		public var unlockLevel : uint = 1;
+		//购买关卡
+		public var buyLevel : uint = 1;
 		
 		//用户是否以开始玩本关，用来判断是否需要存储当前关
 		public var isStartPlay : Boolean = false;

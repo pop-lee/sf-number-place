@@ -40,8 +40,9 @@ package cn.sftech.www.view
 			title.x = 165;
 			title.y = 4;
 			switch(type) {
-				case GameConfig.EASY_LV:title.backgroundImage.gotoAndStop(2); break;
-				case GameConfig.NORMAL_LV:title.backgroundImage.gotoAndStop(3); break;
+				case GameConfig.EASY_TYPE:title.backgroundImage.gotoAndStop(2); break;
+				case GameConfig.NORMAL_TYPE:title.backgroundImage.gotoAndStop(3); break;
+				case GameConfig.HARD_TYPE:title.backgroundImage.gotoAndStop(4); break;
 			}
 			addChild(title);
 			
