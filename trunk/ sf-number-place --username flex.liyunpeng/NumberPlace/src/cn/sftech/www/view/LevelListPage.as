@@ -16,6 +16,8 @@ package cn.sftech.www.view
 		
 		private var normalLevelPane : LevelListPane;
 		
+		private var hardLevelPane : LevelListPane;
+		
 		private var _model : ModelLocator = ModelLocator.getInstance();
 		
 		public function LevelListPage()
@@ -51,8 +53,14 @@ package cn.sftech.www.view
 			normalBtn.y = 130;
 			normalBtn.addEventListener(MouseEvent.CLICK,toNormalList);
 			mainLevelList.addChild(normalBtn);
+			var hardBtn : SFMovieClip = new SFMovieClip();
+			hardBtn.backgroundImage = HardBtnBackground;
+			hardBtn.x = 70;
+			hardBtn.y = 190;
+			hardBtn.addEventListener(MouseEvent.CLICK,toHardList);
+			mainLevelList.addChild(hardBtn);
 			
-			easyLevelPane = new LevelListPane(GameConfig.EASY_LV);
+			easyLevelPane = new LevelListPane(GameConfig.EASY_TYPE);
 			easyLevelPane.percentWidth = 100;
 			easyLevelPane.percentHeight = 100;
 			easyLevelPane.backgroundAlpha = 0;
@@ -68,7 +76,7 @@ package cn.sftech.www.view
 			easyLevelPane.list = easyLevelList;
 			addItem(easyLevelPane);
 			
-			normalLevelPane = new LevelListPane(GameConfig.NORMAL_LV);
+			normalLevelPane = new LevelListPane(GameConfig.NORMAL_TYPE);
 			normalLevelPane.percentWidth = 100;
 			normalLevelPane.percentHeight = 100;
 			normalLevelPane.backgroundAlpha = 0;
@@ -84,22 +92,43 @@ package cn.sftech.www.view
 			normalLevelPane.list = normalLevelList;
 			addItem(normalLevelPane);
 			
+			hardLevelPane = new LevelListPane(GameConfig.HARD_TYPE);
+			hardLevelPane.percentWidth = 100;
+			hardLevelPane.percentHeight = 100;
+			hardLevelPane.backgroundAlpha = 0;
+			hardLevelPane.addEventListener(ChangeGamePageEvent.CHANGE_GAMEPAGE_EVENT,toLevelListPage);
+			
 			var hardLevelList : LevelList = new LevelList();
+			hardLevelList.x = 0;
+			hardLevelList.y = 28;
+			hardLevelList.width = 243;
+			hardLevelList..height = 268;
+			hardLevelList.backgroundAlpha = 0;
+			hardLevelList.addEventListener(ChangeGamePageEvent.CHANGE_GAMEPAGE_EVENT,toGamePanel);
+			hardLevelPane.list = hardLevelList;
+			addItem(hardLevelPane);
 			
 		}
 		
 		public function toEasyList(event : MouseEvent = null) : void
 		{
 			showHelp();
-			easyLevelPane.buildLevelBtn(GameConfig.EASY_LV);
+			easyLevelPane.buildLevelBtn(GameConfig.EASY_TYPE);
 			this.selectedIndex = 1;
 		}
 		
 		public function toNormalList(event : MouseEvent = null) : void
 		{
 			showHelp();
-			normalLevelPane.buildLevelBtn(GameConfig.NORMAL_LV);
+			normalLevelPane.buildLevelBtn(GameConfig.NORMAL_TYPE);
 			this.selectedIndex = 2;
+		}
+		
+		public function toHardList(event : MouseEvent = null) : void
+		{
+			showHelp();
+			hardLevelPane.buildLevelBtn(GameConfig.HARD_TYPE);
+			this.selectedIndex = 3;
 		}
 		
 		private function showHelp() : void

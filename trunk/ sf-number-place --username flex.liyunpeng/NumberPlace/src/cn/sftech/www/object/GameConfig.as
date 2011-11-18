@@ -44,15 +44,22 @@ package cn.sftech.www.object
 //		 */		
 //		public static const NUMBER_RC : uint = 9;
 		
+		public static const EASY_TYPE : uint = 1;
+		public static const NORMAL_TYPE : uint = 2;
+		public static const HARD_TYPE : uint = 3;
+		
 		/**
 		 * EASY级别的游戏关数
 		 */		
 		public static const EASY_LV : uint = 4;
-		
 		/**
 		 * NORMAL级别游戏关数
 		 */
 		public static const NORMAL_LV : uint = 48;
+		/**
+		 * HARD级别游戏关数
+		 */
+		public static const HARD_LV : uint = 48;
 		
 		public static const UNLOCK_INIT_LV : uint = 5;
 		

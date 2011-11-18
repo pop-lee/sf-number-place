@@ -18,11 +18,13 @@ package cn.sftech.www.util
 	public class DataManager
 	{
 		//关卡地图数据Key
-		public const LV_MAP_KEY : String = "lvMapKey";
+//		public const LV_MAP_KEY : String = "lvMapKey";
 		
 		public const USER_LV_DATA_KEY : String = "userLvDataKey";
 		
 		public const UNLOCK_LEVEL_KEY : String = "unlockLevel";
+		
+		public const BUY_LEVEL_KEY : String = "buyLevelKey";
 		
 		private var _model : ModelLocator = ModelLocator.getInstance();
 		
@@ -88,6 +90,14 @@ package cn.sftech.www.util
 			MttGameData.put(UNLOCK_LEVEL_KEY,unlockLevel,saveUnlockLevelResult);
 		}
 		
+		public function saveBuyLevel() : void
+		{
+			var buyLevel : ByteArray = new ByteArray();
+			buyLevel.writeObject(_model.buyLevel);
+			buyLevel.position = 0;
+			MttGameData.put(BUY_LEVEL_KEY,buyLevel,saveBuyLevelResult);
+		}
+		
 //		public function queryLvMap() : void
 //		{
 //			MttGameData.get(LV_MAP_KEY,queryLvMapResult);
@@ -103,6 +113,10 @@ package cn.sftech.www.util
 			MttGameData.get(UNLOCK_LEVEL_KEY,queryUnlockLevelResult);
 		}
 		
+		private function queryBuyLevel() : void
+		{
+			MttGameData.get(BUY_LEVEL_KEY,queryBuyLevelResult);
+		}
 //		private function saveLvMapResult(result:Object) : void
 //		{
 //			if(result.code == 0) { //返回成功
@@ -131,6 +145,14 @@ package cn.sftech.www.util
 //				LogManager.print("保存以解锁关卡成功");
 			} else if(result.code == MttService.EIOERROR) { //网络原因出错
 //				LogManager.print("因网络原因，保存失败");
+			} else { //其他错误
+			}
+		}
+		private function saveBuyLevelResult(result : Object) : void
+		{
+			if(result.code == 0) { //返回成功
+				saveCheck();
+			} else if(result.code == MttService.EIOERROR) { //网络原因出错
 			} else { //其他错误
 			}
 		}
@@ -191,6 +213,22 @@ package cn.sftech.www.util
 			}
 		}
 		
+		private function queryBuyLevelResult(result:Object) : void
+		{
+			if(result.code == 0) { //返回成功
+				//				LogManager.print("加载以解锁关卡成功");
+				_model.buyLevel = uint(result.value.readObject());
+				
+				initCheck();
+			} else if(result.code == MttService.EIOERROR) { //网络原因出错
+				//				LogManager.print("因网络原因，查询失败");
+			} else if(result.code == MttService.ENOENT) { //没有相关的用户存储关卡数据
+				initLvMapData();
+			} else {
+				//				LogManager.print("查询数据发生错误,错误号" + result.code);
+			}
+		}
+		
 		private function initLvMapData() : void
 		{
 			if(isInitializing) return;
@@ -225,6 +263,7 @@ package cn.sftech.www.util
 			switch(saveFlag) {
 				case 1:saveUnlockLevel();break;
 				case 2:submitScore();break;
+				case 3:saveBuyLevel();break;
 //				case 2:saveLvData();break;
 //				case 3:submitScore();break;
 				
@@ -247,6 +286,7 @@ package cn.sftech.www.util
 			switch(initFlag) {
 				case 1:queryUnlockLevel();break;
 				case 2:queryUserSaveData();break;
+				case 3:queryBuyLevel();break;
 //				case 1:queryUserSaveData();break;
 //				case 3:MttScore.query(queryScoreHandle);break;
 				

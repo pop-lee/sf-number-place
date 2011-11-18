@@ -4,6 +4,8 @@ package cn.sftech.www.view
 	import cn.sftech.www.model.ModelLocator;
 	import cn.sftech.www.object.GameConfig;
 	import cn.sftech.www.util.DataManager;
+	import cn.sftech.www.util.FeeMapData;
+	import cn.sftech.www.util.LevelMapData;
 	
 	import flash.display.DisplayObject;
 	import flash.events.Event;
@@ -37,13 +39,22 @@ package cn.sftech.www.view
 		
 		public function buildLevelBtn(type : uint) : void
 		{
+			var unlockLevel : uint;
+			if(type == GameConfig.HARD_TYPE) {
+				unlockLevel = _model.buyLevel;
+				_model.mapDataClass = FeeMapData;
+			} else {
+				unlockLevel = _model.unlockLevel
+				_model.mapDataClass = LevelMapData;
+			}
+			
 			var col : int = 4;
 			var row : int = 4;
 			var horizontalLeading : uint = 8;
 			var verticalLeading : uint = 16;
 			
 //			cleanBuild();
-			for(var i : int = 1;i <= type;i++) {
+			for(var i : int = 1;i <= getLvCount(type);i++) {
 				var lvBtn : LevelListBtn = new LevelListBtn();
 				lvBtn.backgroundImage = LevelBtnBackground;
 				
@@ -53,7 +64,7 @@ package cn.sftech.www.view
 				levelNum.label.text = i.toString();
 				lvBtn.addChild(levelNum);
 				//未解锁的关显示
-				if(lvBtn.level > _model.unlockLevel) {
+				if(lvBtn.level > unlockLevel) {
 					lvBtn.backgroundImage.gotoAndStop(2);
 				//解锁的关显示
 				} else {
@@ -81,8 +92,8 @@ package cn.sftech.www.view
 				}
 				levelListPane.addChild(lvBtn);
 			}
-			
-			this.selectedIndex = (Math.min(_model.unlockLevel,type) - getBase(type))/(col*row);
+			var selIndex : int = Math.min(unlockLevel,getLvCount(type)) - getBase(type) -1;
+			this.selectedIndex = Math.floor((selIndex>0?selIndex:0)/(col*row));
 		}
 		
 		public function cleanBuild() : void
@@ -114,13 +125,26 @@ package cn.sftech.www.view
 		private function getBase(type : uint) : uint
 		{
 			var _base : uint = 0;
-			if(type == GameConfig.EASY_LV) {
-				
+			if(type > GameConfig.EASY_TYPE) {
+				_base += getLvCount(GameConfig.EASY_TYPE);
 			}
-			if(type == GameConfig.NORMAL_LV) {
-				_base = GameConfig.EASY_LV;
+//			if(type > GameConfig.NORMAL_TYPE) {
+//				_base += getLvCount(GameConfig.NORMAL_TYPE);
+//			}
+			if(type == GameConfig.HARD_TYPE) {
+				_base = 0;
 			}
 			return _base;
+		}
+		
+		private function getLvCount(type : uint) : uint
+		{
+			switch(type) {
+				case GameConfig.EASY_TYPE:return GameConfig.EASY_LV;
+				case GameConfig.NORMAL_TYPE:return GameConfig.NORMAL_LV;
+				case GameConfig.HARD_TYPE:return GameConfig.HARD_LV;
+			}
+			return 0;
 		}
 	}
 }

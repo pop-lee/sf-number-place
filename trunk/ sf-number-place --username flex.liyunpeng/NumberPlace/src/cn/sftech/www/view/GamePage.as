@@ -59,6 +59,8 @@ package cn.sftech.www.view
 					levelListPage.toEasyList();
 				} else if(_model.currentLv <= GameConfig.NORMAL_LV + GameConfig.EASY_LV) {
 					levelListPage.toNormalList();
+				} else {
+					levelListPage.toHardList();
 				}
 				gamePanel.cleanGamePane();
 			}

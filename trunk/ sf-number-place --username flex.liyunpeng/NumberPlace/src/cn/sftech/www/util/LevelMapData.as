@@ -1,6 +1,6 @@
 package cn.sftech.www.util
 {
-	public class LevelMapData
+	public class LevelMapData extends MapDataBase
 	{
 		public const GAME_MAP_DATA : Array = 
 			[
@@ -717,6 +717,11 @@ package cn.sftech.www.util
 		
 		public function LevelMapData()
 		{
+		}
+		
+		override public function getMapData():Array
+		{
+			return this.GAME_MAP_DATA;
 		}
 	}
 }

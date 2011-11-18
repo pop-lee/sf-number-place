@@ -72,11 +72,66 @@ package test.aaa
 //			makeNP(45);  //44
 //			makeNP(45);  //45
 			
-			var levelMapData : LevelMapData = new LevelMapData();
-			for(var i : int = 0;i< 6;i++) {
-				trace(i+1 + " 关");
-				getResolveMap(levelMapData.GAME_MAP_DATA[i]);
-			}
+			////////////////////////////////
+			
+//			makeNP(48);  //1
+//			makeNP(48);  //1
+//			makeNP(48);  //1
+//			makeNP(48);  //1
+//			makeNP(48);  //1
+//			makeNP(48);  //1
+//			makeNP(48);  //1
+//			makeNP(48);  //1
+//			makeNP(48);  //1
+//			makeNP(48);  //1
+//			makeNP(48);  //1
+//			makeNP(48);  //1
+//			
+//			makeNP(49);  //1
+//			makeNP(49);  //1
+//			makeNP(49);  //1
+//			makeNP(49);  //1
+//			makeNP(49);  //1
+//			makeNP(49);  //1
+//			makeNP(49);  //1
+//			makeNP(49);  //1
+//			makeNP(49);  //1
+//			makeNP(49);  //1
+//			makeNP(49);  //1
+//			makeNP(49);  //1
+			
+			makeNP(50);  //1
+			makeNP(50);  //1
+			makeNP(50);  //1
+			makeNP(50);  //1
+			makeNP(50);  //1
+			makeNP(50);  //1
+			makeNP(50);  //1
+			makeNP(50);  //1
+			makeNP(50);  //1
+			makeNP(50);  //1
+			makeNP(50);  //1
+			makeNP(50);  //1
+			
+			makeNP(51);  //1
+			makeNP(51);  //1
+			makeNP(51);  //1
+			makeNP(51);  //1
+			makeNP(51);  //1
+			makeNP(51);  //1
+			makeNP(51);  //1
+			makeNP(51);  //1
+			makeNP(51);  //1
+			makeNP(51);  //1
+			makeNP(51);  //1
+			makeNP(51);  //1
+			
+			
+//			var levelMapData : LevelMapData = new LevelMapData();
+//			for(var i : int = 0;i< 12;i++) {
+//				trace(i+1 + " 关");
+//				getResolveMap(levelMapData.GAME_MAP_DATA[i]);
+//			}
 			
 		}
 		
@@ -92,9 +147,9 @@ package test.aaa
 			}
 			display();
 			resolve();
-			trace("解");
-			
-			display();
+//			trace("解");
+//			
+//			display();
 			
 			trace("---------------------");
 		}
@@ -135,7 +190,7 @@ package test.aaa
 			}
 			trace("//" + count);
 			display();
-			if(count == 5) {
+			if(count == 12) {
 				count = 1;
 				trace("//-----------------");
 			} else {

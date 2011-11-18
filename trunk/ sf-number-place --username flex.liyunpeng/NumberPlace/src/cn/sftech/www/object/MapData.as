@@ -4,6 +4,7 @@ package cn.sftech.www.object
 	import cn.sftech.www.util.DataManager;
 	import cn.sftech.www.util.LevelMapData;
 	import cn.sftech.www.util.LogManager;
+	import cn.sftech.www.util.MapDataBase;
 	import cn.sftech.www.util.NPMaker;
 
 	public class MapData
@@ -64,7 +65,7 @@ package cn.sftech.www.object
 //			}
 //			return _model.lvMapArr[lv-1];
 			
-			var levelMapData : LevelMapData = new LevelMapData();
+			var levelMapData : Array = (new _model.mapDataClass()).getMapData();
 //			var arr : Array = levelMapData.GAME_MAP_DATA[lv-1] as Array;
 //			var mapArr : Vector.<Vector.<int>> = new Vector.<Vector.<int>>(9);
 //			for(var i:int = 0;i < arr.length;i++) {
@@ -74,7 +75,7 @@ package cn.sftech.www.object
 //				}
 //			}
 			
-			return levelMapData.GAME_MAP_DATA[lv-1] as Array;
+			return levelMapData[lv-1] as Array;
 		}
 		
 	}
