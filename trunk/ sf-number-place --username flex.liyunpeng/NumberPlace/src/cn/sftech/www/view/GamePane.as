@@ -310,14 +310,25 @@ package cn.sftech.www.view
 		
 		private function successLv() : void
 		{
+			var dataManager : DataManager = new DataManager();
 			if(_model.mapDataClass == LevelMapData) {
 				if(_model.currentLv == _model.unlockLevel) {
 					_model.unlockLevel ++;
-					_model.currentScore = (_model.unlockLevel - GameConfig.UNLOCK_INIT_LV)*10;
-					var dataManager : DataManager = new DataManager();
-					dataManager.saveCheck();
+					_model.currentScore = (_model.unlockLevel + _model.buyLevel - GameConfig.UNLOCK_INIT_LV)*10;
+					dataManager.saveUnlockLevel();
+					dataManager.submitScore();
+//					dataManager.saveCheck();
+				}
+			} else {
+				if(_model.currentLv == _model.buyLevel) {
+					_model.buyLevel ++;
+					_model.currentScore = (_model.unlockLevel + _model.buyLevel - GameConfig.UNLOCK_INIT_LV)*10;
+					dataManager.saveBuyLevel();
+					dataManager.submitScore();
+//					dataManager.saveCheck();
 				}
 			}
+			
 			_model.isSuccess = true;
 			successPage = new SuccessPage();
 			successPage.x = 21;

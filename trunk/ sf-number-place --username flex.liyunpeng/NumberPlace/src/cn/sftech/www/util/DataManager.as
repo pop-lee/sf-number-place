@@ -26,6 +26,10 @@ package cn.sftech.www.util
 		
 		public const BUY_LEVEL_KEY : String = "buyLevelKey";
 		
+		private var manageLock : Boolean = false;
+		
+		private var manageFuncArr : Vector.<Function> = new Vector.<Function>();
+		
 		private var _model : ModelLocator = ModelLocator.getInstance();
 		
 		private var initFlag : uint ;
@@ -46,7 +50,11 @@ package cn.sftech.www.util
 		{
 			LogManager.print("正在加载用户数据...");
 //			initLvMapData();
-			initCheck();
+//			initCheck();
+			queryUnlockLevel();
+			queryUserSaveData();
+			queryBuyLevel();
+			
 //			queryLvMap();
 		}
 		
@@ -63,6 +71,11 @@ package cn.sftech.www.util
 		
 		public function submitScore() : void
 		{
+			if(manageLock) {
+				inList(submitScore);
+				return;
+			}
+			
 			MttScore.submit(_model.currentScore,submitScoreResult);
 		}
 		
@@ -71,6 +84,11 @@ package cn.sftech.www.util
 		 */		
 		public function saveLvData() : void
 		{
+			if(manageLock) {
+				inList(saveLvData);
+				return;
+			}
+			
 			_model.userSaveLv = _model.currentLv;
 			
 			var userLvDataObejct : ByteArray = new ByteArray();
@@ -84,6 +102,11 @@ package cn.sftech.www.util
 		
 		public function saveUnlockLevel() : void
 		{
+			if(manageLock) {
+				inList(saveUnlockLevel);
+				return;
+			}
+			
 			var unlockLevel : ByteArray = new ByteArray();
 			unlockLevel.writeObject(_model.unlockLevel);
 			unlockLevel.position = 0;
@@ -92,6 +115,11 @@ package cn.sftech.www.util
 		
 		public function saveBuyLevel() : void
 		{
+			if(manageLock) {
+				inList(saveBuyLevel);
+				return;
+			}
+			
 			var buyLevel : ByteArray = new ByteArray();
 			buyLevel.writeObject(_model.buyLevel);
 			buyLevel.position = 0;
@@ -130,6 +158,7 @@ package cn.sftech.www.util
 			if(result.code == 0) { //返回成功
 //				LogManager.print("保存当前关成功");
 //				saveCheck();
+				outList();
 				SFApplication.application.dispatchEvent(new SaveGameEvent(SaveGameEvent.SAVED));
 				return;
 			} else if(result.code == MttService.EIOERROR) { //网络原因出错
@@ -141,7 +170,8 @@ package cn.sftech.www.util
 		private function saveUnlockLevelResult(result: Object) : void
 		{
 			if(result.code == 0) { //返回成功
-				saveCheck();
+//				saveCheck();
+				outList();
 //				LogManager.print("保存以解锁关卡成功");
 			} else if(result.code == MttService.EIOERROR) { //网络原因出错
 //				LogManager.print("因网络原因，保存失败");
@@ -151,14 +181,18 @@ package cn.sftech.www.util
 		private function saveBuyLevelResult(result : Object) : void
 		{
 			if(result.code == 0) { //返回成功
-				saveCheck();
+//				saveCheck();
+				outList();
 			} else if(result.code == MttService.EIOERROR) { //网络原因出错
 			} else { //其他错误
 			}
 		}
 		private function submitScoreResult(result:Object) : void
 		{
-			saveCheck();
+			if(result.code == 0) {
+				outList();
+			}
+//			saveCheck();
 		}
 //		private function queryLvMapResult(result:Object) : void
 //		{
@@ -189,10 +223,13 @@ package cn.sftech.www.util
 				_model.userResolveArr = userLvData.userLvData;
 				
 				initCheck();
+				outList();
 			} else if(result.code == MttService.EIOERROR) { //网络原因出错
 //				LogManager.print("因网络原因，提交失败");
 			} else if(result.code == MttService.ENOENT) { //没有相关的用户存储关卡数据
-				initLvMapData();
+				saveLvData();
+				outList();
+//				initLvMapData();
 			} else {
 //				LogManager.print("查询数据发生错误,错误号" + result.code);
 			}
@@ -204,10 +241,13 @@ package cn.sftech.www.util
 				_model.unlockLevel = uint(result.value.readObject());
 				
 				initCheck();
+				outList();
 			} else if(result.code == MttService.EIOERROR) { //网络原因出错
 //				LogManager.print("因网络原因，查询失败");
 			} else if(result.code == MttService.ENOENT) { //没有相关的用户存储关卡数据
-				initLvMapData();
+				saveUnlockLevel();
+				outList();
+//				initLvMapData();
 			} else {
 //				LogManager.print("查询数据发生错误,错误号" + result.code);
 			}
@@ -220,10 +260,13 @@ package cn.sftech.www.util
 				_model.buyLevel = uint(result.value.readObject());
 				
 				initCheck();
+				outList();
 			} else if(result.code == MttService.EIOERROR) { //网络原因出错
 				//				LogManager.print("因网络原因，查询失败");
 			} else if(result.code == MttService.ENOENT) { //没有相关的用户存储关卡数据
-				initLvMapData();
+				saveBuyLevel();
+				outList();
+//				initLvMapData();
 			} else {
 				//				LogManager.print("查询数据发生错误,错误号" + result.code);
 			}
@@ -236,9 +279,12 @@ package cn.sftech.www.util
 //			MapData.initLvData();
 //			saveLvMap();
 			isInitializing = true;
-			saveCheck();
 //			saveLvData();
 //			saveUnlockLevel();
+//			saveBuyLevel();
+			
+			
+//			saveCheck();
 		}
 		
 //		private function queryScoreHandle(result : Object) : void
@@ -301,6 +347,20 @@ package cn.sftech.www.util
 //				LogManager.hideLog();
 //			}
 //			LogManager.print(initFlag + "");
+		}
+		
+		private function inList(func : Function) : void
+		{
+			manageFuncArr.push(func);
+		}
+		
+		private function outList() : void
+		{
+			manageFuncArr.splice(0,1);
+			manageLock = false;
+			if(manageFuncArr.length>0) {
+				manageFuncArr[0].call();
+			}
 		}
 	}
 }

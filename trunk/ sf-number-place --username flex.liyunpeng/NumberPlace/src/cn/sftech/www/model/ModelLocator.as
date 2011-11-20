@@ -32,9 +32,9 @@ package cn.sftech.www.model
 		public var userResolveArr : Array;
 		
 		//以解锁的关数
-		public var unlockLevel : uint = 1;
+		public var unlockLevel : uint = NaN;
 		//购买关卡
-		public var buyLevel : uint = 1;
+		public var buyLevel : uint = NaN;
 		
 		//用户是否以开始玩本关，用来判断是否需要存储当前关
 		public var isStartPlay : Boolean = false;

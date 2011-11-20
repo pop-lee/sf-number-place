@@ -1,5 +1,7 @@
 package cn.sftech.www.object
 {
+	import com.qq.openapi.MttGameData;
+	import cn.sftech.www.business.IDataDelegate;
 
 	/**
 	 * 用来存储当前用户 所保存的进度
@@ -10,6 +12,7 @@ package cn.sftech.www.object
 	 */	
 	public class UserLvData
 	{
+		
 		/**
 		 * 用户保存的当前关
 		 */		
@@ -23,5 +26,6 @@ package cn.sftech.www.object
 		public function UserLvData()
 		{
 		}
+		
 	}
 }
