@@ -137,7 +137,8 @@ package cn.sftech.www.view
 				ModelLocator.getInstance().popIntrPage();
 				_model.unlockLevel = GameConfig.UNLOCK_INIT_LV;
 				var dataManager : DataManager = new DataManager();
-				dataManager.saveCheck();
+//				dataManager.saveCheck();
+				dataManager.saveUnlockLevel();
 //				_model.showHelpTip = false;
 			}
 		}
