@@ -1,5 +1,8 @@
 package cn.sftech.www.view
 {
+	import cn.sftech.www.event.ChangeGamePageEvent;
+	import cn.sftech.www.event.ChangePageEvent;
+	import cn.sftech.www.event.SaveGameEvent;
 	import cn.sftech.www.model.ModelLocator;
 	import cn.sftech.www.util.DataManager;
 	
@@ -11,6 +14,10 @@ package cn.sftech.www.view
 	public class BuyHardLvPage extends SFViewStack
 	{
 		private var coinsBar : CoinsBar;
+		
+		private var buyBtn : BuyHardLvBtn;
+		
+		private var rBuyBtn : MovieClip;
 		
 		private var _model : ModelLocator = ModelLocator.getInstance();
 		
@@ -45,6 +52,7 @@ package cn.sftech.www.view
 			coinsBar = new CoinsBar();
 			coinsBar.x = 58;
 			coinsBar.y = 31;
+			coinsBar.label.text = _model.currentCoins.toString();
 			buyHardLvPane.addChild(coinsBar);
 			
 			var backBtn1 : SFMovieClip = new SFMovieClip();
@@ -54,8 +62,7 @@ package cn.sftech.www.view
 			backBtn1.addEventListener(MouseEvent.CLICK,backLevelListPageHandle);
 			buyHardLvError.addChild(backBtn1);
 			
-			var buyBtn : SFButton = new SFButton();
-			buyBtn.backgroundImage = BuyHardLvBtn;
+			buyBtn = new BuyHardLvBtn();
 			buyBtn.x = 33;
 			buyBtn.y = 280;
 			buyBtn.addEventListener(MouseEvent.CLICK,buyHardLvHandle);
@@ -80,20 +87,22 @@ package cn.sftech.www.view
 			rechargeBtn.addEventListener(MouseEvent.CLICK,rechargeHandle);
 			buyHardLvError.addChild(rechargeBtn);
 			
-			var rBuyBtn : MovieClip = new RBuyBtn();
+			rBuyBtn = new RBuyBtn();
 			rBuyBtn.x = 130;
 			rBuyBtn.y = 280;
-			rBuyBtn.addEventListener(MouseEvent.CLICK,buyHardLvHandle);
+			rBuyBtn.addEventListener(MouseEvent.CLICK,rBuyHandle);
 			buyHardLvError.addChild(rBuyBtn);
 			
 		}
 		
 		private function buyHardLvHandle(event : MouseEvent) : void
 		{
-//			var dataManager : DataManager = new DataManager();
-//			dataManager.buyHardLevel();
+			buyBtn.visible = false;
+//			_model.currentCoins = 0;
 			if(_model.currentCoins>=_model.price) {
-				this.selectedIndex = 1;
+				SFApplication.application.addEventListener(SaveGameEvent.SAVE_GAME_EVENT,buyHandle);
+				var dataManager : DataManager = new DataManager();
+				dataManager.buyHardLevel();
 			} else {
 				this.selectedIndex = 2;
 			}
@@ -102,23 +111,46 @@ package cn.sftech.www.view
 		
 		private function toGamePageHandle(event : MouseEvent) : void
 		{
-			
+			this.dispatchEvent(new ChangePageEvent());
 		}
 		
+		//跳转到充值页面
 		private function rechargeHandle(event : MouseEvent) : void
 		{
 			
 		}
 		
+		private function rBuyHandle(event : MouseEvent) : void
+		{
+			rBuyBtn.visible = false;
+			SFApplication.application.addEventListener(SaveGameEvent.SAVE_GAME_EVENT,buyHandle);
+			
+			var dataManager : DataManager = new DataManager();
+			dataManager.buyHardLevel();
+		}
+		
 		private function backLevelListPageHandle(event : MouseEvent) : void
 		{
-			
+			this.dispatchEvent(new ChangePageEvent());
 		}
 		
 		private function backBuyMainHandle(event : MouseEvent) : void
 		{
 			coinsBar.label.text = _model.currentCoins.toString();
+			buyBtn.visible = true;
+			this.selectedIndex = 0;
 		}
 
+		private function buyHandle(event : SaveGameEvent) : void
+		{
+			SFApplication.application.removeEventListener(SaveGameEvent.SAVE_GAME_EVENT,buyHandle);
+			
+			if(event.saveType == SaveGameEvent.SAVED) {
+				this.selectedIndex = 1;
+			} else {
+				this.selectedIndex = 2;
+				rBuyBtn.visible = true;
+			}
+		}
 	}
 }

@@ -97,6 +97,7 @@ package cn.sftech.www.view
 		
 		private function saveHandle(event : SaveGameEvent) : void
 		{
+			SFApplication.application.removeEventListener(SaveGameEvent.SAVE_GAME_EVENT,saveHandle);
 			if(event.saveType == SaveGameEvent.SAVED) {
 				this.backgroundImage.gotoAndStop(3);
 				okBtn.visible = true;

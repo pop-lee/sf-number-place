@@ -228,6 +228,7 @@ package cn.sftech.www.util
 		{
 			if(result.code == 0) { //返回成功
 				outList();
+				SFApplication.application.dispatchEvent(new SaveGameEvent(SaveGameEvent.SAVED));
 			} else if(result.code == MttService.EIOERROR) { //网络原因出错
 			} else { //其他错误
 			}
@@ -253,8 +254,11 @@ package cn.sftech.www.util
 		{
 			if(result.code == 0) {
 				outList();
+				_model.buyLevel = 1;
+				saveBuyLevel();
 			} else if(result.code == MttService.ENOTENOUGH) {
 				LogManager.print("用户易贝余额不足");
+				SFApplication.application.dispatchEvent(new SaveGameEvent(SaveGameEvent.SAVE_ERROR));
 			}
 		}
 		
