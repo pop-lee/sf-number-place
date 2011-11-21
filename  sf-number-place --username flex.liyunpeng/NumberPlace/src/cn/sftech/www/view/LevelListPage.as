@@ -127,7 +127,14 @@ package cn.sftech.www.view
 		public function toHardList(event : MouseEvent = null) : void
 		{
 			showHelp();
-			hardLevelPane.buildLevelBtn(GameConfig.HARD_TYPE);
+			if(_model.buyLevel == 0) {
+				var buyHardLvPage : BuyHardLvPage = new BuyHardLvPage();
+				buyHardLvPage.percentWidth = 100;
+				buyHardLvPage.percentHeight = 100;
+				hardLevelPane.addChild(buyHardLvPage);
+			}
+			
+//			hardLevelPane.buildLevelBtn(GameConfig.HARD_TYPE);
 			this.selectedIndex = 3;
 		}
 		
