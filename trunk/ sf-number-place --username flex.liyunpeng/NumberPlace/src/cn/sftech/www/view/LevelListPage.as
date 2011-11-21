@@ -6,6 +6,7 @@ package cn.sftech.www.view
 	import cn.sftech.www.object.GameConfig;
 	import cn.sftech.www.util.DataManager;
 	
+	import flash.display.DisplayObject;
 	import flash.events.MouseEvent;
 
 	public class LevelListPage extends SFViewStack
@@ -131,6 +132,7 @@ package cn.sftech.www.view
 				var buyHardLvPage : BuyHardLvPage = new BuyHardLvPage();
 				buyHardLvPage.percentWidth = 100;
 				buyHardLvPage.percentHeight = 100;
+				buyHardLvPage.addEventListener(ChangePageEvent.CHANGE_PAGE_EVENT,hardLvHandle);
 				hardLevelPane.addChild(buyHardLvPage);
 			}
 			
@@ -170,5 +172,13 @@ package cn.sftech.www.view
 			SFApplication.application.dispatchEvent(changePageEvent);
 		}
 		
+		private function hardLvHandle(event : ChangePageEvent) : void
+		{
+			hardLevelPane.removeChild(event.currentTarget as DisplayObject);
+			
+			if(_model.buyLevel != 0) {
+				hardLevelPane.buildLevelBtn(GameConfig.HARD_TYPE);
+			}
+		}
 	}
 }
