@@ -8,6 +8,7 @@ package cn.sftech.www.util
 	import cn.sftech.www.view.SFApplication;
 	
 	import com.qq.openapi.MttGameData;
+	import com.qq.openapi.MttMall;
 	import com.qq.openapi.MttScore;
 	import com.qq.openapi.MttService;
 	
@@ -17,9 +18,6 @@ package cn.sftech.www.util
 
 	public class DataManager
 	{
-		//关卡地图数据Key
-//		public const LV_MAP_KEY : String = "lvMapKey";
-		
 		public const USER_LV_DATA_KEY : String = "userLvDataKey";
 		
 		public const UNLOCK_LEVEL_KEY : String = "unlockLevel";
@@ -28,19 +26,9 @@ package cn.sftech.www.util
 		
 		private var manageLock : Boolean = false;
 		
-		private var manageFuncArr : Vector.<Function> = new Vector.<Function>();
+		private static var manageFuncArr : Vector.<Function> = new Vector.<Function>();
 		
 		private var _model : ModelLocator = ModelLocator.getInstance();
-		
-		private var initFlag : uint ;
-		private var saveFlag : uint;
-		
-		private var isInitializing : Boolean = false;
-		
-		
-		
-		//关卡地图是否初始化
-		private var lvMapInited : Boolean = false;
 		
 		public function DataManager()
 		{
@@ -49,34 +37,24 @@ package cn.sftech.www.util
 		public function initData() : void
 		{
 			LogManager.print("正在加载用户数据...");
-//			initLvMapData();
-//			initCheck();
 			queryUnlockLevel();
 			queryUserSaveData();
-			queryBuyLevel();
-			
-//			queryLvMap();
+			queryUserPackage();
+			queryStore();
+			queryCoins();
+			initFinished();
 		}
-		
-//		/**
-//		 * 存储用户的关卡地图数据
-//		 */		
-//		public function saveLvMap() : void
-//		{
-//			var lvMap : ByteArray = new ByteArray();
-//			lvMap.writeObject(_model.lvMapArr);
-//			lvMap.position = 0;
-//			MttGameData.put(LV_MAP_KEY,lvMap,saveLvMapResult);
-//		}
 		
 		public function submitScore() : void
 		{
 			if(manageLock) {
 				inList(submitScore);
-				return;
+			} else {
+				manageLock = true;
+				
+				MttScore.submit(_model.currentScore,submitScoreResult);
 			}
 			
-			MttScore.submit(_model.currentScore,submitScoreResult);
 		}
 		
 		/**
@@ -86,78 +64,147 @@ package cn.sftech.www.util
 		{
 			if(manageLock) {
 				inList(saveLvData);
-				return;
+			} else {
+				manageLock = true;
+				
+				_model.userSaveLv = _model.currentLv;
+				
+				var userLvDataObejct : ByteArray = new ByteArray();
+				var userLvData : UserLvData = new UserLvData();
+				userLvData.saveLv = _model.currentLv;
+				userLvData.userLvData = _model.userResolveArr;
+				userLvDataObejct.writeObject(userLvData);
+				userLvDataObejct.position = 0;
+				MttGameData.put(USER_LV_DATA_KEY,userLvDataObejct,saveLvDataResult);
 			}
-			
-			_model.userSaveLv = _model.currentLv;
-			
-			var userLvDataObejct : ByteArray = new ByteArray();
-			var userLvData : UserLvData = new UserLvData();
-			userLvData.saveLv = _model.currentLv;
-			userLvData.userLvData = _model.userResolveArr;
-			userLvDataObejct.writeObject(userLvData);
-			userLvDataObejct.position = 0;
-			MttGameData.put(USER_LV_DATA_KEY,userLvDataObejct,saveLvDataResult);
 		}
 		
 		public function saveUnlockLevel() : void
 		{
 			if(manageLock) {
 				inList(saveUnlockLevel);
-				return;
+			} else {
+				manageLock = true;
+				
+				var unlockLevel : ByteArray = new ByteArray();
+				unlockLevel.writeObject(_model.unlockLevel);
+				unlockLevel.position = 0;
+				MttGameData.put(UNLOCK_LEVEL_KEY,unlockLevel,saveUnlockLevelResult);
 			}
-			
-			var unlockLevel : ByteArray = new ByteArray();
-			unlockLevel.writeObject(_model.unlockLevel);
-			unlockLevel.position = 0;
-			MttGameData.put(UNLOCK_LEVEL_KEY,unlockLevel,saveUnlockLevelResult);
 		}
 		
 		public function saveBuyLevel() : void
 		{
 			if(manageLock) {
 				inList(saveBuyLevel);
-				return;
+			} else {
+				manageLock = true;
+				
+				var buyLevel : ByteArray = new ByteArray();
+				buyLevel.writeObject(_model.buyLevel);
+				buyLevel.position = 0;
+				MttGameData.put(BUY_LEVEL_KEY,buyLevel,saveBuyLevelResult);
 			}
-			
-			var buyLevel : ByteArray = new ByteArray();
-			buyLevel.writeObject(_model.buyLevel);
-			buyLevel.position = 0;
-			MttGameData.put(BUY_LEVEL_KEY,buyLevel,saveBuyLevelResult);
 		}
 		
-//		public function queryLvMap() : void
-//		{
-//			MttGameData.get(LV_MAP_KEY,queryLvMapResult);
-//		}
+		public function buyHardLevel() : void
+		{
+			if(manageLock) {
+				inList(buyHardLevel);
+			} else {
+				MttMall.purchase(1321841767, 1, buyHardLevelResult);
+			}
+		}
+		
+		//---------------------------------------------------------------------------------------------
 		
 		private function queryUserSaveData() : void
 		{
-			MttGameData.get(USER_LV_DATA_KEY,queryUserLvDataResult);
+			if(manageLock) {
+				inList(queryUserSaveData);
+			} else {
+				manageLock = true;
+				
+				MttGameData.get(USER_LV_DATA_KEY,queryUserLvDataResult);
+			}
 		}
 		
 		private function queryUnlockLevel() : void
 		{
-			MttGameData.get(UNLOCK_LEVEL_KEY,queryUnlockLevelResult);
+			if(manageLock) {
+				inList(queryUnlockLevel);
+			} else {
+				manageLock = true;
+				
+				MttGameData.get(UNLOCK_LEVEL_KEY,queryUnlockLevelResult);
+			}
+			
 		}
 		
 		private function queryBuyLevel() : void
 		{
-			MttGameData.get(BUY_LEVEL_KEY,queryBuyLevelResult);
+			if(manageLock) {
+				inList(queryBuyLevel);
+			} else {
+				manageLock = true;
+				
+				MttGameData.get(BUY_LEVEL_KEY,queryBuyLevelResult);
+			}
 		}
-//		private function saveLvMapResult(result:Object) : void
-//		{
-//			if(result.code == 0) { //返回成功
-//				
-//			} else if(result.code == MttService.EIOERROR) { //网络原因出错
-//				LogManager.print("因网络原因，提交失败");
-//			}
-//		}
+		
+		private function queryUserPackage() : void
+		{
+			if(manageLock) {
+				inList(queryUserPackage);
+			} else {
+				manageLock = true;
+				
+				MttMall.list(queryUserPackageResult);
+			}
+		}
+		
+		private function queryStore() : void
+		{
+			if(manageLock) {
+				inList(queryStore);
+			} else {
+				manageLock = true;
+				
+				MttMall.store(queryStoreResult);
+			}
+		}
+		
+		private function queryCoins() : void
+		{
+			if(manageLock) {
+				inList(queryCoins);
+			} else {
+				manageLock = true;
+				
+				MttMall.coins(queryCoinsResult);
+			}
+		}
+		
+		private function initFinished() : void
+		{
+			if(manageLock) {
+				inList(initFinished);
+			} else {
+				LogManager.print("初始化成功");
+				
+				manageLock = true;
+				
+				SFApplication.application.dispatchEvent(new SFInitializeDataEvent());
+//				LogManager.hideLog();
+			}
+		}
+		
+		//---------------------------------------------------------------------------------------------
+		
 		private function saveLvDataResult(result:Object) : void
 		{
 			if(result.code == 0) { //返回成功
 //				LogManager.print("保存当前关成功");
-//				saveCheck();
 				outList();
 				SFApplication.application.dispatchEvent(new SaveGameEvent(SaveGameEvent.SAVED));
 				return;
@@ -170,7 +217,6 @@ package cn.sftech.www.util
 		private function saveUnlockLevelResult(result: Object) : void
 		{
 			if(result.code == 0) { //返回成功
-//				saveCheck();
 				outList();
 //				LogManager.print("保存以解锁关卡成功");
 			} else if(result.code == MttService.EIOERROR) { //网络原因出错
@@ -181,7 +227,6 @@ package cn.sftech.www.util
 		private function saveBuyLevelResult(result : Object) : void
 		{
 			if(result.code == 0) { //返回成功
-//				saveCheck();
 				outList();
 			} else if(result.code == MttService.EIOERROR) { //网络原因出错
 			} else { //其他错误
@@ -192,44 +237,46 @@ package cn.sftech.www.util
 			if(result.code == 0) {
 				outList();
 			}
-//			saveCheck();
 		}
-//		private function queryLvMapResult(result:Object) : void
-//		{
-//			if(result.code == 0) { //返回成功
-//				LogManager.print("加载关卡地图成功");
-//				_model.lvMapArr = Vector.<Object>(result.value.readObject());
-//				lvMapInited = true;
-//				
-//				initCheck();
-//			} else if(result.code == MttService.EIOERROR) { //网络原因出错
-//				LogManager.print("因网络原因，查询失败");
-//			} else if(result.code == MttService.ENOENT) { //没有相关的用户存储关卡数据
-//				initLvMapData();
-//			} else {
-//				LogManager.print("查询数据发生错误,错误号" + result.code);
-//			}
-//		}
+		
+		private function queryCoinsResult(result : Object) : void
+		{
+			if(result.code == 0) {
+				outList();
+				_model.currentCoins = result.balance;
+			} else {
+				outList();
+			}
+		}
+		
+		private function buyHardLevelResult(result : Object) : void
+		{
+			if(result.code == 0) {
+				outList();
+			} else if(result.code == MttService.ENOTENOUGH) {
+				LogManager.print("用户易贝余额不足");
+			}
+		}
+		
+		//---------------------------------------------------------------------------------------------
+		
 		private function queryUserLvDataResult(result : Object) : void
 		{
 			if(result.code == 0) { //返回成功
-//				LogManager.print("加载用户数据成功");
-//				var byteArray : ByteArray = result.value;
-//				byteArray.position = 0
-//				trace(byteArray.position);
+				LogManager.print("加载保存关卡成功");
+				
 				result.value.position = 0;
 				var userLvData : Object = result.value.readObject();
 				_model.userSaveLv = userLvData.saveLv;
 				_model.userResolveArr = userLvData.userLvData;
 				
-				initCheck();
 				outList();
 			} else if(result.code == MttService.EIOERROR) { //网络原因出错
 //				LogManager.print("因网络原因，提交失败");
 			} else if(result.code == MttService.ENOENT) { //没有相关的用户存储关卡数据
+				LogManager.print("正在为您初始化用户关卡数据");
 				saveLvData();
 				outList();
-//				initLvMapData();
 			} else {
 //				LogManager.print("查询数据发生错误,错误号" + result.code);
 			}
@@ -237,17 +284,16 @@ package cn.sftech.www.util
 		private function queryUnlockLevelResult(result:Object) : void
 		{
 			if(result.code == 0) { //返回成功
-//				LogManager.print("加载以解锁关卡成功");
+				LogManager.print("加载以解锁关卡成功");
 				_model.unlockLevel = uint(result.value.readObject());
 				
-				initCheck();
 				outList();
 			} else if(result.code == MttService.EIOERROR) { //网络原因出错
 //				LogManager.print("因网络原因，查询失败");
 			} else if(result.code == MttService.ENOENT) { //没有相关的用户存储关卡数据
+				LogManager.print("正在为您初始化以解锁关卡数据");
 				saveUnlockLevel();
 				outList();
-//				initLvMapData();
 			} else {
 //				LogManager.print("查询数据发生错误,错误号" + result.code);
 			}
@@ -256,97 +302,45 @@ package cn.sftech.www.util
 		private function queryBuyLevelResult(result:Object) : void
 		{
 			if(result.code == 0) { //返回成功
-				//				LogManager.print("加载以解锁关卡成功");
+				LogManager.print("加载以解锁关卡成功");
 				_model.buyLevel = uint(result.value.readObject());
 				
-				initCheck();
 				outList();
 			} else if(result.code == MttService.EIOERROR) { //网络原因出错
-				//				LogManager.print("因网络原因，查询失败");
+//				LogManager.print("因网络原因，查询失败");
 			} else if(result.code == MttService.ENOENT) { //没有相关的用户存储关卡数据
+				LogManager.print("正在为您初始化以购买关卡数据");
+				_model.buyLevel = 1;
 				saveBuyLevel();
 				outList();
-//				initLvMapData();
 			} else {
-				//				LogManager.print("查询数据发生错误,错误号" + result.code);
+//				LogManager.print("查询数据发生错误,错误号" + result.code);
 			}
 		}
 		
-		private function initLvMapData() : void
+		private function queryUserPackageResult(result : Object) : void
 		{
-			if(isInitializing) return;
-			LogManager.print("正在为您的第一次游戏初始化数据...");
-//			MapData.initLvData();
-//			saveLvMap();
-			isInitializing = true;
-//			saveLvData();
-//			saveUnlockLevel();
-//			saveBuyLevel();
-			
-			
-//			saveCheck();
-		}
-		
-//		private function queryScoreHandle(result : Object) : void
-//		{
-//			if(result.code == 0) {
-////				LogManager.print("加载积分榜成功");
-//				var items:Array = result.board as Array;
-//				for (var i:int = 0; i < items.length; i++)
-//				{
-////				sInfo += "\n好友[" + (i + 1) + "]:" + items[i].nickName + " " + items[i].score + " " + items[i].playTime;
-//					var _score: int = items[i].score;
-////					_model.topScoreArr[i] = _score;
-//				}
-//				
-//				initCheck();
-//			}
-//		}
-		
-		public function saveCheck() : void
-		{
-			saveFlag++;
-			switch(saveFlag) {
-				case 1:saveUnlockLevel();break;
-				case 2:submitScore();break;
-				case 3:saveBuyLevel();break;
-//				case 2:saveLvData();break;
-//				case 3:submitScore();break;
+			if(result.code == 0) {
+				LogManager.print("加载以用户购买道具列表成功");
+				outList();
 				
-				default:{
-					saveFlag = 0;
-					if(isInitializing) {
-						saveLvData();
-						isInitializing = false;
-						SFApplication.application.dispatchEvent(new SFInitializeDataEvent());
-						LogManager.hideLog();
-					}
+				if(result.items[0].total > 0) {
+					queryBuyLevel();
 				}
+			} else if(result.code == MttService.ENOENT) {
+				outList();
 			}
 		}
 		
-		private function initCheck() : void
+		private function queryStoreResult(result : Object) : void
 		{
-//			isInitializing = true;
-			initFlag++;
-			switch(initFlag) {
-				case 1:queryUnlockLevel();break;
-				case 2:queryUserSaveData();break;
-				case 3:queryBuyLevel();break;
-//				case 1:queryUserSaveData();break;
-//				case 3:MttScore.query(queryScoreHandle);break;
+			if(result.code == 0) {
+				LogManager.print("加载商城成功");
+				outList();
 				
-				default:{
-					SFApplication.application.dispatchEvent(new SFInitializeDataEvent());
-					LogManager.hideLog();
-					initFlag = 0;
-				}
+				var storeList : Array = result.items as Array;
+				_model.price = result.items[0].price;
 			}
-//			if(initFlag == initDataCount) {
-//				SFApplication.application.dispatchEvent(new SFInitializeDataEvent());
-//				LogManager.hideLog();
-//			}
-//			LogManager.print(initFlag + "");
 		}
 		
 		private function inList(func : Function) : void
@@ -356,11 +350,11 @@ package cn.sftech.www.util
 		
 		private function outList() : void
 		{
-			manageFuncArr.splice(0,1);
 			manageLock = false;
 			if(manageFuncArr.length>0) {
 				manageFuncArr[0].call();
 			}
+			manageFuncArr.splice(0,1);
 		}
 	}
 }
