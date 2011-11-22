@@ -6,6 +6,7 @@ package cn.sftech.www.object
 	import cn.sftech.www.util.LogManager;
 	import cn.sftech.www.util.MapDataBase;
 	import cn.sftech.www.util.NPMaker;
+	import cn.sftech.www.util.PayMapData;
 
 	public class MapData
 	{
@@ -64,6 +65,11 @@ package cn.sftech.www.object
 //				(new DataManager()).saveLvMap();
 //			}
 //			return _model.lvMapArr[lv-1];
+			if(_model.isHardType) {
+				_model.mapDataClass = PayMapData;
+			} else {
+				_model.mapDataClass = LevelMapData;
+			}
 			
 			var levelMapData : Array = (new _model.mapDataClass()).getMapData();
 //			var arr : Array = levelMapData.GAME_MAP_DATA[lv-1] as Array;

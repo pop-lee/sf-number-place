@@ -115,8 +115,6 @@ package cn.sftech.www.view
 			if(_model.isStartPlay) {
 				if(saveTip == null) {
 					saveTip = new SaveTip();
-					saveTip.x = 21;
-					saveTip.y = 50;
 					saveTip.addEventListener(SaveGameEvent.SAVE_GAME_EVENT,saveFinishHandle);
 					SFApplication.application.addChild(saveTip);
 				}

@@ -2,6 +2,7 @@ package test.aaa
 {
 	import cn.sftech.www.util.LevelMapData;
 	import cn.sftech.www.util.LogManager;
+	import cn.sftech.www.util.PayMapData;
 	
 	import flash.display.Sprite;
 
@@ -100,38 +101,38 @@ package test.aaa
 //			makeNP(49);  //1
 //			makeNP(49);  //1
 			
-			makeNP(50);  //1
-			makeNP(50);  //1
-			makeNP(50);  //1
-			makeNP(50);  //1
-			makeNP(50);  //1
-			makeNP(50);  //1
-			makeNP(50);  //1
-			makeNP(50);  //1
-			makeNP(50);  //1
-			makeNP(50);  //1
-			makeNP(50);  //1
-			makeNP(50);  //1
+//			makeNP(50);  //1
+//			makeNP(50);  //1
+//			makeNP(50);  //1
+//			makeNP(50);  //1
+//			makeNP(50);  //1
+//			makeNP(50);  //1
+//			makeNP(50);  //1
+//			makeNP(50);  //1
+//			makeNP(50);  //1
+//			makeNP(50);  //1
+//			makeNP(50);  //1
+//			makeNP(50);  //1
+//			
+//			makeNP(51);  //1
+//			makeNP(51);  //1
+//			makeNP(51);  //1
+//			makeNP(51);  //1
+//			makeNP(51);  //1
+//			makeNP(51);  //1
+//			makeNP(51);  //1
+//			makeNP(51);  //1
+//			makeNP(51);  //1
+//			makeNP(51);  //1
+//			makeNP(51);  //1
+//			makeNP(51);  //1
 			
-			makeNP(51);  //1
-			makeNP(51);  //1
-			makeNP(51);  //1
-			makeNP(51);  //1
-			makeNP(51);  //1
-			makeNP(51);  //1
-			makeNP(51);  //1
-			makeNP(51);  //1
-			makeNP(51);  //1
-			makeNP(51);  //1
-			makeNP(51);  //1
-			makeNP(51);  //1
 			
-			
-//			var levelMapData : LevelMapData = new LevelMapData();
-//			for(var i : int = 0;i< 12;i++) {
-//				trace(i+1 + " 关");
-//				getResolveMap(levelMapData.GAME_MAP_DATA[i]);
-//			}
+			var levelMapData : LevelMapData = new LevelMapData();
+			for(var i : int = 8;i< 9;i++) {
+				trace(i+1 + " 关");
+				getResolveMap(levelMapData.getMapData()[i]);
+			}
 			
 		}
 		
@@ -147,9 +148,9 @@ package test.aaa
 			}
 			display();
 			resolve();
-//			trace("解");
-//			
-//			display();
+			trace("解");
+			
+			display();
 			
 			trace("---------------------");
 		}

@@ -32,22 +32,22 @@ package cn.sftech.www.view
 			
 			saveLvBtn = new SFMovieClip();
 			saveLvBtn.backgroundImage = SaveLvBtnBackground;
-			saveLvBtn.x = 70;
-			saveLvBtn.y = 55;
+			saveLvBtn.x = 91;
+			saveLvBtn.y = 115;
 			saveLvBtn.addEventListener(MouseEvent.CLICK,saveLvDataHandle);
 			addChild(saveLvBtn);
 			
 			notSaveLvBtn = new SFMovieClip();
 			notSaveLvBtn.backgroundImage = NotSaveLvBtnBackground;
-			notSaveLvBtn.x = 60;
-			notSaveLvBtn.y = 98;
+			notSaveLvBtn.x = 81;
+			notSaveLvBtn.y = 158;
 			notSaveLvBtn.addEventListener(MouseEvent.CLICK,notSaveLvDataHandle);
 			addChild(notSaveLvBtn);
 			
 			cancelSaveLvBtn = new SFMovieClip();
 			cancelSaveLvBtn.backgroundImage = CancelSaveLvBtnBackground;
-			cancelSaveLvBtn.x = 73;
-			cancelSaveLvBtn.y = 148;
+			cancelSaveLvBtn.x = 94;
+			cancelSaveLvBtn.y = 208;
 			cancelSaveLvBtn.addEventListener(MouseEvent.CLICK,cancelHandle);
 			addChild(cancelSaveLvBtn);
 			

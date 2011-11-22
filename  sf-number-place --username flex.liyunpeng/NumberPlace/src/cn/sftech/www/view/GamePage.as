@@ -55,12 +55,14 @@ package cn.sftech.www.view
 			if(event.data == ChangeGamePageEvent.TO_GAMEPANEL_PAGE) {
 				gamePanel.startGame();
 			} else if(event.data == ChangeGamePageEvent.TO_LVLIST_PAGE) {
-				if(_model.currentLv <= GameConfig.EASY_LV) {
-					levelListPage.toEasyList();
-				} else if(_model.currentLv <= GameConfig.NORMAL_LV + GameConfig.EASY_LV) {
-					levelListPage.toNormalList();
-				} else {
+				if(_model.isHardType) {
 					levelListPage.toHardList();
+				} else {
+					if(_model.currentLv <= GameConfig.EASY_LV) {
+						levelListPage.toEasyList();
+					} else if(_model.currentLv <= GameConfig.NORMAL_LV + GameConfig.EASY_LV) {
+						levelListPage.toNormalList();
+					}
 				}
 				gamePanel.cleanGamePane();
 			}
