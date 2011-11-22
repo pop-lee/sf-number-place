@@ -331,8 +331,6 @@ package cn.sftech.www.view
 			
 			_model.isSuccess = true;
 			successPage = new SuccessPage();
-			successPage.x = 21;
-			successPage.y = 50;
 			successPage.addEventListener(SuccessEvent.SUCCESS_EVENT,successHandle);
 			SFApplication.application.addChild(successPage);
 		}

@@ -22,6 +22,11 @@ package cn.sftech.www.object
 		 */		
 		public var userLvData : Array;
 		
+		/**
+		 * 当前保存是否是困难模式
+		 */		
+		public var isHardType : Boolean = false;
+		
 		public function UserLvData()
 		{
 		}

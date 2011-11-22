@@ -63,5 +63,7 @@ package cn.sftech.www.object
 		
 		public static const UNLOCK_INIT_LV : uint = 5;
 		
+		public static const PAY_URL : String = "http://mpay.3g.qq.com/";
+		
 	}
 }

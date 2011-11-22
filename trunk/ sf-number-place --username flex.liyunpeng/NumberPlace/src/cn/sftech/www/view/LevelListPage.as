@@ -134,9 +134,10 @@ package cn.sftech.www.view
 				buyHardLvPage.percentHeight = 100;
 				buyHardLvPage.addEventListener(ChangePageEvent.CHANGE_PAGE_EVENT,hardLvHandle);
 				hardLevelPane.addChild(buyHardLvPage);
+			} else {
+				hardLevelPane.buildLevelBtn(GameConfig.HARD_TYPE);
 			}
 			
-//			hardLevelPane.buildLevelBtn(GameConfig.HARD_TYPE);
 			this.selectedIndex = 3;
 		}
 		

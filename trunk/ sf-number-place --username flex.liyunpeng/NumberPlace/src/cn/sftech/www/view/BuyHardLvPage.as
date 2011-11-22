@@ -4,7 +4,10 @@ package cn.sftech.www.view
 	import cn.sftech.www.event.ChangePageEvent;
 	import cn.sftech.www.event.SaveGameEvent;
 	import cn.sftech.www.model.ModelLocator;
+	import cn.sftech.www.object.GameConfig;
 	import cn.sftech.www.util.DataManager;
+	
+	import com.qq.openapi.MttService;
 	
 	import flash.display.DisplayObject;
 	import flash.display.MovieClip;
@@ -98,7 +101,6 @@ package cn.sftech.www.view
 		private function buyHardLvHandle(event : MouseEvent) : void
 		{
 			buyBtn.visible = false;
-//			_model.currentCoins = 0;
 			if(_model.currentCoins>=_model.price) {
 				SFApplication.application.addEventListener(SaveGameEvent.SAVE_GAME_EVENT,buyHandle);
 				var dataManager : DataManager = new DataManager();
@@ -117,7 +119,7 @@ package cn.sftech.www.view
 		//跳转到充值页面
 		private function rechargeHandle(event : MouseEvent) : void
 		{
-			
+			MttService.jump(uint(GameConfig.PAY_URL),true);
 		}
 		
 		private function rBuyHandle(event : MouseEvent) : void

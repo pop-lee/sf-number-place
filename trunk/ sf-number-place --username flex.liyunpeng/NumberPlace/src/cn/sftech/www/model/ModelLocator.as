@@ -30,6 +30,8 @@ package cn.sftech.www.model
 		
 		//用户当前填写在面板上的解
 		public var userResolveArr : Array;
+		//当前模式是否为困难模式
+		public var isHardType : Boolean = false;
 		
 		//以解锁的关数
 		public var unlockLevel : uint = 1;
@@ -39,6 +41,8 @@ package cn.sftech.www.model
 		public var currentCoins : uint = 0;
 		//道具价格
 		public var price:uint = 0;
+		//道具ID
+		public var hardLvKeyId : uint = 0;
 		
 		//用户是否以开始玩本关，用来判断是否需要存储当前关
 		public var isStartPlay : Boolean = false;

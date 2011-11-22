@@ -1,6 +1,6 @@
 package cn.sftech.www.util
 {
-	public class FeeMapData extends MapDataBase
+	public class PayMapData extends MapDataBase
 	{
 		public const FEE_MAP_DATA : Array = 
 			[
@@ -587,7 +587,7 @@ package cn.sftech.www.util
 
 			]
 		
-		public function FeeMapData()
+		public function PayMapData()
 		{
 		}
 		

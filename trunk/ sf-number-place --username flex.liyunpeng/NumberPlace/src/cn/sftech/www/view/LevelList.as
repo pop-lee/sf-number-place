@@ -4,7 +4,7 @@ package cn.sftech.www.view
 	import cn.sftech.www.model.ModelLocator;
 	import cn.sftech.www.object.GameConfig;
 	import cn.sftech.www.util.DataManager;
-	import cn.sftech.www.util.FeeMapData;
+	import cn.sftech.www.util.PayMapData;
 	import cn.sftech.www.util.LevelMapData;
 	
 	import flash.display.DisplayObject;
@@ -42,9 +42,11 @@ package cn.sftech.www.view
 			var unlockLevel : uint;
 			if(type == GameConfig.HARD_TYPE) {
 				unlockLevel = _model.buyLevel;
-				_model.mapDataClass = FeeMapData;
+				_model.mapDataClass = PayMapData;
+				_model.isHardType = true;
 			} else {
 				unlockLevel = _model.unlockLevel
+				_model.isHardType = false;
 				_model.mapDataClass = LevelMapData;
 			}
 			

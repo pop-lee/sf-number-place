@@ -26,6 +26,8 @@ package cn.sftech.www.util
 		
 		private var manageLock : Boolean = false;
 		
+		private static var isInitialized : Boolean = false;
+		
 		private static var manageFuncArr : Vector.<Function> = new Vector.<Function>();
 		
 		private var _model : ModelLocator = ModelLocator.getInstance();
@@ -42,7 +44,7 @@ package cn.sftech.www.util
 			queryUserPackage();
 			queryStore();
 			queryCoins();
-			initFinished();
+//			initFinished();
 		}
 		
 		public function submitScore() : void
@@ -72,6 +74,7 @@ package cn.sftech.www.util
 				var userLvDataObejct : ByteArray = new ByteArray();
 				var userLvData : UserLvData = new UserLvData();
 				userLvData.saveLv = _model.currentLv;
+				userLvData.isHardType = _model.isHardType;
 				userLvData.userLvData = _model.userResolveArr;
 				userLvDataObejct.writeObject(userLvData);
 				userLvDataObejct.position = 0;
@@ -112,7 +115,7 @@ package cn.sftech.www.util
 			if(manageLock) {
 				inList(buyHardLevel);
 			} else {
-				MttMall.purchase(1321841767, 1, buyHardLevelResult);
+				MttMall.purchase(_model.hardLvKeyId, 1, buyHardLevelResult);
 			}
 		}
 		
@@ -144,6 +147,7 @@ package cn.sftech.www.util
 		private function queryBuyLevel() : void
 		{
 			if(manageLock) {
+				trace(queryBuyLevel);
 				inList(queryBuyLevel);
 			} else {
 				manageLock = true;
@@ -187,16 +191,13 @@ package cn.sftech.www.util
 		
 		private function initFinished() : void
 		{
-			if(manageLock) {
-				inList(initFinished);
-			} else {
-				LogManager.print("初始化成功");
-				
-				manageLock = true;
-				
-				SFApplication.application.dispatchEvent(new SFInitializeDataEvent());
-//				LogManager.hideLog();
-			}
+			isInitialized = true;
+			LogManager.print("初始化成功");
+			
+			manageLock = true;
+			
+			SFApplication.application.dispatchEvent(new SFInitializeDataEvent());
+			LogManager.hideLog();
 		}
 		
 		//---------------------------------------------------------------------------------------------
@@ -205,8 +206,8 @@ package cn.sftech.www.util
 		{
 			if(result.code == 0) { //返回成功
 //				LogManager.print("保存当前关成功");
-				outList();
 				SFApplication.application.dispatchEvent(new SaveGameEvent(SaveGameEvent.SAVED));
+				outList();
 				return;
 			} else if(result.code == MttService.EIOERROR) { //网络原因出错
 //				LogManager.print("因网络原因，保存失败");
@@ -227,8 +228,8 @@ package cn.sftech.www.util
 		private function saveBuyLevelResult(result : Object) : void
 		{
 			if(result.code == 0) { //返回成功
-				outList();
 				SFApplication.application.dispatchEvent(new SaveGameEvent(SaveGameEvent.SAVED));
+				outList();
 			} else if(result.code == MttService.EIOERROR) { //网络原因出错
 			} else { //其他错误
 			}
@@ -243,8 +244,8 @@ package cn.sftech.www.util
 		private function queryCoinsResult(result : Object) : void
 		{
 			if(result.code == 0) {
-				outList();
 				_model.currentCoins = result.balance;
+				outList();
 			} else {
 				outList();
 			}
@@ -253,11 +254,11 @@ package cn.sftech.www.util
 		private function buyHardLevelResult(result : Object) : void
 		{
 			if(result.code == 0) {
-				outList();
 				_model.buyLevel = 1;
 				saveBuyLevel();
+				outList();
 			} else if(result.code == MttService.ENOTENOUGH) {
-				LogManager.print("用户易贝余额不足");
+//				LogManager.print("用户易贝余额不足");
 				SFApplication.application.dispatchEvent(new SaveGameEvent(SaveGameEvent.SAVE_ERROR));
 			}
 		}
@@ -267,18 +268,19 @@ package cn.sftech.www.util
 		private function queryUserLvDataResult(result : Object) : void
 		{
 			if(result.code == 0) { //返回成功
-				LogManager.print("加载保存关卡成功");
+//				LogManager.print("加载保存关卡成功");
 				
 				result.value.position = 0;
 				var userLvData : Object = result.value.readObject();
 				_model.userSaveLv = userLvData.saveLv;
+				_model.isHardType = userLvData.isHardType;
 				_model.userResolveArr = userLvData.userLvData;
 				
 				outList();
 			} else if(result.code == MttService.EIOERROR) { //网络原因出错
 //				LogManager.print("因网络原因，提交失败");
 			} else if(result.code == MttService.ENOENT) { //没有相关的用户存储关卡数据
-				LogManager.print("正在为您初始化用户关卡数据");
+//				LogManager.print("正在为您初始化用户关卡数据");
 				saveLvData();
 				outList();
 			} else {
@@ -287,15 +289,17 @@ package cn.sftech.www.util
 		}
 		private function queryUnlockLevelResult(result:Object) : void
 		{
+//			result.code = MttService.ENOENT;
 			if(result.code == 0) { //返回成功
-				LogManager.print("加载以解锁关卡成功");
+//				LogManager.print("加载以解锁关卡成功");
+				
 				_model.unlockLevel = uint(result.value.readObject());
 				
 				outList();
 			} else if(result.code == MttService.EIOERROR) { //网络原因出错
 //				LogManager.print("因网络原因，查询失败");
 			} else if(result.code == MttService.ENOENT) { //没有相关的用户存储关卡数据
-				LogManager.print("正在为您初始化以解锁关卡数据");
+//				LogManager.print("正在为您初始化以解锁关卡数据");
 				saveUnlockLevel();
 				outList();
 			} else {
@@ -305,15 +309,16 @@ package cn.sftech.www.util
 		
 		private function queryBuyLevelResult(result:Object) : void
 		{
+//			result.code = MttService.ENOENT;
 			if(result.code == 0) { //返回成功
-				LogManager.print("加载以解锁关卡成功");
+//				LogManager.print("加载以解锁关卡成功");
 				_model.buyLevel = uint(result.value.readObject());
 				
 				outList();
 			} else if(result.code == MttService.EIOERROR) { //网络原因出错
 //				LogManager.print("因网络原因，查询失败");
 			} else if(result.code == MttService.ENOENT) { //没有相关的用户存储关卡数据
-				LogManager.print("正在为您初始化以购买关卡数据");
+//				LogManager.print("正在为您初始化以购买关卡数据");
 				_model.buyLevel = 1;
 				saveBuyLevel();
 				outList();
@@ -325,12 +330,12 @@ package cn.sftech.www.util
 		private function queryUserPackageResult(result : Object) : void
 		{
 			if(result.code == 0) {
-				LogManager.print("加载以用户购买道具列表成功");
-				outList();
+//				LogManager.print("加载以用户购买道具列表成功");
 				
 				if(result.items[0].total > 0) {
 					queryBuyLevel();
 				}
+				outList();
 			} else if(result.code == MttService.ENOENT) {
 				outList();
 			}
@@ -339,11 +344,12 @@ package cn.sftech.www.util
 		private function queryStoreResult(result : Object) : void
 		{
 			if(result.code == 0) {
-				LogManager.print("加载商城成功");
-				outList();
-				
+//				LogManager.print("加载商城成功");
 				var storeList : Array = result.items as Array;
 				_model.price = result.items[0].price;
+				_model.hardLvKeyId = result.items[0].id;
+				
+				outList();
 			}
 		}
 		
@@ -354,11 +360,28 @@ package cn.sftech.www.util
 		
 		private function outList() : void
 		{
-			manageLock = false;
-			if(manageFuncArr.length>0) {
-				manageFuncArr[0].call();
+			if(!isInitialized) {
+				loading = loading>=100?100:loading += 10;
+				LogManager.print("正在加载用户数据..." + loading + " %");
+				
+				if(manageFuncArr.length == 0) {
+					loading = 100;
+					LogManager.print("正在加载用户数据..." + loading + " %");
+					initFinished();
+				}
 			}
+			
+			manageLock = false;
+			if(manageFuncArr.length == 0) return;
+			
+			var func : Function = manageFuncArr[0];
 			manageFuncArr.splice(0,1);
+			if(manageFuncArr.length>=0) {
+				func.call();
+			}
+			
 		}
+		
+		private var loading : uint = 0;
 	}
 }
