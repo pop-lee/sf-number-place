@@ -179,6 +179,8 @@ package cn.sftech.www.view
 			
 			if(_model.buyLevel != 0) {
 				hardLevelPane.buildLevelBtn(GameConfig.HARD_TYPE);
+			} else {
+				this.selectedIndex = 0;
 			}
 		}
 	}

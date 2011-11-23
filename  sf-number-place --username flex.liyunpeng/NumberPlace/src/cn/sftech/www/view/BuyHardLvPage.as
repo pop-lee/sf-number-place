@@ -12,6 +12,8 @@ package cn.sftech.www.view
 	import flash.display.DisplayObject;
 	import flash.display.MovieClip;
 	import flash.events.MouseEvent;
+	import flash.net.URLRequest;
+	import flash.net.navigateToURL;
 	import flash.text.TextField;
 
 	public class BuyHardLvPage extends SFViewStack
@@ -63,7 +65,7 @@ package cn.sftech.www.view
 			backBtn1.y = 4;
 			backBtn1.backgroundImage = BackBtnBackground;
 			backBtn1.addEventListener(MouseEvent.CLICK,backLevelListPageHandle);
-			buyHardLvError.addChild(backBtn1);
+			buyHardLvPane.addChild(backBtn1);
 			
 			buyBtn = new BuyHardLvBtn();
 			buyBtn.x = 33;
@@ -101,6 +103,7 @@ package cn.sftech.www.view
 		private function buyHardLvHandle(event : MouseEvent) : void
 		{
 			buyBtn.visible = false;
+//			_model.currentCoins = 0;
 			if(_model.currentCoins>=_model.price) {
 				SFApplication.application.addEventListener(SaveGameEvent.SAVE_GAME_EVENT,buyHandle);
 				var dataManager : DataManager = new DataManager();
@@ -119,7 +122,8 @@ package cn.sftech.www.view
 		//跳转到充值页面
 		private function rechargeHandle(event : MouseEvent) : void
 		{
-			MttService.jump(uint(GameConfig.PAY_URL),true);
+			navigateToURL(new URLRequest(GameConfig.PAY_URL),"_blank");
+//			MttService.jump(uint(GameConfig.PAY_URL),true);
 		}
 		
 		private function rBuyHandle(event : MouseEvent) : void

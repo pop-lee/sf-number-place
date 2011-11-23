@@ -212,6 +212,7 @@ package cn.sftech.www.util
 			} else if(result.code == MttService.EIOERROR) { //网络原因出错
 //				LogManager.print("因网络原因，保存失败");
 			} else { //其他错误
+//				LogManager.print("保存数据发生错误,错误号" + result.code);
 			}
 			SFApplication.application.dispatchEvent(new SaveGameEvent(SaveGameEvent.SAVE_ERROR));
 		}
@@ -223,6 +224,7 @@ package cn.sftech.www.util
 			} else if(result.code == MttService.EIOERROR) { //网络原因出错
 //				LogManager.print("因网络原因，保存失败");
 			} else { //其他错误
+//				LogManager.print("保存数据发生错误,错误号" + result.code);
 			}
 		}
 		private function saveBuyLevelResult(result : Object) : void
@@ -232,21 +234,12 @@ package cn.sftech.www.util
 				outList();
 			} else if(result.code == MttService.EIOERROR) { //网络原因出错
 			} else { //其他错误
+//				LogManager.print("保存数据发生错误,错误号" + result.code);
 			}
 		}
 		private function submitScoreResult(result:Object) : void
 		{
 			if(result.code == 0) {
-				outList();
-			}
-		}
-		
-		private function queryCoinsResult(result : Object) : void
-		{
-			if(result.code == 0) {
-				_model.currentCoins = result.balance;
-				outList();
-			} else {
 				outList();
 			}
 		}
@@ -338,6 +331,8 @@ package cn.sftech.www.util
 				outList();
 			} else if(result.code == MttService.ENOENT) {
 				outList();
+			} else {
+//				LogManager.print("查询数据发生错误,错误号" + result.code);
 			}
 		}
 		
@@ -350,7 +345,21 @@ package cn.sftech.www.util
 				_model.hardLvKeyId = result.items[0].id;
 				
 				outList();
+			} else {
+//				LogManager.print("查询数据发生错误,错误号" + result.code);
 			}
+		}
+		
+		private function queryCoinsResult(result : Object) : void
+		{
+			if(result.code == 0) {
+//				LogManager.print("加载钱币成功");
+				_model.currentCoins = result.balance;
+				outList();
+			} else {
+				outList();
+//				LogManager.print("查询数据发生错误,错误号" + result.code);
+			} 
 		}
 		
 		private function inList(func : Function) : void
