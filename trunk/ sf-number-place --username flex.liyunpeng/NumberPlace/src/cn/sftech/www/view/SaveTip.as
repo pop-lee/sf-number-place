@@ -54,8 +54,8 @@ package cn.sftech.www.view
 			okBtn = new SFMovieClip();
 			okBtn.backgroundImage = OkBtnBackground;
 			okBtn.visible = false;
-			okBtn.x = 60;
-			okBtn.y = 98;
+			okBtn.x = 86;
+			okBtn.y = 165;
 			okBtn.addEventListener(MouseEvent.CLICK,okHandle);
 			addChild(okBtn);
 		}

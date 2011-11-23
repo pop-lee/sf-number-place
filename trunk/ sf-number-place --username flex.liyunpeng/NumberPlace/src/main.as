@@ -49,7 +49,7 @@ package
 			logo.height = this.height;
 			addChild(logo);
 			
-			MttService.initialize(root, "D5FE393C02DB836FFDE413B8794056ED","682");
+			MttService.initialize(root, "D5FE393C02DB836FFDE413B8794056ED","733");
 			MttService.addEventListener(MttService.ETLOGOUT, onLogout);
 			
 			initData();
