@@ -55,7 +55,7 @@ package cn.sftech.www.object
 		/**
 		 * NORMAL级别游戏关数
 		 */
-		public static const NORMAL_LV : uint = 48;
+		public static const NORMAL_LV : uint = 72;
 		/**
 		 * HARD级别游戏关数
 		 */
