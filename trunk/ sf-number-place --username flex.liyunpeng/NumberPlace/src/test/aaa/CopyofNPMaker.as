@@ -75,6 +75,32 @@ package test.aaa
 			
 			////////////////////////////////
 			
+			makeNP(46);
+			makeNP(46);
+			makeNP(46);
+			makeNP(46);
+			makeNP(46);
+			makeNP(46);
+			makeNP(46);
+			makeNP(46);
+			makeNP(46);
+			makeNP(46);
+			makeNP(46);
+			makeNP(46);
+			makeNP(46);
+			makeNP(46);
+			makeNP(46);
+			makeNP(46);
+			makeNP(46);
+			makeNP(46);
+			makeNP(46);
+			makeNP(46);
+			makeNP(46);
+			makeNP(46);
+			makeNP(46);
+			makeNP(46);
+			
+			
 //			makeNP(48);  //1
 //			makeNP(48);  //1
 //			makeNP(48);  //1
@@ -148,9 +174,9 @@ package test.aaa
 			}
 			display();
 			resolve();
-			trace("解");
+//			trace("解");
 			
-			display();
+//			display();
 			
 			trace("---------------------");
 		}

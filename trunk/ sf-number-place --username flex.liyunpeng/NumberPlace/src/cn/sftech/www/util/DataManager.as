@@ -22,7 +22,7 @@ package cn.sftech.www.util
 		
 		public const UNLOCK_LEVEL_KEY : String = "unlockLevel";
 		
-		public const BUY_LEVEL_KEY : String = "buyLevelKey";
+		public const HARD_LEVEL_KEY : String = "HardLevelKey";
 		
 		private var manageLock : Boolean = false;
 		
@@ -41,9 +41,10 @@ package cn.sftech.www.util
 			LogManager.print("正在加载用户数据...");
 			queryUnlockLevel();
 			queryUserSaveData();
-			queryUserPackage();
-			queryStore();
-			queryCoins();
+			queryBuyLevel();
+//			queryUserPackage();
+//			queryStore();
+//			queryCoins();
 //			initFinished();
 		}
 		
@@ -106,7 +107,7 @@ package cn.sftech.www.util
 				var buyLevel : ByteArray = new ByteArray();
 				buyLevel.writeObject(_model.buyLevel);
 				buyLevel.position = 0;
-				MttGameData.put(BUY_LEVEL_KEY,buyLevel,saveBuyLevelResult);
+				MttGameData.put(HARD_LEVEL_KEY,buyLevel,saveBuyLevelResult);
 			}
 		}
 		
@@ -152,7 +153,7 @@ package cn.sftech.www.util
 			} else {
 				manageLock = true;
 				
-				MttGameData.get(BUY_LEVEL_KEY,queryBuyLevelResult);
+				MttGameData.get(HARD_LEVEL_KEY,queryBuyLevelResult);
 			}
 		}
 		

@@ -144,20 +144,23 @@ package cn.sftech.www.view
 			//用户是否以开始本关
 			_model.isStartPlay = true;
 			
-			//标记当前是否已经全填满
-			var isComplete : Boolean = true;
-			
 			System.gc();
 			
 			//检测是过关(全部填满并且没有错误)
-			if(_currentLvBlock[i][j].type == 0) return;
 			for(var i : int = 0; i <_model.userResolveArr.length;i++) {
 				for(var j : int = 0; j < _model.userResolveArr[i].length;j++) {
-					if(_model.userResolveArr[i][j] == 0) {
-						isComplete=false; 
-					} else {
-						//鉴证填写的数字快是否合理
-						checkNum(_currentLvBlock[i][j]);
+					//鉴证填写的数字快是否合理
+					checkNum(_currentLvBlock[i][j]);
+				}
+			}
+			
+			//是否已经填满
+			var isComplete : Boolean = true;
+			//验证是否全部填写完成
+			for(var m : int = 0;m < 9;m++) {
+				for(var n : int = 0;n < 9;n++) {
+					if(_currentLvMap[m][n] == 0) { //还有空地没有填写数字
+						isComplete = false;
 					}
 				}
 			}
@@ -197,6 +200,7 @@ package cn.sftech.www.view
 		
 		private function checkNum(block : NumberBlock) : void
 		{
+			if(block.type == 0) return;
 			//检测列
 			for(var i : int = 0;i < 9;i++) {
 				if(i == block.indexY) continue;
